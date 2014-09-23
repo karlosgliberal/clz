@@ -1,0 +1,12 @@
+{
+  "name": "colapso",
+  "version": "0.0.1",
+  "description": "The best game in the world",
+  "authors": [
+    ""
+  ],
+  "dependencies": {
+    "almond": "latest",
+    "phaser-official": "latest"
+  }
+}
