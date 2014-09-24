@@ -105,7 +105,6 @@ define("scenes/boot",
     Boot.prototype.create = function () {
       // max number of fingers to detect
       this.input.maxPointers = 1;
-
       // auto pause if window looses focus
       this.stage.disableVisibilityChange = true;
 
@@ -117,6 +116,10 @@ define("scenes/boot",
       this.game.scale.pageAlignHorizontally = true;
       this.game.scale.pageAlignVertically = true;
       this.game.scale.stopFullScreen();
+
+      this.game.canvas.id = 'colapso';
+
+
 
       this.game.state.start('preload', true, false);
     };

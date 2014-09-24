@@ -9,10 +9,25 @@ var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     rename = require('gulp-rename'),
     // imagemin = require('gulp-imagemin'),
-    uglify = require('gulp-uglify');
+    uglify = require('gulp-uglify'),
+    run = require('gulp-run'),
     browserSync = require('browser-sync'),
     source = require('vinyl-source-stream'),
-    path = require('path');
+    path = require('path'),
+    $ = require('gulp-load-plugins')();
+    nn = require('node-notifier');
+
+function errorHandler(error, error_type) {
+    var notifier = new nn.NotificationCenter();
+    notifier.notify({
+        title: "¡¡ERROR!!",
+        message: error.message
+    });
+    console.error("\n" + error.message + "\n");
+    this.emit('end');
+}
+
+var notifier = new nn.NotificationCenter()
 
 var paths = {
     develop: 'project',
@@ -102,7 +117,7 @@ gulp.task('process-html', function() {
         .on('error', gutil.log);
 });
 
-gulp.task('minifycss', function() {
+gulp.task('minifycss', function () {
     return gulp.src(paths.develop + '/css/*.css')
         .pipe(minifycss({
             keepSpecialComments: false,
