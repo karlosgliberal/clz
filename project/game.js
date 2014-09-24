@@ -95,47 +95,6 @@ define("prefabs/vidas",
 
     __exports__["default"] = Vidas;
   });
-define("utils/analytics",
-  ["exports"],
-  function(__exports__) {
-    "use strict";
-    var Analytics = function(category) {
-        if (!category) {
-            throw new this.exception('No category defined');
-        }
-
-        this.active = (window.ga) ? true : false;
-        this.category = category;
-    };
-
-    Analytics.prototype.trackEvent = function(action, label, value) {
-        if (!this.active) {
-            return;
-        }
-
-        if (!action) {
-            throw new this.exception('No action defined');
-        }
-
-        if (value) {
-            window.ga('send', this.category, action, label, value);
-        }
-        else if (label) {
-            window.ga('send', this.category, action, label);
-        }
-        else {
-            window.ga('send', this.category, action);
-        }
-
-    };
-
-    Analytics.prototype.exception = function(message) {
-        this.message = message;
-        this.name = 'AnalyticsException';
-    };
-
-    __exports__["default"] = Analytics;
-  });
 define("scenes/boot",
   ["exports"],
   function(__exports__) {
@@ -205,8 +164,9 @@ define("scenes/menu",
     var empezar;
     var image;
     var textura;
-
+    var blop;
     Menu.prototype.create = function () {
+      blop = this.game.add.audio('blop');
       textura = this.add.sprite(0, 0, 'textura');
       image =  this.game.add.image(this.game.world.centerX, 200, 'logo');
       image.anchor.setTo(0.5, 0.5);
@@ -215,9 +175,19 @@ define("scenes/menu",
     };
 
     Menu.prototype.startGame = function () {
+      //blop.play();
+      console.log(blop);
+      var myMedia = new Media('/android_asset/www/assets/audio/blop.mp3',
+        function () {
+          console.log("playAudio():Audio Success");
+        }, function (err) {
+          console.log(err);
+        });
+      myMedia.play();
       this.game.state.start('setupNumeros', true, false);
-      //this.game.state.start('game', true, false);
     };
+
+
 
     __exports__["default"] = Menu;
   });
@@ -241,9 +211,13 @@ define("scenes/preload",
       this.load.image('textura', 'assets/textura.png');
       this.load.image('titulo', 'assets/title.png');
       this.load.image('eledificio', 'assets/eledificio.png');
-      this.load.image('interrogante', 'assets/interrante.png');
+      this.load.image('interrogante', 'assets/interrogante.png');
+      this.load.image('siguiente', 'assets/siguiente.png');
       this.load.image('siguiente', 'assets/siguiente.png');
       this.load.image('numeroJugadores', 'assets/numero-jugadores.png');
+
+      this.load.audio('blop', 'assets/audio/blop.mp3');
+
       this.load.spritesheet('button-start', 'assets/botones.png', 371, 100);
       this.load.spritesheet('numeros', 'assets/botones_numero.png', 94, 92);
     };
@@ -332,4 +306,51 @@ define("scenes/setupNumeros",
 
 
     __exports__["default"] = SetupNumeros;
+  });
+define("utils/analytics",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    var Analytics = function(category) {
+        if (!category) {
+            throw new this.exception('No category defined');
+        }
+
+        this.active = (window.ga) ? true : false;
+        this.category = category;
+    };
+
+    Analytics.prototype.trackEvent = function(action, label, value) {
+        if (!this.active) {
+            return;
+        }
+
+        if (!action) {
+            throw new this.exception('No action defined');
+        }
+
+        if (value) {
+            window.ga('send', this.category, action, label, value);
+        }
+        else if (label) {
+            window.ga('send', this.category, action, label);
+        }
+        else {
+            window.ga('send', this.category, action);
+        }
+
+    };
+
+    Analytics.prototype.exception = function(message) {
+        this.message = message;
+        this.name = 'AnalyticsException';
+    };
+
+    __exports__["default"] = Analytics;
+  });
+define("utils/mediaCordova",
+  [],
+  function() {
+    "use strict";
+
   });
