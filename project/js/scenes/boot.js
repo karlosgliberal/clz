@@ -13,7 +13,7 @@ Boot.prototype.create = function () {
   if (this.game.device.desktop) {
     this.stage.scale.pageAlignHorizontally = true;
   }
-  this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+  this.game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
   this.game.scale.setScreenSize(true);
   this.game.scale.pageAlignHorizontally = true;
   this.game.scale.pageAlignVertically = true;

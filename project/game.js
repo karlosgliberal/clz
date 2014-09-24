@@ -6,7 +6,11 @@ define("global",
       juego: {
         numeroJugadores : 4,
         escenario: ''
-      }
+      },
+      escenarios: [
+        {id: 'edificio', titulo: 'El edificio', descripcion: 'Teneis que sobrevivir por lo menos dos jugadores, durante 20 minutos, para que os rescaten (solo a dos)'},
+        {id: 'supermercado', titulo: 'El supermercado', descripcion: 'Solo uno sobrevivira en el supermercado, pero solo con ayuda agantarás hata el final'}
+      ]
     };
 
     //var juego = { numerJugadores: 4 };
@@ -20,7 +24,6 @@ define("main",
     "use strict";
 
     var Analytics = __dependency1__["default"];
-
     var Boot = __dependency2__["default"];
     var Preload = __dependency3__["default"];
     var Menu = __dependency4__["default"];
@@ -92,6 +95,47 @@ define("prefabs/vidas",
 
     __exports__["default"] = Vidas;
   });
+define("utils/analytics",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    var Analytics = function(category) {
+        if (!category) {
+            throw new this.exception('No category defined');
+        }
+
+        this.active = (window.ga) ? true : false;
+        this.category = category;
+    };
+
+    Analytics.prototype.trackEvent = function(action, label, value) {
+        if (!this.active) {
+            return;
+        }
+
+        if (!action) {
+            throw new this.exception('No action defined');
+        }
+
+        if (value) {
+            window.ga('send', this.category, action, label, value);
+        }
+        else if (label) {
+            window.ga('send', this.category, action, label);
+        }
+        else {
+            window.ga('send', this.category, action);
+        }
+
+    };
+
+    Analytics.prototype.exception = function(message) {
+        this.message = message;
+        this.name = 'AnalyticsException';
+    };
+
+    __exports__["default"] = Analytics;
+  });
 define("scenes/boot",
   ["exports"],
   function(__exports__) {
@@ -111,7 +155,7 @@ define("scenes/boot",
       if (this.game.device.desktop) {
         this.stage.scale.pageAlignHorizontally = true;
       }
-      this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+      this.game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
       this.game.scale.setScreenSize(true);
       this.game.scale.pageAlignHorizontally = true;
       this.game.scale.pageAlignVertically = true;
@@ -158,25 +202,21 @@ define("scenes/menu",
     "use strict";
     function Menu() {}
 
-    var logo;
-    var text;
-    var style;
-    var t;
+    var empezar;
+    var image;
     var textura;
 
     Menu.prototype.create = function () {
       textura = this.add.sprite(0, 0, 'textura');
-      text = "Configurar partida";
-      style = { font: "65px Arial", fill: "#ff0044", align: "center" };
-      t = game.add.text(game.world.centerX - 300, 0, text, style);
-      logo = this.add.button(this.game.world.centerX, game.world.centerY, 'button-start', this.startGame, this, 1, 2, 0);
-      logo.anchor.setTo(0.5);
-
-      this.game.input.onDown.add(this.startGame, this);
+      image =  this.game.add.image(this.game.world.centerX, 200, 'logo');
+      image.anchor.setTo(0.5, 0.5);
+      empezar = this.add.button(this.game.world.centerX, game.world.centerY + 150, 'button-start', this.startGame, this, 1, 2, 0);
+      empezar.anchor.setTo(0.5);
     };
 
     Menu.prototype.startGame = function () {
-      this.game.state.start('game', true, false);
+      this.game.state.start('setupNumeros', true, false);
+      //this.game.state.start('game', true, false);
     };
 
     __exports__["default"] = Menu;
@@ -200,8 +240,12 @@ define("scenes/preload",
       this.load.image('logo', 'assets/logo.png');
       this.load.image('textura', 'assets/textura.png');
       this.load.image('titulo', 'assets/title.png');
-      this.load.spritesheet('button-start', 'assets/botones.png', 212, 52);
-      this.load.spritesheet('numeros', 'assets/number-buttons.png', 160, 160);
+      this.load.image('eledificio', 'assets/eledificio.png');
+      this.load.image('interrogante', 'assets/interrante.png');
+      this.load.image('siguiente', 'assets/siguiente.png');
+      this.load.image('numeroJugadores', 'assets/numero-jugadores.png');
+      this.load.spritesheet('button-start', 'assets/botones.png', 371, 100);
+      this.load.spritesheet('numeros', 'assets/botones_numero.png', 94, 92);
     };
 
     Preload.prototype.create = function () {
@@ -220,15 +264,18 @@ define("scenes/setupEscenario",
     var Juego = __dependency1__["default"];
 
     function SetupEscenario() {}
-
+    var textura;
     var logo;
+    var escenarios = Juego.escenarios;
+
     SetupEscenario.prototype.create = function () {
+      console.log(escenarios[0].titulo);
+      textura = this.add.sprite(0, 0, 'textura');
       var text = "Selecciona el escenario";
       var style = { font: "45px Arial", fill: "#ff0044", align: "center" };
       game.add.text(game.world.centerX - 300, 10, text, style);
       logo = this.add.button(this.game.world.centerX, game.world.centerY, 'button-start', this.startGame, this, 1, 2, 0);
       logo.anchor.setTo(0.5);
-      console.log(Juego);
     };
 
     SetupEscenario.prototype.startGame = function () {
@@ -245,33 +292,29 @@ define("scenes/setupNumeros",
 
     function SetupNumeros() {}
 
-    var logo;
+    var siguiente;
     var grupoNumeros;
+    var textura;
+    var jugadores;
 
     SetupNumeros.prototype.create = function () {
-      var text = "Elije el numero de jugadores";
-      var style = { font: "45px Arial", fill: "#ff0044", align: "center" };
-      game.add.text(game.world.centerX - 300, 10, text, style);
-      // var numero = game.add.sprite(300, 200, 'numeros');
-      // numero.animations.add('walk');
-      // numero.animations.play('walk', 20, true);
+      textura = this.add.sprite(0, 0, 'textura');
+      jugadores =  this.game.add.image(this.game.world.centerX, 100, 'numeroJugadores');
+      jugadores.anchor.setTo(0.5, 0.5);
       grupoNumeros = game.add.group();
-      var item;
 
-      for (var i = 0; i < 6; i++) {
-        item = grupoNumeros.create(150 + 168 * i, game.world.centerX, 'numeros', i);
-          // Enable input.
+      var item;
+      for (var i = 0; i < 4; i++) {
+        item = grupoNumeros.create(200 + 168 * i, game.world.centerX - 200, 'numeros', i);
         item.inputEnabled = true;
         item.input.start(0, true);
-        item.events.onInputDown.add(this.select);
-          // item.events.onInputUp.add(release);
-          // item.events.onInputOut.add(moveOff);
-        grupoNumeros.getAt(i).alpha = 0.5;
+        item.events.onInputDown.add(this.select, {valor: i});
+        grupoNumeros.getAt(i).alpha = 0.9;
       }
-      grupoNumeros.scale.set(0.7, 0.7);
+      //grupoNumeros.scale.set(0.7, 0.7);
 
-      logo = this.add.button(this.game.world.centerX, game.world.centerY + 250, 'button-start', this.startGame, this, 1, 2, 0);
-      logo.anchor.setTo(0.5);
+      siguiente = this.add.button(this.game.world.centerX + 310, game.world.centerY + 220, 'siguiente', this.startGame, this);
+      siguiente.anchor.setTo(0.5);
 
     };
 
@@ -280,7 +323,7 @@ define("scenes/setupNumeros",
         losOtrosItems.alpha = 0.5;
       });
       item.alpha = 1;
-      console.log(Juego); // if (item.alpha === 1) {
+      Juego.numeroJugadores = this.valor;
     };
 
     SetupNumeros.prototype.startGame = function () {
@@ -289,45 +332,4 @@ define("scenes/setupNumeros",
 
 
     __exports__["default"] = SetupNumeros;
-  });
-define("utils/analytics",
-  ["exports"],
-  function(__exports__) {
-    "use strict";
-    var Analytics = function(category) {
-        if (!category) {
-            throw new this.exception('No category defined');
-        }
-
-        this.active = (window.ga) ? true : false;
-        this.category = category;
-    };
-
-    Analytics.prototype.trackEvent = function(action, label, value) {
-        if (!this.active) {
-            return;
-        }
-
-        if (!action) {
-            throw new this.exception('No action defined');
-        }
-
-        if (value) {
-            window.ga('send', this.category, action, label, value);
-        }
-        else if (label) {
-            window.ga('send', this.category, action, label);
-        }
-        else {
-            window.ga('send', this.category, action);
-        }
-
-    };
-
-    Analytics.prototype.exception = function(message) {
-        this.message = message;
-        this.name = 'AnalyticsException';
-    };
-
-    __exports__["default"] = Analytics;
   });

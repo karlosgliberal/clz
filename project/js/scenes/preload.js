@@ -13,8 +13,12 @@ Preload.prototype.preload = function () {
   this.load.image('logo', 'assets/logo.png');
   this.load.image('textura', 'assets/textura.png');
   this.load.image('titulo', 'assets/title.png');
-  this.load.spritesheet('button-start', 'assets/botones.png', 212, 52);
-  this.load.spritesheet('numeros', 'assets/number-buttons.png', 160, 160);
+  this.load.image('eledificio', 'assets/eledificio.png');
+  this.load.image('interrogante', 'assets/interrante.png');
+  this.load.image('siguiente', 'assets/siguiente.png');
+  this.load.image('numeroJugadores', 'assets/numero-jugadores.png');
+  this.load.spritesheet('button-start', 'assets/botones.png', 371, 100);
+  this.load.spritesheet('numeros', 'assets/botones_numero.png', 94, 92);
 };
 
 Preload.prototype.create = function () {

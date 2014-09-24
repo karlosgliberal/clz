@@ -1,6 +1,5 @@
 
 import Analytics from 'utils/analytics';
-
 import Boot from 'scenes/boot';
 import Preload from 'scenes/preload';
 import Menu from 'scenes/menu';

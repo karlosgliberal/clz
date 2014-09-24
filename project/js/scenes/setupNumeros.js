@@ -2,33 +2,29 @@ import Juego from 'global';
 
 function SetupNumeros() {}
 
-var logo;
+var siguiente;
 var grupoNumeros;
+var textura;
+var jugadores;
 
 SetupNumeros.prototype.create = function () {
-  var text = "Elije el numero de jugadores";
-  var style = { font: "45px Arial", fill: "#ff0044", align: "center" };
-  game.add.text(game.world.centerX - 300, 10, text, style);
-  // var numero = game.add.sprite(300, 200, 'numeros');
-  // numero.animations.add('walk');
-  // numero.animations.play('walk', 20, true);
+  textura = this.add.sprite(0, 0, 'textura');
+  jugadores =  this.game.add.image(this.game.world.centerX, 100, 'numeroJugadores');
+  jugadores.anchor.setTo(0.5, 0.5);
   grupoNumeros = game.add.group();
-  var item;
 
-  for (var i = 0; i < 6; i++) {
-    item = grupoNumeros.create(150 + 168 * i, game.world.centerX, 'numeros', i);
-      // Enable input.
+  var item;
+  for (var i = 0; i < 4; i++) {
+    item = grupoNumeros.create(200 + 168 * i, game.world.centerX - 200, 'numeros', i);
     item.inputEnabled = true;
     item.input.start(0, true);
-    item.events.onInputDown.add(this.select);
-      // item.events.onInputUp.add(release);
-      // item.events.onInputOut.add(moveOff);
-    grupoNumeros.getAt(i).alpha = 0.5;
+    item.events.onInputDown.add(this.select, {valor: i});
+    grupoNumeros.getAt(i).alpha = 0.9;
   }
-  grupoNumeros.scale.set(0.7, 0.7);
+  //grupoNumeros.scale.set(0.7, 0.7);
 
-  logo = this.add.button(this.game.world.centerX, game.world.centerY + 250, 'button-start', this.startGame, this, 1, 2, 0);
-  logo.anchor.setTo(0.5);
+  siguiente = this.add.button(this.game.world.centerX + 310, game.world.centerY + 220, 'siguiente', this.startGame, this);
+  siguiente.anchor.setTo(0.5);
 
 };
 
@@ -37,7 +33,7 @@ SetupNumeros.prototype.select = function (item) {
     losOtrosItems.alpha = 0.5;
   });
   item.alpha = 1;
-  console.log(Juego); // if (item.alpha === 1) {
+  Juego.numeroJugadores = this.valor;
 };
 
 SetupNumeros.prototype.startGame = function () {
