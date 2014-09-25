@@ -14,6 +14,7 @@ Preload.prototype.preload = function () {
   this.load.image('textura', 'assets/textura.png');
   this.load.image('titulo', 'assets/title.png');
   this.load.image('eledificio', 'assets/eledificio.png');
+  this.load.image('supermercado', 'assets/eledificio.png');
   this.load.image('interrogante', 'assets/interrogante.png');
   this.load.image('siguiente', 'assets/siguiente.png');
   this.load.image('siguiente', 'assets/siguiente.png');

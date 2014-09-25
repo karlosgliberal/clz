@@ -22,3 +22,13 @@ canvas {
     image-rendering: -webkit-optimize-contrast;
     -ms-interpolation-mode: nearest-neighbor;
 }
+
+@font-face {
+  font-family: 'eurostileregular';
+  src: url('../assets/fuentes/eurostile-webfont.eot');
+  src: url('../assets/fuentes/eurostile-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../assets/fuentes/eurostile-webfont.woff2') format('woff2'),
+       url('../assets/fuentes/eurostile-webfont.woff') format('woff'),
+       url('../assets/fuentes/eurostile-webfont.ttf') format('truetype'),
+       url('../assets/fuentes/eurostile-webfont.svg#eurostileregular') format('svg');
+}

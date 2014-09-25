@@ -156,6 +156,13 @@ gulp.task('process-assets', function () {
         .on('error', gutil.log);
 });
 
+// Use gulp-run in the middle of a pipeline:
+// gulp.task('cordova', function () {
+//   gulp.src('../cordova')           // Get input files.
+//     .pipe(run('cd ../cordova'))     // Use awk to extract the even lines.
+//     .pipe(run('cordova run android'))     // Use awk to extract the even lines.
+// });
+
 // Runnable tasks
 gulp.task('default', ['compile', 'watch', 'server']);
 gulp.task('build', ['clean', 'process-html', 'minifycss', 'uglify', 'process-assets']);

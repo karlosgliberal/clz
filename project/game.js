@@ -8,7 +8,7 @@ define("global",
         escenario: ''
       },
       escenarios: [
-        {id: 'edificio', titulo: 'El edificio', descripcion: 'Teneis que sobrevivir por lo menos dos jugadores, durante 20 minutos, para que os rescaten (solo a dos)'},
+        {id: 'eledificio', titulo: 'El edificio', descripcion: 'Teneis que sobrevivir por lo menos dos jugadores, durante 20 minutos, para que os rescaten (solo a dos)'},
         {id: 'supermercado', titulo: 'El supermercado', descripcion: 'Solo uno sobrevivira en el supermercado, pero solo con ayuda agantarás hata el final'}
       ]
     };
@@ -156,17 +156,22 @@ define("scenes/game",
     __exports__["default"] = Game;
   });
 define("scenes/menu",
-  ["exports"],
-  function(__exports__) {
+  ["utils/mediaCordova","exports"],
+  function(__dependency1__, __exports__) {
     "use strict";
+    var MediaCordova = __dependency1__["default"];
+
     function Menu() {}
 
-    var empezar;
-    var image;
-    var textura;
-    var blop;
+    var empezar,
+        image,
+        textura,
+        blopAudioAssets,
+        blopAudio;
+
     Menu.prototype.create = function () {
-      blop = this.game.add.audio('blop');
+      blopAudioAssets = this.game.add.audio('blop');
+      blopAudio = new MediaCordova(blopAudioAssets);
       textura = this.add.sprite(0, 0, 'textura');
       image =  this.game.add.image(this.game.world.centerX, 200, 'logo');
       image.anchor.setTo(0.5, 0.5);
@@ -176,14 +181,7 @@ define("scenes/menu",
 
     Menu.prototype.startGame = function () {
       //blop.play();
-      console.log(blop);
-      var myMedia = new Media('/android_asset/www/assets/audio/blop.mp3',
-        function () {
-          console.log("playAudio():Audio Success");
-        }, function (err) {
-          console.log(err);
-        });
-      myMedia.play();
+      blopAudio.play();
       this.game.state.start('setupNumeros', true, false);
     };
 
@@ -211,6 +209,7 @@ define("scenes/preload",
       this.load.image('textura', 'assets/textura.png');
       this.load.image('titulo', 'assets/title.png');
       this.load.image('eledificio', 'assets/eledificio.png');
+      this.load.image('supermercado', 'assets/eledificio.png');
       this.load.image('interrogante', 'assets/interrogante.png');
       this.load.image('siguiente', 'assets/siguiente.png');
       this.load.image('siguiente', 'assets/siguiente.png');
@@ -240,16 +239,33 @@ define("scenes/setupEscenario",
     function SetupEscenario() {}
     var textura;
     var logo;
+    var espacioEscenarios = 0;
+    var contenedor;
     var escenarios = Juego.escenarios;
 
     SetupEscenario.prototype.create = function () {
-      console.log(escenarios[0].titulo);
       textura = this.add.sprite(0, 0, 'textura');
-      var text = "Selecciona el escenario";
-      var style = { font: "45px Arial", fill: "#ff0044", align: "center" };
-      game.add.text(game.world.centerX - 300, 10, text, style);
+      var style = { font: "26px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
       logo = this.add.button(this.game.world.centerX, game.world.centerY, 'button-start', this.startGame, this, 1, 2, 0);
       logo.anchor.setTo(0.5);
+
+      contenedor = game.add.sprite(100, 0, null);
+      escenarios.forEach(function (item, index) {
+          if (index !== 0) {
+            espacioEscenarios = espacioEscenarios + 450;
+          }
+          var indice = 'indice' + index;
+          console.log(indice);
+          contenedor.escenario = game.add.sprite((game.world.centerX - espacioEscenarios) + 150, game.world.centerY, item.id);
+          contenedor.escenario.anchor.setTo(0.5);
+          contenedor.addChild(contenedor.escenario);
+          var tituloEscenario = item.titulo;
+          contenedor.texto = game.add.text((game.world.centerX - espacioEscenarios), game.world.centerY + 120, tituloEscenario, style);
+          contenedor.addChild(contenedor.texto);
+
+        }
+      );
+      console.log(contenedor);
     };
 
     SetupEscenario.prototype.startGame = function () {
@@ -349,8 +365,32 @@ define("utils/analytics",
     __exports__["default"] = Analytics;
   });
 define("utils/mediaCordova",
-  [],
-  function() {
+  ["exports"],
+  function(__exports__) {
     "use strict";
+    var MediaCordova = function (sound) {
+      if (!sound) {
+        throw new this.exception('No src defined');
+      }
+      this.sound = sound;
+      if (!game.device.desktop) {
+        this.src = this.sound._sound.currentSrc;
+        this.soundObj = new Media(this.src,
+          function () {
+            console.log("playAudio():Audio Success");
+          }, function (err) {
+            console.log(err);
+          }
+        );
+      } else {
+        this.soundObj = this.sound;
+      }
+    };
 
+    MediaCordova.prototype.play = function () {
+      this.soundObj.play();
+    };
+
+
+    __exports__["default"] = MediaCordova;
   });

@@ -19,7 +19,8 @@
     "module": true,
     "Phaser": true,
     "PIXI": true,
-    "game": true
+    "game": true,
+    "Media": true
 
   }
 }
