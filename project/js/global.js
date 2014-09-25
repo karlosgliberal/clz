@@ -5,7 +5,8 @@ var global = window['colapso'] = {
   },
   escenarios: [
     {id: 'eledificio', titulo: 'El edificio', descripcion: 'Teneis que sobrevivir por lo menos dos jugadores, durante 20 minutos, para que os rescaten (solo a dos)'},
-    {id: 'supermercado', titulo: 'El supermercado', descripcion: 'Solo uno sobrevivira en el supermercado, pero solo con ayuda agantarás hata el final'}
+    {id: 'supermercado', titulo: 'El supermercado', descripcion: 'Solo uno sobrevivira en el supermercado, pero solo con ayuda agantarás hata el final'},
+    {id: 'estadio', titulo: 'El estadio', descripcion: 'Buscar la llave de la entrada (carta de suceso) todos y llegar a la puerta (carta de suceso), mientra tanto sobrevivir como podais'}
   ]
 };
 

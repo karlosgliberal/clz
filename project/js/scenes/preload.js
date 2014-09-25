@@ -15,9 +15,11 @@ Preload.prototype.preload = function () {
   this.load.image('titulo', 'assets/title.png');
   this.load.image('eledificio', 'assets/eledificio.png');
   this.load.image('supermercado', 'assets/eledificio.png');
+  this.load.image('estadio', 'assets/eledificio.png');
   this.load.image('interrogante', 'assets/interrogante.png');
   this.load.image('siguiente', 'assets/siguiente.png');
-  this.load.image('siguiente', 'assets/siguiente.png');
+  this.load.image('flechaDerecha', 'assets/flecha_derecha.png');
+  this.load.image('flechaIzquierda', 'assets/flecha_izquierda.png');
   this.load.image('numeroJugadores', 'assets/numero-jugadores.png');
 
   this.load.audio('blop', 'assets/audio/blop.mp3');
