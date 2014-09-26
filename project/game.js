@@ -72,6 +72,22 @@ define("main",
 
     __exports__["default"] = App;
   });
+define("prefabs/escenario",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    function Escenario(game, x, y) {
+        Phaser.Sprite.call(this, game, x, y, 'logo');
+        this.anchor.setTo(0.5);
+    }
+
+    Escenario.prototype = Object.create(Phaser.Sprite.prototype);
+    Escenario.prototype.constructor = Escenario;
+
+    Escenario.prototype.update = function() {};
+
+    __exports__["default"] = Escenario;
+  });
 define("prefabs/rotate-logo",
   ["exports"],
   function(__exports__) {
