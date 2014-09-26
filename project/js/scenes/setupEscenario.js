@@ -8,7 +8,8 @@ var textura,
     botonIzquierda,
     tweenContendero,
     interrogante,
-    escenarios = Juego.escenarios,
+    escenariosObj = Juego.escenarios[0],
+    escenarios = [],
     siguiente;
 
 SetupEscenario.prototype.create = function () {
@@ -16,22 +17,25 @@ SetupEscenario.prototype.create = function () {
   var style = { font: "26px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
   var that = this;
   contenedor = game.add.sprite(100, 0, null);
+  var escenariosKey = Object.keys(escenariosObj);
+
+  for (var i = escenariosKey.length - 1; i >= 0; i--) {
+    escenarios.push(escenariosKey[i]);
+  }
   escenarios.forEach(function (item, index) {
       if (index !== 0) {
         espacioEscenarios = espacioEscenarios + 450;
       }
-      var indice = 'indice' + index;
-      console.log(indice);
-      contenedor.escenario = game.add.sprite((game.world.centerX - espacioEscenarios) + 150, game.world.centerY, item.id);
+      contenedor.escenario = game.add.sprite((game.world.centerX - espacioEscenarios) + 150, game.world.centerY, escenariosObj[item].id);
       contenedor.escenario.anchor.setTo(0.5);
       contenedor.addChild(contenedor.escenario);
 
-      var tituloEscenario = item.titulo;
+      var tituloEscenario = escenariosObj[item].titulo;
       contenedor.texto = game.add.text((game.world.centerX - espacioEscenarios), game.world.centerY + 120, tituloEscenario, style);
       contenedor.addChild(contenedor.texto);
 
       contenedor.interrogante = game.add.sprite((game.world.centerX - espacioEscenarios) + 280, game.world.centerY + 120, 'interrogante');
-      contenedor.interrogante.escenario = item.id;
+      contenedor.interrogante.escenario = escenariosObj[item].id;
       contenedor.interrogante.inputEnabled = true;
       contenedor.interrogante.events.onInputDown.add(that.interroganteBoton, this);
       //contenedor.interrogante = game.add.button((game.world.centerX - espacioEscenarios) + 280, game.world.centerY + 120, 'interrogante', that.interroganteBoton, this);
@@ -54,6 +58,7 @@ SetupEscenario.prototype.startGame = function () {
 
 SetupEscenario.prototype.interroganteBoton = function (conteexto) {
   console.log(conteexto.escenario);
+  // contenedor.texto = game.add.text((game.world.centerX - espacioEscenarios), game.world.centerY + 120, tituloEscenario, style);
 };
 
 SetupEscenario.prototype.itemDeDerecha = function () {
