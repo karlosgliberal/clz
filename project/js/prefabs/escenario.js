@@ -1,23 +1,54 @@
+import Juego from 'global';
+var escenariosObj = Juego.escenarios[0];
+
+var text, textDescripcion, group;
 
 function Escenario(game, objeto, accion) {
+  var that = this;
+  console.log(accion);
+  console.log(escenariosObj);
   var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
-  var styleDescripcion = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
-  var group = Phaser.Group.call(this, game);
-  var  sprite = this.create(0, 0, 'seccionGrande');
+  var styleDescripcion = { font: "30px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
+  group = Phaser.Group.call(this, game);
+
+  var  sprite = this.create(-465, 0, 'seccionGrande');
   sprite.anchor.setTo(0, 0);
-  var cerrar = this.create(865, 45, 'cerrar');
-  cerrar.anchor.setTo(0, 0);
-  var imagen = this.create(105, 215, 'eledificio');
+
+  var cerrar = this.create(0, 45, 'cerrar');
+  cerrar.inputEnabled = true;
+  cerrar.events.onInputDown.add(interroganteBotonEscenario, this);
+  //cerrar.anchor.setTo(0, 0);
+
+  var imagen = this.create(0, 215, 'eledificio');
   imagen.scale.setTo(1, 1.5);
   imagen.anchor.setTo(0, 0);
-  //var text = game.add.text(105, 120, "El edificio", style);
-  //group.add(text);
-  var textDescripcion = game.add.text(105, 120, "Teneis que sobrevivir por lo menos dos jugadores, durante 20 minutos, para que os rescaten (solo a dos)", styleDescripcion);
-  group.add(textDescripcion);
-  var tweenContendero = game.add.tween(this);
-  tweenContendero.to({x: 590}, 1000, Phaser.Easing.Linear.None);
+
+  text = game.add.text(-465, 120, escenariosObj[objeto].titulo, style);
+
+  textDescripcion = game.add.text(-400, 220, escenariosObj[objeto].descripcion, styleDescripcion);
+  textDescripcion.wordWrap = true;
+  textDescripcion.align = 'left';
+  textDescripcion.wordWrapWidth =  340;
+
+  tweenEscenario(this, 465, 500);
+  tweenEscenario(cerrar, 400, 100);
+  tweenEscenario(imagen, 50, 100);
+  tweenEscenario(text, 105, 500);
+  tweenEscenario(textDescripcion, 100, 500);
+  // tweenEscenario(cerrar, 865);
+}
+
+function tweenEscenario(obj, coord, vel) {
+  var tweenContendero = game.add.tween(obj);
+  tweenContendero.to({x : coord }, vel, Phaser.Easing.Linear.None);
   tweenContendero.start();
 }
+
+function interroganteBotonEscenario() {
+  this.destroy();
+  textDescripcion.destroy();
+  text.destroy();
+};
 
 Escenario.prototype = Object.create(Phaser.Group.prototype);
 Escenario.prototype.constructor = Escenario;

@@ -11,6 +11,7 @@ var textura,
     interrogante,
     escenariosObj = Juego.escenarios[0],
     escenarios = [],
+    escenario,
     siguiente;
 
 SetupEscenario.prototype.create = function () {
@@ -64,7 +65,7 @@ SetupEscenario.prototype.startGame = function () {
 
 SetupEscenario.prototype.interroganteBoton = function (conteexto) {
   console.log(conteexto.escenario);
-  var escenario = new Escenario(game, 'accion', 'accion2');
+  escenario = new Escenario(game, conteexto.escenario, 'accion2');
   // contenedor.texto = game.add.text((game.world.centerX - espacioEscenarios), game.world.centerY + 120, tituloEscenario, style);
 };
 

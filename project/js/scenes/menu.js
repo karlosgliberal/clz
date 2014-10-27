@@ -22,6 +22,7 @@ Menu.prototype.startGame = function () {
   //blop.play();
   blopAudio.play();
   this.game.state.start('setupNumeros', true, false);
+  // this.game.state.start('setupEscenario', true, false);
 };
 
 

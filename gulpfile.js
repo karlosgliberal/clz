@@ -110,16 +110,6 @@ gulp.task('connect', function() {
 });
 
 
-// gulp.task('server', function () {
-//     browserSync({
-//         server: {
-//             baseDir: paths.develop
-//         },
-//         logLevel: "silent",
-//         logConnections: false
-//     });
-// });
-
 // Production tasks
 gulp.task('process-html', function() {
     return gulp.src(paths.develop + '/index.html')
@@ -142,19 +132,21 @@ gulp.task('minifycss', function () {
 });
 
 gulp.task('uglify', ['scripts'], function () {
-    return gulp.src([
-            './project/bower_components/almond/almond.js',
+  return gulp.src([
+      './project/bower_components/almond/almond.js',
 
-            './project/bower_components/phaser-official/build/custom/phaser-arcade-physics.js',
+      './project/bower_components/phaser-official/build/custom/phaser-arcade-physics.js',
 
-            './project/game.js'
-        ])
-        .pipe(concat('game.js'))
-        .pipe(uglify())
-        .pipe(gulp.dest(paths.product))
-        .pipe(gulp.dest(paths.cordova))
-        .on('error', gutil.log);
-});
+      './project/game.js'
+  ])
+  .pipe(concat('game.js'))
+  .pipe(uglify())
+  .pipe(gulp.dest(paths.product))
+  .pipe(gulp.dest(paths.cordova))
+  .on('error', gutil.log);
+  }
+);
+
 
 gulp.task('process-assets', function () {
     gulp.src(['project/assets/**/*'])
@@ -169,12 +161,14 @@ gulp.task('process-assets', function () {
 });
 
 // Use gulp-run in the middle of a pipeline:
-// gulp.task('cordova', function () {
-//   gulp.src('../cordova')           // Get input files.
-//     .pipe(run('cd ../cordova'))     // Use awk to extract the even lines.
-//     .pipe(run('cordova run android'))     // Use awk to extract the even lines.
-// });
+gulp.task('cordova', function () {
+  gulp.src('../cordova')           // Get input files.
+    .pipe(run('cd ../cordova'))     // Use awk to extract the even lines.
+    .pipe(run('ls'))     // Use awk to extract the even lines.
+    //.pipe(run('cordova run android'));     // Use awk to extract the even lines.
+});
 
 // Runnable tasks
 gulp.task('default', ['compile', 'watch', 'connect']);
 gulp.task('build', ['clean', 'process-html', 'minifycss', 'uglify', 'process-assets']);
+gulp.task('android', ['cordova']);
