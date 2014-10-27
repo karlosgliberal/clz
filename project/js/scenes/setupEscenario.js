@@ -1,4 +1,5 @@
 import Juego from 'global';
+import Escenario from 'prefabs/escenario';
 
 function SetupEscenario() {}
 var textura,
@@ -26,15 +27,20 @@ SetupEscenario.prototype.create = function () {
       if (index !== 0) {
         espacioEscenarios = espacioEscenarios + 450;
       }
-      contenedor.escenario = game.add.sprite((game.world.centerX - espacioEscenarios) + 150, game.world.centerY, escenariosObj[item].id);
+      contenedor.seccion = game.add.sprite((game.world.centerX - espacioEscenarios) + 150, game.world.centerY, 'seccionMini');
+      contenedor.seccion.anchor.setTo(0.5);
+      contenedor.addChild(contenedor.seccion);
+
+      contenedor.escenario = game.add.sprite((game.world.centerX - espacioEscenarios) + 150, game.world.centerY - 60, escenariosObj[item].id);
+      contenedor.escenario.scale.setTo(-0.9, -0.9);
       contenedor.escenario.anchor.setTo(0.5);
       contenedor.addChild(contenedor.escenario);
 
       var tituloEscenario = escenariosObj[item].titulo;
-      contenedor.texto = game.add.text((game.world.centerX - espacioEscenarios), game.world.centerY + 120, tituloEscenario, style);
+      contenedor.texto = game.add.text((game.world.centerX - espacioEscenarios) + 10, game.world.centerY + 70, tituloEscenario, style);
       contenedor.addChild(contenedor.texto);
 
-      contenedor.interrogante = game.add.sprite((game.world.centerX - espacioEscenarios) + 280, game.world.centerY + 120, 'interrogante');
+      contenedor.interrogante = game.add.sprite((game.world.centerX - espacioEscenarios) + 270, game.world.centerY + 150, 'interrogante');
       contenedor.interrogante.escenario = escenariosObj[item].id;
       contenedor.interrogante.inputEnabled = true;
       contenedor.interrogante.events.onInputDown.add(that.interroganteBoton, this);
@@ -58,6 +64,7 @@ SetupEscenario.prototype.startGame = function () {
 
 SetupEscenario.prototype.interroganteBoton = function (conteexto) {
   console.log(conteexto.escenario);
+  var escenario = new Escenario(game, 'accion', 'accion2');
   // contenedor.texto = game.add.text((game.world.centerX - espacioEscenarios), game.world.centerY + 120, tituloEscenario, style);
 };
 

@@ -21,6 +21,9 @@ Preload.prototype.preload = function () {
   this.load.image('flechaDerecha', 'assets/flecha_derecha.png');
   this.load.image('flechaIzquierda', 'assets/flecha_izquierda.png');
   this.load.image('numeroJugadores', 'assets/numero-jugadores.png');
+  this.load.image('seccionMini', 'assets/seccionMini.png');
+  this.load.image('cerrar', 'assets/cerrar.png');
+  this.load.image('seccionGrande', 'assets/seccionGrande.png');
 
   this.load.audio('blop', 'assets/audio/blop.mp3');
 

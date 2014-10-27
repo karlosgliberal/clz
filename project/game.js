@@ -76,15 +76,30 @@ define("prefabs/escenario",
   ["exports"],
   function(__exports__) {
     "use strict";
-    function Escenario(game, x, y) {
-        Phaser.Sprite.call(this, game, x, y, 'logo');
-        this.anchor.setTo(0.5);
+
+    function Escenario(game, objeto, accion) {
+      var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
+      var styleDescripcion = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
+      var group = Phaser.Group.call(this, game);
+      var  sprite = this.create(0, 0, 'seccionGrande');
+      sprite.anchor.setTo(0, 0);
+      var cerrar = this.create(865, 45, 'cerrar');
+      cerrar.anchor.setTo(0, 0);
+      var imagen = this.create(105, 215, 'eledificio');
+      imagen.scale.setTo(1, 2.5);
+      imagen.anchor.setTo(0, 0);
+      //var text = game.add.text(105, 120, "El edificio", style);
+      //group.add(text);
+      var textDescripcion = game.add.text(105, 120, "Teneis que sobrevivir por lo menos dos jugadores, durante 20 minutos, para que os rescaten (solo a dos)", styleDescripcion);
+      group.add(textDescripcion);
+      var tweenContendero = game.add.tween(this);
+      tweenContendero.to({x: 590}, 1000, Phaser.Easing.Linear.None);
+      tweenContendero.start();
     }
 
-    Escenario.prototype = Object.create(Phaser.Sprite.prototype);
+    Escenario.prototype = Object.create(Phaser.Group.prototype);
     Escenario.prototype.constructor = Escenario;
 
-    Escenario.prototype.update = function() {};
 
     __exports__["default"] = Escenario;
   });
@@ -247,6 +262,9 @@ define("scenes/preload",
       this.load.image('flechaDerecha', 'assets/flecha_derecha.png');
       this.load.image('flechaIzquierda', 'assets/flecha_izquierda.png');
       this.load.image('numeroJugadores', 'assets/numero-jugadores.png');
+      this.load.image('seccionMini', 'assets/seccionMini.png');
+      this.load.image('cerrar', 'assets/cerrar.png');
+      this.load.image('seccionGrande', 'assets/seccionGrande.png');
 
       this.load.audio('blop', 'assets/audio/blop.mp3');
 
@@ -264,10 +282,11 @@ define("scenes/preload",
     __exports__["default"] = Preload;
   });
 define("scenes/setupEscenario",
-  ["global","exports"],
-  function(__dependency1__, __exports__) {
+  ["global","prefabs/escenario","exports"],
+  function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     var Juego = __dependency1__["default"];
+    var Escenario = __dependency2__["default"];
 
     function SetupEscenario() {}
     var textura,
@@ -295,15 +314,20 @@ define("scenes/setupEscenario",
           if (index !== 0) {
             espacioEscenarios = espacioEscenarios + 450;
           }
-          contenedor.escenario = game.add.sprite((game.world.centerX - espacioEscenarios) + 150, game.world.centerY, escenariosObj[item].id);
+          contenedor.seccion = game.add.sprite((game.world.centerX - espacioEscenarios) + 150, game.world.centerY, 'seccionMini');
+          contenedor.seccion.anchor.setTo(0.5);
+          contenedor.addChild(contenedor.seccion);
+
+          contenedor.escenario = game.add.sprite((game.world.centerX - espacioEscenarios) + 150, game.world.centerY - 60, escenariosObj[item].id);
+          contenedor.escenario.scale.setTo(-0.9, -0.9);
           contenedor.escenario.anchor.setTo(0.5);
           contenedor.addChild(contenedor.escenario);
 
           var tituloEscenario = escenariosObj[item].titulo;
-          contenedor.texto = game.add.text((game.world.centerX - espacioEscenarios), game.world.centerY + 120, tituloEscenario, style);
+          contenedor.texto = game.add.text((game.world.centerX - espacioEscenarios) + 10, game.world.centerY + 70, tituloEscenario, style);
           contenedor.addChild(contenedor.texto);
 
-          contenedor.interrogante = game.add.sprite((game.world.centerX - espacioEscenarios) + 280, game.world.centerY + 120, 'interrogante');
+          contenedor.interrogante = game.add.sprite((game.world.centerX - espacioEscenarios) + 270, game.world.centerY + 150, 'interrogante');
           contenedor.interrogante.escenario = escenariosObj[item].id;
           contenedor.interrogante.inputEnabled = true;
           contenedor.interrogante.events.onInputDown.add(that.interroganteBoton, this);
@@ -327,6 +351,7 @@ define("scenes/setupEscenario",
 
     SetupEscenario.prototype.interroganteBoton = function (conteexto) {
       console.log(conteexto.escenario);
+      var escenario = new Escenario(game, 'accion', 'accion2');
       // contenedor.texto = game.add.text((game.world.centerX - espacioEscenarios), game.world.centerY + 120, tituloEscenario, style);
     };
 
