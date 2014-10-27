@@ -33,7 +33,7 @@ SetupNumeros.prototype.select = function (item) {
     losOtrosItems.alpha = 0.5;
   });
   item.alpha = 1;
-  Juego.numeroJugadores = this.valor;
+  Juego.juego.numeroJugadores = this.valor;
 };
 
 SetupNumeros.prototype.startGame = function () {

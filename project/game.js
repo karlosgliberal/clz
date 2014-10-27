@@ -204,23 +204,26 @@ define("scenes/boot",
     __exports__["default"] = Boot;
   });
 define("scenes/game",
-  ["prefabs/rotate-logo","exports"],
-  function(__dependency1__, __exports__) {
+  ["prefabs/rotate-logo","global","exports"],
+  function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     var RotateLogo = __dependency1__["default"];
+    var Juego = __dependency2__["default"];
 
     function Game() {}
 
-    var logo;
+    var logo, text, text2;
+    var juego = Juego.juego;
     Game.prototype.create = function () {
       logo = new RotateLogo(
         this.game,
         this.game.width / 2, this.game.height / 2,
         0.5
       );
-
       this.add.existing(logo);
-      this.game.input.onDown.add(this.startGame, this);
+      var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
+      text = game.add.text(250, 460, "Número de jugadores: " + juego.numeroJugadores, style);
+      text2 = game.add.text(250, 500, "Escenario: " + juego.escenario, style);
     };
 
     Game.prototype.startGame = function () {
@@ -257,7 +260,6 @@ define("scenes/menu",
       //blop.play();
       blopAudio.play();
       this.game.state.start('setupNumeros', true, false);
-      // this.game.state.start('setupEscenario', true, false);
     };
 
 
@@ -392,7 +394,8 @@ define("scenes/setupEscenario",
         losOtrosItems.alpha = 1;
       });
       conteexto.alpha = 0.5;
-      Juego.numeroJugadores = conteexto.escenario;
+      Juego.juego.escenario = conteexto.escenario;
+      console.log(Juego);
     };
 
     SetupEscenario.prototype.itemDeDerecha = function () {
@@ -447,7 +450,7 @@ define("scenes/setupNumeros",
         losOtrosItems.alpha = 0.5;
       });
       item.alpha = 1;
-      Juego.numeroJugadores = this.valor;
+      Juego.juego.numeroJugadores = this.valor;
     };
 
     SetupNumeros.prototype.startGame = function () {

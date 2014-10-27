@@ -76,7 +76,8 @@ SetupEscenario.prototype.seleccionBoton = function (conteexto) {
     losOtrosItems.alpha = 1;
   });
   conteexto.alpha = 0.5;
-  Juego.numeroJugadores = conteexto.escenario;
+  Juego.juego.escenario = conteexto.escenario;
+  console.log(Juego);
 };
 
 SetupEscenario.prototype.itemDeDerecha = function () {
