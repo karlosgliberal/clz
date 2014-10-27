@@ -30,11 +30,11 @@ function Escenario(game, objeto, accion) {
   textDescripcion.align = 'left';
   textDescripcion.wordWrapWidth =  340;
 
-  tweenEscenario(this, 465, 500);
+  tweenEscenario(this, 465, 300);
   tweenEscenario(cerrar, 400, 100);
   tweenEscenario(imagen, 50, 100);
-  tweenEscenario(text, 105, 500);
-  tweenEscenario(textDescripcion, 100, 500);
+  tweenEscenario(text, 105, 300);
+  tweenEscenario(textDescripcion, 100, 300);
   // tweenEscenario(cerrar, 865);
 }
 

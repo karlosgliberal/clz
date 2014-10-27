@@ -108,11 +108,11 @@ define("prefabs/escenario",
       textDescripcion.align = 'left';
       textDescripcion.wordWrapWidth =  340;
 
-      tweenEscenario(this, 465, 500);
+      tweenEscenario(this, 465, 300);
       tweenEscenario(cerrar, 400, 100);
       tweenEscenario(imagen, 50, 100);
-      tweenEscenario(text, 105, 500);
-      tweenEscenario(textDescripcion, 100, 500);
+      tweenEscenario(text, 105, 300);
+      tweenEscenario(textDescripcion, 100, 300);
       // tweenEscenario(cerrar, 865);
     }
 
@@ -367,6 +367,14 @@ define("scenes/setupEscenario",
           //contenedor.interrogante = game.add.button((game.world.centerX - espacioEscenarios) + 280, game.world.centerY + 120, 'interrogante', that.interroganteBoton, this);
           contenedor.interrogante.anchor.setTo(0.5);
           contenedor.addChild(contenedor.interrogante);
+
+          contenedor.seleccion = game.add.sprite((game.world.centerX - espacioEscenarios) + 50, game.world.centerY + 150, 'interrogante');
+          contenedor.seleccion.escenario = escenariosObj[item].id;
+          contenedor.seleccion.inputEnabled = true;
+          contenedor.seleccion.events.onInputDown.add(that.seleccionBoton, this);
+          //contenedor.interrogante = game.add.button((game.world.centerX - espacioEscenarios) + 280, game.world.centerY + 120, 'interrogante', that.interroganteBoton, this);
+          contenedor.seleccion.anchor.setTo(0.5);
+          contenedor.addChild(contenedor.seleccion);
         }
       );
 
@@ -378,13 +386,19 @@ define("scenes/setupEscenario",
       siguiente.anchor.setTo(0.5);
     };
 
-    SetupEscenario.prototype.startGame = function () {
-      this.game.state.start('game', true, false);
-    };
-
     SetupEscenario.prototype.interroganteBoton = function (conteexto) {
       console.log(conteexto.escenario);
       escenario = new Escenario(game, conteexto.escenario, 'accion2');
+      // contenedor.texto = game.add.text((game.world.centerX - espacioEscenarios), game.world.centerY + 120, tituloEscenario, style);
+    };
+
+    SetupEscenario.prototype.seleccionBoton = function (conteexto) {
+      console.log(contenedor);
+      contenedor.children.forEach(function (losOtrosItems) {
+        losOtrosItems.alpha = 1;
+      });
+      conteexto.alpha = 0.5;
+      Juego.numeroJugadores = conteexto.escenario;
       // contenedor.texto = game.add.text((game.world.centerX - espacioEscenarios), game.world.centerY + 120, tituloEscenario, style);
     };
 
@@ -392,9 +406,13 @@ define("scenes/setupEscenario",
       tweenContendero = game.add.tween(contenedor);
       tweenContendero.to({x: 590}, 1000, Phaser.Easing.Linear.None);
       tweenContendero.start();
-
       //this.game.state.start('game', true, false);
     };
+
+    SetupEscenario.prototype.startGame = function () {
+      this.game.state.start('game', true, false);
+    };
+
 
     __exports__["default"] = SetupEscenario;
   });

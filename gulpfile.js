@@ -105,7 +105,8 @@ gulp.task('watch', function() {
 gulp.task('connect', function() {
   connect.server({
     root: 'project',
-    livereload: true
+    livereload: true,
+    port: 5000
   });
 });
 
