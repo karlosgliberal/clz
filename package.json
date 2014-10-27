@@ -22,7 +22,8 @@
     "gulp-run": "~1.6.4",
     "node-notifier": "~3.4.1",
     "gulp-load-plugins": "~0.6.0",
-    "run-sequence": "~0.3.7"
+    "run-sequence": "~0.3.7",
+    "gulp-connect": "~2.0.6"
   },
   "scripts": {
     "post-install": "node ./node_modules/bower/bin/bower install",

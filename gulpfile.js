@@ -8,10 +8,11 @@ var gulp = require('gulp'),
     es6ModuleTranspiler = require('gulp-es6-module-transpiler'),
     jshint = require('gulp-jshint'),
     rename = require('gulp-rename'),
+    connect = require('gulp-connect'),
     // imagemin = require('gulp-imagemin'),
     uglify = require('gulp-uglify'),
     run = require('gulp-run'),
-    browserSync = require('browser-sync'),
+    //browserSync = require('browser-sync'),
     source = require('vinyl-source-stream'),
     path = require('path'),
     $ = require('gulp-load-plugins')();
@@ -57,14 +58,16 @@ gulp.task('compile', ['html', 'styles', 'scripts']);
 // Development tasks
 gulp.task('html', function () {
     return gulp.src(paths.develop + '/index.html')
-        .pipe(browserSync.reload({ stream: true }))
+        //.pipe(browserSync.reload({ stream: true }))
+        .pipe(connect.reload());
 });
 
 gulp.task('styles', function () {
     return gulp.src(paths.develop + '/css/*.css')
         .pipe(concat('style.css'))
         .pipe(gulp.dest(paths.develop))
-        .pipe(browserSync.reload({ stream: true}))
+        // .pipe(browserSync.reload({ stream: true}))
+        .pipe(connect.reload())
         .on('error', gutil.log);
 });
 
@@ -79,7 +82,8 @@ gulp.task('scripts', ['lint'], function () {
         }))
         .pipe(concat('game.js'))
         .pipe(gulp.dest('./project'))
-        .pipe(browserSync.reload({ stream: true, once: true }));
+        // .pipe(browserSync.reload({ stream: true, once: true }));
+        .pipe(connect.reload());
 });
 
 
@@ -98,15 +102,23 @@ gulp.task('watch', function() {
         .on('change', logChanges);
 });
 
-gulp.task('server', function () {
-    browserSync({
-        server: {
-            baseDir: paths.develop
-        },
-        logLevel: "silent",
-        logConnections: false
-    });
+gulp.task('connect', function() {
+  connect.server({
+    root: 'project',
+    livereload: true
+  });
 });
+
+
+// gulp.task('server', function () {
+//     browserSync({
+//         server: {
+//             baseDir: paths.develop
+//         },
+//         logLevel: "silent",
+//         logConnections: false
+//     });
+// });
 
 // Production tasks
 gulp.task('process-html', function() {
@@ -164,5 +176,5 @@ gulp.task('process-assets', function () {
 // });
 
 // Runnable tasks
-gulp.task('default', ['compile', 'watch', 'server']);
+gulp.task('default', ['compile', 'watch', 'connect']);
 gulp.task('build', ['clean', 'process-html', 'minifycss', 'uglify', 'process-assets']);

@@ -8,7 +8,7 @@ function Escenario(game, objeto, accion) {
   var cerrar = this.create(865, 45, 'cerrar');
   cerrar.anchor.setTo(0, 0);
   var imagen = this.create(105, 215, 'eledificio');
-  imagen.scale.setTo(1, 2.5);
+  imagen.scale.setTo(1, 1.5);
   imagen.anchor.setTo(0, 0);
   //var text = game.add.text(105, 120, "El edificio", style);
   //group.add(text);
