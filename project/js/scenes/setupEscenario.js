@@ -45,7 +45,6 @@ SetupEscenario.prototype.create = function () {
       contenedor.interrogante.escenario = escenariosObj[item].id;
       contenedor.interrogante.inputEnabled = true;
       contenedor.interrogante.events.onInputDown.add(that.interroganteBoton, this);
-      //contenedor.interrogante = game.add.button((game.world.centerX - espacioEscenarios) + 280, game.world.centerY + 120, 'interrogante', that.interroganteBoton, this);
       contenedor.interrogante.anchor.setTo(0.5);
       contenedor.addChild(contenedor.interrogante);
 
@@ -53,7 +52,6 @@ SetupEscenario.prototype.create = function () {
       contenedor.seleccion.escenario = escenariosObj[item].id;
       contenedor.seleccion.inputEnabled = true;
       contenedor.seleccion.events.onInputDown.add(that.seleccionBoton, this);
-      //contenedor.interrogante = game.add.button((game.world.centerX - espacioEscenarios) + 280, game.world.centerY + 120, 'interrogante', that.interroganteBoton, this);
       contenedor.seleccion.anchor.setTo(0.5);
       contenedor.addChild(contenedor.seleccion);
     }
@@ -69,8 +67,7 @@ SetupEscenario.prototype.create = function () {
 
 SetupEscenario.prototype.interroganteBoton = function (conteexto) {
   console.log(conteexto.escenario);
-  escenario = new Escenario(game, conteexto.escenario, 'accion2');
-  // contenedor.texto = game.add.text((game.world.centerX - espacioEscenarios), game.world.centerY + 120, tituloEscenario, style);
+  escenario = new Escenario(game, conteexto.escenario);
 };
 
 SetupEscenario.prototype.seleccionBoton = function (conteexto) {
@@ -80,14 +77,12 @@ SetupEscenario.prototype.seleccionBoton = function (conteexto) {
   });
   conteexto.alpha = 0.5;
   Juego.numeroJugadores = conteexto.escenario;
-  // contenedor.texto = game.add.text((game.world.centerX - espacioEscenarios), game.world.centerY + 120, tituloEscenario, style);
 };
 
 SetupEscenario.prototype.itemDeDerecha = function () {
   tweenContendero = game.add.tween(contenedor);
   tweenContendero.to({x: 590}, 1000, Phaser.Easing.Linear.None);
   tweenContendero.start();
-  //this.game.state.start('game', true, false);
 };
 
 SetupEscenario.prototype.startGame = function () {

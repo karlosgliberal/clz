@@ -1,12 +1,9 @@
 import Juego from 'global';
-var escenariosObj = Juego.escenarios[0];
 
+var escenariosObj = Juego.escenarios[0];
 var text, textDescripcion, group;
 
-function Escenario(game, objeto, accion) {
-  var that = this;
-  console.log(accion);
-  console.log(escenariosObj);
+function Escenario(game, objeto) {
   var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
   var styleDescripcion = { font: "30px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
   group = Phaser.Group.call(this, game);
@@ -48,7 +45,7 @@ function interroganteBotonEscenario() {
   this.destroy();
   textDescripcion.destroy();
   text.destroy();
-};
+}
 
 Escenario.prototype = Object.create(Phaser.Group.prototype);
 Escenario.prototype.constructor = Escenario;

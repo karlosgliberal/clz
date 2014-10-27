@@ -77,14 +77,11 @@ define("prefabs/escenario",
   function(__dependency1__, __exports__) {
     "use strict";
     var Juego = __dependency1__["default"];
-    var escenariosObj = Juego.escenarios[0];
 
+    var escenariosObj = Juego.escenarios[0];
     var text, textDescripcion, group;
 
-    function Escenario(game, objeto, accion) {
-      var that = this;
-      console.log(accion);
-      console.log(escenariosObj);
+    function Escenario(game, objeto) {
       var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
       var styleDescripcion = { font: "30px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
       group = Phaser.Group.call(this, game);
@@ -126,7 +123,7 @@ define("prefabs/escenario",
       this.destroy();
       textDescripcion.destroy();
       text.destroy();
-    };
+    }
 
     Escenario.prototype = Object.create(Phaser.Group.prototype);
     Escenario.prototype.constructor = Escenario;
@@ -364,7 +361,6 @@ define("scenes/setupEscenario",
           contenedor.interrogante.escenario = escenariosObj[item].id;
           contenedor.interrogante.inputEnabled = true;
           contenedor.interrogante.events.onInputDown.add(that.interroganteBoton, this);
-          //contenedor.interrogante = game.add.button((game.world.centerX - espacioEscenarios) + 280, game.world.centerY + 120, 'interrogante', that.interroganteBoton, this);
           contenedor.interrogante.anchor.setTo(0.5);
           contenedor.addChild(contenedor.interrogante);
 
@@ -372,7 +368,6 @@ define("scenes/setupEscenario",
           contenedor.seleccion.escenario = escenariosObj[item].id;
           contenedor.seleccion.inputEnabled = true;
           contenedor.seleccion.events.onInputDown.add(that.seleccionBoton, this);
-          //contenedor.interrogante = game.add.button((game.world.centerX - espacioEscenarios) + 280, game.world.centerY + 120, 'interrogante', that.interroganteBoton, this);
           contenedor.seleccion.anchor.setTo(0.5);
           contenedor.addChild(contenedor.seleccion);
         }
@@ -388,8 +383,7 @@ define("scenes/setupEscenario",
 
     SetupEscenario.prototype.interroganteBoton = function (conteexto) {
       console.log(conteexto.escenario);
-      escenario = new Escenario(game, conteexto.escenario, 'accion2');
-      // contenedor.texto = game.add.text((game.world.centerX - espacioEscenarios), game.world.centerY + 120, tituloEscenario, style);
+      escenario = new Escenario(game, conteexto.escenario);
     };
 
     SetupEscenario.prototype.seleccionBoton = function (conteexto) {
@@ -399,14 +393,12 @@ define("scenes/setupEscenario",
       });
       conteexto.alpha = 0.5;
       Juego.numeroJugadores = conteexto.escenario;
-      // contenedor.texto = game.add.text((game.world.centerX - espacioEscenarios), game.world.centerY + 120, tituloEscenario, style);
     };
 
     SetupEscenario.prototype.itemDeDerecha = function () {
       tweenContendero = game.add.tween(contenedor);
       tweenContendero.to({x: 590}, 1000, Phaser.Easing.Linear.None);
       tweenContendero.start();
-      //this.game.state.start('game', true, false);
     };
 
     SetupEscenario.prototype.startGame = function () {
