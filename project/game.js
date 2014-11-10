@@ -5,6 +5,7 @@ define("global",
     var global = window['colapso'] = {
       juego: {
         numeroJugadores : 4,
+        jugadorNumero: 0,
         escenario: ''
       },
       escenarios: [
@@ -156,8 +157,8 @@ define("global",
     __exports__["default"] = global;
   });
 define("main",
-  ["utils/analytics","scenes/boot","scenes/preload","scenes/menu","scenes/game","scenes/setupNumeros","scenes/setupEscenario","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __exports__) {
+  ["utils/analytics","scenes/boot","scenes/preload","scenes/menu","scenes/game","scenes/setupNumeros","scenes/numeroJugador","scenes/setupEscenario","exports"],
+  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __dependency8__, __exports__) {
     "use strict";
 
     var Analytics = __dependency1__["default"];
@@ -166,7 +167,8 @@ define("main",
     var Menu = __dependency4__["default"];
     var Game = __dependency5__["default"];
     var Numeros = __dependency6__["default"];
-    var Escenario = __dependency7__["default"];
+    var Jugador = __dependency7__["default"];
+    var Escenario = __dependency8__["default"];
 
 
     var game, App = {};
@@ -183,9 +185,10 @@ define("main",
       game.state.add('boot', Boot);
       game.state.add('preload', Preload);
       game.state.add('menu', Menu);
-      game.state.add('game', Game);
       game.state.add('setupNumeros', Numeros);
+      game.state.add('numeroJugador', Jugador);
       game.state.add('setupEscenario', Escenario);
+      game.state.add('game', Game);
 
       game.state.start('boot');
 
@@ -339,7 +342,8 @@ define("scenes/game",
 
       var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
       text = game.add.text(250, 460, "Número de jugadores: " + juego.numeroJugadores, style);
-      text2 = game.add.text(250, 500, "Escenario: " + juego.escenario, style);
+      text = game.add.text(250, 500, "Eres el Jugador: " + juego.jugadorNumero, style);
+      text2 = game.add.text(250, 540, "Escenario: " + juego.escenario, style);
       console.log(Juego.sucesos);
     };
 
@@ -382,6 +386,55 @@ define("scenes/menu",
 
 
     __exports__["default"] = Menu;
+  });
+define("scenes/numeroJugador",
+  ["global","exports"],
+  function(__dependency1__, __exports__) {
+    "use strict";
+    var Juego = __dependency1__["default"];
+
+    function numeroJugador() {}
+
+    var siguiente;
+    var grupoJugador;
+    var textura;
+    var jugadores;
+    var text;
+
+    numeroJugador.prototype.create = function () {
+      textura = this.add.sprite(0, 0, 'textura');
+      var style = { font: "52px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
+      text = game.add.text(170, 130, "¿Qué número de jugador eres?", style);
+      // jugadores =  this.game.add.image(this.game.world.centerX, 100, 'numeroJugadores');
+      // jugadores.anchor.setTo(0.5, 0.5);
+      grupoJugador = game.add.group();
+
+      var item;
+      for (var i = 0; i < 4; i++) {
+        item = grupoJugador.create(200 + 168 * i, game.world.centerX - 200, 'numeros', i);
+        item.inputEnabled = true;
+        item.input.start(0, true);
+        item.events.onInputDown.add(this.select, {valor: i});
+        grupoJugador.getAt(i).alpha = 0.9;
+      }
+      siguiente = this.add.button(this.game.world.centerX + 310, game.world.centerY + 220, 'siguiente', this.startGame, this);
+      siguiente.anchor.setTo(0.5);
+    };
+
+    numeroJugador.prototype.select = function (item) {
+      grupoJugador.forEach(function (losOtrosItems) {
+        losOtrosItems.alpha = 0.5;
+      });
+      item.alpha = 1;
+      Juego.juego.jugadorNumero = this.valor;
+    };
+
+    numeroJugador.prototype.startGame = function () {
+      this.game.state.start('setupEscenario', true, false);
+    };
+
+
+    __exports__["default"] = numeroJugador;
   });
 define("scenes/preload",
   ["exports"],
@@ -555,11 +608,8 @@ define("scenes/setupNumeros",
         item.events.onInputDown.add(this.select, {valor: i});
         grupoNumeros.getAt(i).alpha = 0.9;
       }
-      //grupoNumeros.scale.set(0.7, 0.7);
-
       siguiente = this.add.button(this.game.world.centerX + 310, game.world.centerY + 220, 'siguiente', this.startGame, this);
       siguiente.anchor.setTo(0.5);
-
     };
 
     SetupNumeros.prototype.select = function (item) {
@@ -571,7 +621,7 @@ define("scenes/setupNumeros",
     };
 
     SetupNumeros.prototype.startGame = function () {
-      this.game.state.start('setupEscenario', true, false);
+      this.game.state.start('numeroJugador', true, false);
     };
 
 

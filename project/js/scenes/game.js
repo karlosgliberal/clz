@@ -8,7 +8,8 @@ Game.prototype.create = function () {
 
   var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
   text = game.add.text(250, 460, "Número de jugadores: " + juego.numeroJugadores, style);
-  text2 = game.add.text(250, 500, "Escenario: " + juego.escenario, style);
+  text = game.add.text(250, 500, "Eres el Jugador: " + juego.jugadorNumero, style);
+  text2 = game.add.text(250, 540, "Escenario: " + juego.escenario, style);
   console.log(Juego.sucesos);
 };
 

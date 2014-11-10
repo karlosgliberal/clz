@@ -21,11 +21,8 @@ SetupNumeros.prototype.create = function () {
     item.events.onInputDown.add(this.select, {valor: i});
     grupoNumeros.getAt(i).alpha = 0.9;
   }
-  //grupoNumeros.scale.set(0.7, 0.7);
-
   siguiente = this.add.button(this.game.world.centerX + 310, game.world.centerY + 220, 'siguiente', this.startGame, this);
   siguiente.anchor.setTo(0.5);
-
 };
 
 SetupNumeros.prototype.select = function (item) {
@@ -37,7 +34,7 @@ SetupNumeros.prototype.select = function (item) {
 };
 
 SetupNumeros.prototype.startGame = function () {
-  this.game.state.start('setupEscenario', true, false);
+  this.game.state.start('numeroJugador', true, false);
 };
 
 

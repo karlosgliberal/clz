@@ -5,6 +5,7 @@ import Preload from 'scenes/preload';
 import Menu from 'scenes/menu';
 import Game from 'scenes/game';
 import Numeros from 'scenes/setupNumeros';
+import Jugador from 'scenes/numeroJugador';
 import Escenario from 'scenes/setupEscenario';
 
 
@@ -22,9 +23,10 @@ App.start = function () {
   game.state.add('boot', Boot);
   game.state.add('preload', Preload);
   game.state.add('menu', Menu);
-  game.state.add('game', Game);
   game.state.add('setupNumeros', Numeros);
+  game.state.add('numeroJugador', Jugador);
   game.state.add('setupEscenario', Escenario);
+  game.state.add('game', Game);
 
   game.state.start('boot');
 

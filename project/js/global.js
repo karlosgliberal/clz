@@ -1,6 +1,7 @@
 var global = window['colapso'] = {
   juego: {
     numeroJugadores : 4,
+    jugadorNumero: 0,
     escenario: ''
   },
   escenarios: [
