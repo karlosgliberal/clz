@@ -1,7 +1,7 @@
 import Juego from 'global';
 import Escenario from 'prefabs/escenario';
 
-function SetupEscenario() {}
+function setupSuperviviente() {}
 var textura,
     espacioEscenarios = 0,
     contenedor,
@@ -9,12 +9,12 @@ var textura,
     botonIzquierda,
     tweenContendero,
     interrogante,
-    escenariosObj = Juego.escenarios[0],
+    escenariosObj = Juego.supervivientes[0],
     escenarios = [],
     escenario,
     siguiente;
 
-SetupEscenario.prototype.create = function () {
+setupSuperviviente.prototype.create = function () {
   textura = this.add.sprite(0, 0, 'textura');
   var style = { font: "26px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
   var that = this;
@@ -65,12 +65,12 @@ SetupEscenario.prototype.create = function () {
   siguiente.anchor.setTo(0.5);
 };
 
-SetupEscenario.prototype.interroganteBoton = function (conteexto) {
+setupSuperviviente.prototype.interroganteBoton = function (conteexto) {
   console.log(conteexto.escenario);
   escenario = new Escenario(game, conteexto.escenario);
 };
 
-SetupEscenario.prototype.seleccionBoton = function (conteexto) {
+setupSuperviviente.prototype.seleccionBoton = function (conteexto) {
   console.log(contenedor);
   contenedor.children.forEach(function (losOtrosItems) {
     losOtrosItems.alpha = 1;
@@ -80,15 +80,15 @@ SetupEscenario.prototype.seleccionBoton = function (conteexto) {
   console.log(Juego);
 };
 
-SetupEscenario.prototype.itemDeDerecha = function () {
+setupSuperviviente.prototype.itemDeDerecha = function () {
   tweenContendero = game.add.tween(contenedor);
   tweenContendero.to({x: 590}, 1000, Phaser.Easing.Linear.None);
   tweenContendero.start();
 };
 
-SetupEscenario.prototype.startGame = function () {
-  this.game.state.start('setupSuperviviente', true, false);
+setupSuperviviente.prototype.startGame = function () {
+  this.game.state.start('game', true, false);
 };
 
 
-export default SetupEscenario;
+export default setupSuperviviente;

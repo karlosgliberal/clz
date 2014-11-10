@@ -3,10 +3,11 @@ import Analytics from 'utils/analytics';
 import Boot from 'scenes/boot';
 import Preload from 'scenes/preload';
 import Menu from 'scenes/menu';
-import Game from 'scenes/game';
 import Numeros from 'scenes/setupNumeros';
 import Jugador from 'scenes/numeroJugador';
 import Escenario from 'scenes/setupEscenario';
+import Superviviente from 'scenes/setupSuperviviente';
+import Game from 'scenes/game';
 
 
 var game, App = {};
@@ -26,6 +27,7 @@ App.start = function () {
   game.state.add('setupNumeros', Numeros);
   game.state.add('numeroJugador', Jugador);
   game.state.add('setupEscenario', Escenario);
+  game.state.add('setupSuperviviente', Superviviente);
   game.state.add('game', Game);
 
   game.state.start('boot');

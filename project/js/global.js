@@ -2,8 +2,28 @@ var global = window['colapso'] = {
   juego: {
     numeroJugadores : 4,
     jugadorNumero: 0,
-    escenario: ''
+    escenario: '',
+    superviviente: ''
   },
+  supervivientes: [
+    {
+      marine: {
+        id: 'marine',
+        titulo: 'Marine',
+        descripcion: 'El marine'
+      },
+      ratero: {
+        id: 'ratero',
+        titulo: 'ratero',
+        descripcion: 'El raterojjk'
+      },
+      monje: {
+        id: 'monje',
+        titulo: 'monje',
+        descripcion: 'El monje'
+      }
+    }
+  ],
   escenarios: [
     {
       eledificio: {

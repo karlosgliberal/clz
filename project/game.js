@@ -6,8 +6,28 @@ define("global",
       juego: {
         numeroJugadores : 4,
         jugadorNumero: 0,
-        escenario: ''
+        escenario: '',
+        superviviente: ''
       },
+      supervivientes: [
+        {
+          marine: {
+            id: 'marine',
+            titulo: 'Marine',
+            descripcion: 'El marine'
+          },
+          ratero: {
+            id: 'ratero',
+            titulo: 'ratero',
+            descripcion: 'El raterojjk'
+          },
+          monje: {
+            id: 'monje',
+            titulo: 'monje',
+            descripcion: 'El monje'
+          }
+        }
+      ],
       escenarios: [
         {
           eledificio: {
@@ -157,18 +177,19 @@ define("global",
     __exports__["default"] = global;
   });
 define("main",
-  ["utils/analytics","scenes/boot","scenes/preload","scenes/menu","scenes/game","scenes/setupNumeros","scenes/numeroJugador","scenes/setupEscenario","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __dependency8__, __exports__) {
+  ["utils/analytics","scenes/boot","scenes/preload","scenes/menu","scenes/setupNumeros","scenes/numeroJugador","scenes/setupEscenario","scenes/setupSuperviviente","scenes/game","exports"],
+  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __dependency8__, __dependency9__, __exports__) {
     "use strict";
 
     var Analytics = __dependency1__["default"];
     var Boot = __dependency2__["default"];
     var Preload = __dependency3__["default"];
     var Menu = __dependency4__["default"];
-    var Game = __dependency5__["default"];
-    var Numeros = __dependency6__["default"];
-    var Jugador = __dependency7__["default"];
-    var Escenario = __dependency8__["default"];
+    var Numeros = __dependency5__["default"];
+    var Jugador = __dependency6__["default"];
+    var Escenario = __dependency7__["default"];
+    var Superviviente = __dependency8__["default"];
+    var Game = __dependency9__["default"];
 
 
     var game, App = {};
@@ -188,6 +209,7 @@ define("main",
       game.state.add('setupNumeros', Numeros);
       game.state.add('numeroJugador', Jugador);
       game.state.add('setupEscenario', Escenario);
+      game.state.add('setupSuperviviente', Superviviente);
       game.state.add('game', Game);
 
       game.state.start('boot');
@@ -293,6 +315,77 @@ define("prefabs/vidas",
     Vidas.prototype.update = function() {};
 
     __exports__["default"] = Vidas;
+  });
+define("utils/analytics",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    var Analytics = function(category) {
+        if (!category) {
+            throw new this.exception('No category defined');
+        }
+
+        this.active = (window.ga) ? true : false;
+        this.category = category;
+    };
+
+    Analytics.prototype.trackEvent = function(action, label, value) {
+        if (!this.active) {
+            return;
+        }
+
+        if (!action) {
+            throw new this.exception('No action defined');
+        }
+
+        if (value) {
+            window.ga('send', this.category, action, label, value);
+        }
+        else if (label) {
+            window.ga('send', this.category, action, label);
+        }
+        else {
+            window.ga('send', this.category, action);
+        }
+
+    };
+
+    Analytics.prototype.exception = function(message) {
+        this.message = message;
+        this.name = 'AnalyticsException';
+    };
+
+    __exports__["default"] = Analytics;
+  });
+define("utils/mediaCordova",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    var MediaCordova = function (sound) {
+      if (!sound) {
+        throw new this.exception('No src defined');
+      }
+      this.sound = sound;
+      if (!game.device.desktop) {
+        this.src = this.sound._sound.currentSrc;
+        this.soundObj = new Media(this.src,
+          function () {
+            console.log("playAudio():Audio Success");
+          }, function (err) {
+            console.log(err);
+          }
+        );
+      } else {
+        this.soundObj = this.sound;
+      }
+    };
+
+    MediaCordova.prototype.play = function () {
+      this.soundObj.play();
+    };
+
+
+    __exports__["default"] = MediaCordova;
   });
 define("scenes/boot",
   ["exports"],
@@ -575,7 +668,7 @@ define("scenes/setupEscenario",
     };
 
     SetupEscenario.prototype.startGame = function () {
-      this.game.state.start('game', true, false);
+      this.game.state.start('setupSuperviviente', true, false);
     };
 
 
@@ -627,74 +720,102 @@ define("scenes/setupNumeros",
 
     __exports__["default"] = SetupNumeros;
   });
-define("utils/analytics",
-  ["exports"],
-  function(__exports__) {
+define("scenes/setupSuperviviente",
+  ["global","prefabs/escenario","exports"],
+  function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
-    var Analytics = function(category) {
-        if (!category) {
-            throw new this.exception('No category defined');
-        }
+    var Juego = __dependency1__["default"];
+    var Escenario = __dependency2__["default"];
 
-        this.active = (window.ga) ? true : false;
-        this.category = category;
-    };
+    function setupSuperviviente() {}
+    var textura,
+        espacioEscenarios = 0,
+        contenedor,
+        botonDerecha,
+        botonIzquierda,
+        tweenContendero,
+        interrogante,
+        escenariosObj = Juego.supervivientes[0],
+        escenarios = [],
+        escenario,
+        siguiente;
 
-    Analytics.prototype.trackEvent = function(action, label, value) {
-        if (!this.active) {
-            return;
-        }
+    setupSuperviviente.prototype.create = function () {
+      textura = this.add.sprite(0, 0, 'textura');
+      var style = { font: "26px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
+      var that = this;
+      contenedor = game.add.sprite(100, 0, null);
+      var escenariosKey = Object.keys(escenariosObj);
 
-        if (!action) {
-            throw new this.exception('No action defined');
-        }
-
-        if (value) {
-            window.ga('send', this.category, action, label, value);
-        }
-        else if (label) {
-            window.ga('send', this.category, action, label);
-        }
-        else {
-            window.ga('send', this.category, action);
-        }
-
-    };
-
-    Analytics.prototype.exception = function(message) {
-        this.message = message;
-        this.name = 'AnalyticsException';
-    };
-
-    __exports__["default"] = Analytics;
-  });
-define("utils/mediaCordova",
-  ["exports"],
-  function(__exports__) {
-    "use strict";
-    var MediaCordova = function (sound) {
-      if (!sound) {
-        throw new this.exception('No src defined');
+      for (var i = escenariosKey.length - 1; i >= 0; i--) {
+        escenarios.push(escenariosKey[i]);
       }
-      this.sound = sound;
-      if (!game.device.desktop) {
-        this.src = this.sound._sound.currentSrc;
-        this.soundObj = new Media(this.src,
-          function () {
-            console.log("playAudio():Audio Success");
-          }, function (err) {
-            console.log(err);
+      escenarios.forEach(function (item, index) {
+          if (index !== 0) {
+            espacioEscenarios = espacioEscenarios + 450;
           }
-        );
-      } else {
-        this.soundObj = this.sound;
-      }
+          contenedor.seccion = game.add.sprite((game.world.centerX - espacioEscenarios) + 150, game.world.centerY, 'seccionMini');
+          contenedor.seccion.anchor.setTo(0.5);
+          contenedor.addChild(contenedor.seccion);
+
+          contenedor.escenario = game.add.sprite((game.world.centerX - espacioEscenarios) + 150, game.world.centerY - 60, escenariosObj[item].id);
+          contenedor.escenario.scale.setTo(-0.9, -0.9);
+          contenedor.escenario.anchor.setTo(0.5);
+          contenedor.addChild(contenedor.escenario);
+
+          var tituloEscenario = escenariosObj[item].titulo;
+          contenedor.texto = game.add.text((game.world.centerX - espacioEscenarios) + 10, game.world.centerY + 70, tituloEscenario, style);
+          contenedor.addChild(contenedor.texto);
+
+          contenedor.interrogante = game.add.sprite((game.world.centerX - espacioEscenarios) + 270, game.world.centerY + 150, 'interrogante');
+          contenedor.interrogante.escenario = escenariosObj[item].id;
+          contenedor.interrogante.inputEnabled = true;
+          contenedor.interrogante.events.onInputDown.add(that.interroganteBoton, this);
+          contenedor.interrogante.anchor.setTo(0.5);
+          contenedor.addChild(contenedor.interrogante);
+
+          contenedor.seleccion = game.add.sprite((game.world.centerX - espacioEscenarios) + 50, game.world.centerY + 150, 'interrogante');
+          contenedor.seleccion.escenario = escenariosObj[item].id;
+          contenedor.seleccion.inputEnabled = true;
+          contenedor.seleccion.events.onInputDown.add(that.seleccionBoton, this);
+          contenedor.seleccion.anchor.setTo(0.5);
+          contenedor.addChild(contenedor.seleccion);
+        }
+      );
+
+
+      botonDerecha = this.add.button(50, game.world.centerY, 'flechaDerecha', this.itemDeDerecha, this);
+      botonDerecha.anchor.setTo(0.5);
+
+      siguiente = this.add.button(this.game.world.centerX + 310, game.world.centerY + 220, 'siguiente', this.startGame, this);
+      siguiente.anchor.setTo(0.5);
     };
 
-    MediaCordova.prototype.play = function () {
-      this.soundObj.play();
+    setupSuperviviente.prototype.interroganteBoton = function (conteexto) {
+      console.log(conteexto.escenario);
+      escenario = new Escenario(game, conteexto.escenario);
+    };
+
+    setupSuperviviente.prototype.seleccionBoton = function (conteexto) {
+      console.log(contenedor);
+      contenedor.children.forEach(function (losOtrosItems) {
+        losOtrosItems.alpha = 1;
+      });
+      conteexto.alpha = 0.5;
+      Juego.juego.escenario = conteexto.escenario;
+      console.log(Juego);
+    };
+
+    setupSuperviviente.prototype.itemDeDerecha = function () {
+      tweenContendero = game.add.tween(contenedor);
+      tweenContendero.to({x: 590}, 1000, Phaser.Easing.Linear.None);
+      tweenContendero.start();
+    };
+
+    setupSuperviviente.prototype.startGame = function () {
+      this.game.state.start('game', true, false);
     };
 
 
-    __exports__["default"] = MediaCordova;
+    __exports__["default"] = setupSuperviviente;
   });
