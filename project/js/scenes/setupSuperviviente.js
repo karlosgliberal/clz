@@ -1,17 +1,17 @@
 import Juego from 'global';
-import Escenario from 'prefabs/escenario';
+import Superviviente from 'prefabs/superviviente';
 
 function setupSuperviviente() {}
 var textura,
-    espacioEscenarios = 0,
+    espacioSupervivientes = 0,
     contenedor,
     botonDerecha,
     botonIzquierda,
     tweenContendero,
     interrogante,
-    escenariosObj = Juego.supervivientes[0],
-    escenarios = [],
-    escenario,
+    supervivientesObj = Juego.supervivientes[0],
+    supervivientes = [],
+    superviviente,
     siguiente;
 
 setupSuperviviente.prototype.create = function () {
@@ -19,37 +19,37 @@ setupSuperviviente.prototype.create = function () {
   var style = { font: "26px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
   var that = this;
   contenedor = game.add.sprite(100, 0, null);
-  var escenariosKey = Object.keys(escenariosObj);
+  var supervivientesKey = Object.keys(supervivientesObj);
 
-  for (var i = escenariosKey.length - 1; i >= 0; i--) {
-    escenarios.push(escenariosKey[i]);
+  for (var i = supervivientesKey.length - 1; i >= 0; i--) {
+    supervivientes.push(supervivientesKey[i]);
   }
-  escenarios.forEach(function (item, index) {
+  supervivientes.forEach(function (item, index) {
       if (index !== 0) {
-        espacioEscenarios = espacioEscenarios + 450;
+        espacioSupervivientes = espacioSupervivientes + 450;
       }
-      contenedor.seccion = game.add.sprite((game.world.centerX - espacioEscenarios) + 150, game.world.centerY, 'seccionMini');
+      contenedor.seccion = game.add.sprite((game.world.centerX - espacioSupervivientes) + 150, game.world.centerY, 'seccionMini');
       contenedor.seccion.anchor.setTo(0.5);
       contenedor.addChild(contenedor.seccion);
 
-      contenedor.escenario = game.add.sprite((game.world.centerX - espacioEscenarios) + 150, game.world.centerY - 60, escenariosObj[item].id);
-      contenedor.escenario.scale.setTo(-0.9, -0.9);
-      contenedor.escenario.anchor.setTo(0.5);
-      contenedor.addChild(contenedor.escenario);
+      contenedor.superviviente = game.add.sprite((game.world.centerX - espacioSupervivientes) + 150, game.world.centerY - 60, supervivientesObj[item].id);
+      contenedor.superviviente.scale.setTo(-0.9, -0.9);
+      contenedor.superviviente.anchor.setTo(0.5);
+      contenedor.addChild(contenedor.superviviente);
 
-      var tituloEscenario = escenariosObj[item].titulo;
-      contenedor.texto = game.add.text((game.world.centerX - espacioEscenarios) + 10, game.world.centerY + 70, tituloEscenario, style);
+      var tituloSuperviviente = supervivientesObj[item].titulo;
+      contenedor.texto = game.add.text((game.world.centerX - espacioSupervivientes) + 10, game.world.centerY + 70, tituloSuperviviente, style);
       contenedor.addChild(contenedor.texto);
 
-      contenedor.interrogante = game.add.sprite((game.world.centerX - espacioEscenarios) + 270, game.world.centerY + 150, 'interrogante');
-      contenedor.interrogante.escenario = escenariosObj[item].id;
+      contenedor.interrogante = game.add.sprite((game.world.centerX - espacioSupervivientes) + 270, game.world.centerY + 150, 'interrogante');
+      contenedor.interrogante.superviviente =  supervivientesObj[item].id;
       contenedor.interrogante.inputEnabled = true;
       contenedor.interrogante.events.onInputDown.add(that.interroganteBoton, this);
       contenedor.interrogante.anchor.setTo(0.5);
       contenedor.addChild(contenedor.interrogante);
 
-      contenedor.seleccion = game.add.sprite((game.world.centerX - espacioEscenarios) + 50, game.world.centerY + 150, 'interrogante');
-      contenedor.seleccion.escenario = escenariosObj[item].id;
+      contenedor.seleccion = game.add.sprite((game.world.centerX - espacioSupervivientes) + 50, game.world.centerY + 150, 'interrogante');
+      contenedor.seleccion.superviviente = supervivientesObj[item].id;
       contenedor.seleccion.inputEnabled = true;
       contenedor.seleccion.events.onInputDown.add(that.seleccionBoton, this);
       contenedor.seleccion.anchor.setTo(0.5);
@@ -66,18 +66,15 @@ setupSuperviviente.prototype.create = function () {
 };
 
 setupSuperviviente.prototype.interroganteBoton = function (conteexto) {
-  console.log(conteexto.escenario);
-  escenario = new Escenario(game, conteexto.escenario);
+  superviviente = new Superviviente(game, conteexto.superviviente);
 };
 
 setupSuperviviente.prototype.seleccionBoton = function (conteexto) {
-  console.log(contenedor);
   contenedor.children.forEach(function (losOtrosItems) {
     losOtrosItems.alpha = 1;
   });
   conteexto.alpha = 0.5;
-  Juego.juego.escenario = conteexto.escenario;
-  console.log(Juego);
+  Juego.juego.superviviente = conteexto.superviviente;
 };
 
 setupSuperviviente.prototype.itemDeDerecha = function () {

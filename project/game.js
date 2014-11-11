@@ -5,9 +5,9 @@ define("global",
     var global = window['colapso'] = {
       juego: {
         numeroJugadores : 4,
-        jugadorNumero: 0,
-        escenario: '',
-        superviviente: ''
+        jugadorNumero: 1,
+        escenario: 'marine',
+        superviviente: 'eledificio'
       },
       supervivientes: [
         {
@@ -177,8 +177,8 @@ define("global",
     __exports__["default"] = global;
   });
 define("main",
-  ["utils/analytics","scenes/boot","scenes/preload","scenes/menu","scenes/setupNumeros","scenes/numeroJugador","scenes/setupEscenario","scenes/setupSuperviviente","scenes/game","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __dependency8__, __dependency9__, __exports__) {
+  ["utils/analytics","scenes/boot","scenes/preload","scenes/menu","scenes/setupNumeros","scenes/numeroJugador","scenes/setupEscenario","scenes/setupSuperviviente","scenes/game","scenes/initJuego","exports"],
+  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __dependency8__, __dependency9__, __dependency10__, __exports__) {
     "use strict";
 
     var Analytics = __dependency1__["default"];
@@ -190,7 +190,7 @@ define("main",
     var Escenario = __dependency7__["default"];
     var Superviviente = __dependency8__["default"];
     var Game = __dependency9__["default"];
-
+    var InitJuego = __dependency10__["default"];
 
     var game, App = {};
 
@@ -211,6 +211,8 @@ define("main",
       game.state.add('setupEscenario', Escenario);
       game.state.add('setupSuperviviente', Superviviente);
       game.state.add('game', Game);
+      game.state.add('initJuego', InitJuego);
+
 
       game.state.start('boot');
 
@@ -298,6 +300,65 @@ define("prefabs/rotate-logo",
 
     __exports__["default"] = RotateLogo;
   });
+define("prefabs/superviviente",
+  ["global","exports"],
+  function(__dependency1__, __exports__) {
+    "use strict";
+    var Juego = __dependency1__["default"];
+
+    var supervivientesObj = Juego.supervivientes[0];
+    var text, textDescripcion, group;
+
+    function Superviviente(game, objeto) {
+      var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
+      var styleDescripcion = { font: "30px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
+      group = Phaser.Group.call(this, game);
+
+      var  sprite = this.create(-465, 0, 'seccionGrande');
+      sprite.anchor.setTo(0, 0);
+
+      var cerrar = this.create(0, 45, 'cerrar');
+      cerrar.inputEnabled = true;
+      cerrar.events.onInputDown.add(interroganteBotonSuperviviente, this);
+      //cerrar.anchor.setTo(0, 0);
+
+      var imagen = this.create(0, 215, 'eledificio');
+      imagen.scale.setTo(1, 1.5);
+      imagen.anchor.setTo(0, 0);
+
+      text = game.add.text(-465, 120, supervivientesObj[objeto].titulo, style);
+
+      textDescripcion = game.add.text(-400, 220, supervivientesObj[objeto].descripcion, styleDescripcion);
+      textDescripcion.wordWrap = true;
+      textDescripcion.align = 'left';
+      textDescripcion.wordWrapWidth =  340;
+
+      tweenEscenario(this, 465, 300);
+      tweenEscenario(cerrar, 400, 100);
+      tweenEscenario(imagen, 50, 100);
+      tweenEscenario(text, 105, 300);
+      tweenEscenario(textDescripcion, 100, 300);
+      // tweenEscenario(cerrar, 865);
+    }
+
+    function tweenEscenario(obj, coord, vel) {
+      var tweenContendero = game.add.tween(obj);
+      tweenContendero.to({x : coord }, vel, Phaser.Easing.Linear.None);
+      tweenContendero.start();
+    }
+
+    function interroganteBotonSuperviviente() {
+      this.destroy();
+      textDescripcion.destroy();
+      text.destroy();
+    }
+
+    Superviviente.prototype = Object.create(Phaser.Group.prototype);
+    Superviviente.prototype.constructor = Superviviente;
+
+
+    __exports__["default"] = Superviviente;
+  });
 define("prefabs/vidas",
   ["exports"],
   function(__exports__) {
@@ -315,77 +376,6 @@ define("prefabs/vidas",
     Vidas.prototype.update = function() {};
 
     __exports__["default"] = Vidas;
-  });
-define("utils/analytics",
-  ["exports"],
-  function(__exports__) {
-    "use strict";
-    var Analytics = function(category) {
-        if (!category) {
-            throw new this.exception('No category defined');
-        }
-
-        this.active = (window.ga) ? true : false;
-        this.category = category;
-    };
-
-    Analytics.prototype.trackEvent = function(action, label, value) {
-        if (!this.active) {
-            return;
-        }
-
-        if (!action) {
-            throw new this.exception('No action defined');
-        }
-
-        if (value) {
-            window.ga('send', this.category, action, label, value);
-        }
-        else if (label) {
-            window.ga('send', this.category, action, label);
-        }
-        else {
-            window.ga('send', this.category, action);
-        }
-
-    };
-
-    Analytics.prototype.exception = function(message) {
-        this.message = message;
-        this.name = 'AnalyticsException';
-    };
-
-    __exports__["default"] = Analytics;
-  });
-define("utils/mediaCordova",
-  ["exports"],
-  function(__exports__) {
-    "use strict";
-    var MediaCordova = function (sound) {
-      if (!sound) {
-        throw new this.exception('No src defined');
-      }
-      this.sound = sound;
-      if (!game.device.desktop) {
-        this.src = this.sound._sound.currentSrc;
-        this.soundObj = new Media(this.src,
-          function () {
-            console.log("playAudio():Audio Success");
-          }, function (err) {
-            console.log(err);
-          }
-        );
-      } else {
-        this.soundObj = this.sound;
-      }
-    };
-
-    MediaCordova.prototype.play = function () {
-      this.soundObj.play();
-    };
-
-
-    __exports__["default"] = MediaCordova;
   });
 define("scenes/boot",
   ["exports"],
@@ -429,22 +419,49 @@ define("scenes/game",
 
     function Game() {}
 
-    var text, text2;
+    var text;
     var juego = Juego.juego;
     Game.prototype.create = function () {
 
       var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
+      text = game.add.text(250, 420, "Superviviente: " + juego.superviviente, style);
       text = game.add.text(250, 460, "Número de jugadores: " + juego.numeroJugadores, style);
       text = game.add.text(250, 500, "Eres el Jugador: " + juego.jugadorNumero, style);
-      text2 = game.add.text(250, 540, "Escenario: " + juego.escenario, style);
-      console.log(Juego.sucesos);
+      text = game.add.text(250, 540, "Escenario: " + juego.escenario, style);
+
+      var siguiente = this.add.button(this.game.world.centerX + 310, game.world.centerY + 220, 'siguiente', this.startGame, this);
+      siguiente.anchor.setTo(0.5);
+
     };
 
     Game.prototype.startGame = function () {
-      this.game.state.start('setupNumeros', true, false);
+      this.game.state.start('initJuego', true, false);
     };
 
     __exports__["default"] = Game;
+  });
+define("scenes/initJuego",
+  ["global","exports"],
+  function(__dependency1__, __exports__) {
+    "use strict";
+    var Juego = __dependency1__["default"];
+
+    function InitJuego() {}
+
+    InitJuego.prototype.create = function() {
+
+      var siguiente = this.add.button(this.game.world.centerX + 310, game.world.centerY + 220, 'siguiente', this.startGame, this);
+      siguiente.anchor.setTo(0.5);
+      siguiente.angle = 45;
+      console.log('hola');
+
+    };
+
+    InitJuego.prototype.startGame = function () {
+      this.game.state.start('Otro', true, false);
+    };
+
+    __exports__["default"] = InitJuego;
   });
 define("scenes/menu",
   ["utils/mediaCordova","exports"],
@@ -570,7 +587,8 @@ define("scenes/preload",
     };
 
     Preload.prototype.onLoadComplete = function () {
-      this.game.state.start('menu', true, false);
+      this.game.state.start('game', true, false);
+      //this.game.state.start('menu', true, false);
     };
 
     __exports__["default"] = Preload;
@@ -721,23 +739,23 @@ define("scenes/setupNumeros",
     __exports__["default"] = SetupNumeros;
   });
 define("scenes/setupSuperviviente",
-  ["global","prefabs/escenario","exports"],
+  ["global","prefabs/superviviente","exports"],
   function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     var Juego = __dependency1__["default"];
-    var Escenario = __dependency2__["default"];
+    var Superviviente = __dependency2__["default"];
 
     function setupSuperviviente() {}
     var textura,
-        espacioEscenarios = 0,
+        espacioSupervivientes = 0,
         contenedor,
         botonDerecha,
         botonIzquierda,
         tweenContendero,
         interrogante,
-        escenariosObj = Juego.supervivientes[0],
-        escenarios = [],
-        escenario,
+        supervivientesObj = Juego.supervivientes[0],
+        supervivientes = [],
+        superviviente,
         siguiente;
 
     setupSuperviviente.prototype.create = function () {
@@ -745,37 +763,37 @@ define("scenes/setupSuperviviente",
       var style = { font: "26px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
       var that = this;
       contenedor = game.add.sprite(100, 0, null);
-      var escenariosKey = Object.keys(escenariosObj);
+      var supervivientesKey = Object.keys(supervivientesObj);
 
-      for (var i = escenariosKey.length - 1; i >= 0; i--) {
-        escenarios.push(escenariosKey[i]);
+      for (var i = supervivientesKey.length - 1; i >= 0; i--) {
+        supervivientes.push(supervivientesKey[i]);
       }
-      escenarios.forEach(function (item, index) {
+      supervivientes.forEach(function (item, index) {
           if (index !== 0) {
-            espacioEscenarios = espacioEscenarios + 450;
+            espacioSupervivientes = espacioSupervivientes + 450;
           }
-          contenedor.seccion = game.add.sprite((game.world.centerX - espacioEscenarios) + 150, game.world.centerY, 'seccionMini');
+          contenedor.seccion = game.add.sprite((game.world.centerX - espacioSupervivientes) + 150, game.world.centerY, 'seccionMini');
           contenedor.seccion.anchor.setTo(0.5);
           contenedor.addChild(contenedor.seccion);
 
-          contenedor.escenario = game.add.sprite((game.world.centerX - espacioEscenarios) + 150, game.world.centerY - 60, escenariosObj[item].id);
-          contenedor.escenario.scale.setTo(-0.9, -0.9);
-          contenedor.escenario.anchor.setTo(0.5);
-          contenedor.addChild(contenedor.escenario);
+          contenedor.superviviente = game.add.sprite((game.world.centerX - espacioSupervivientes) + 150, game.world.centerY - 60, supervivientesObj[item].id);
+          contenedor.superviviente.scale.setTo(-0.9, -0.9);
+          contenedor.superviviente.anchor.setTo(0.5);
+          contenedor.addChild(contenedor.superviviente);
 
-          var tituloEscenario = escenariosObj[item].titulo;
-          contenedor.texto = game.add.text((game.world.centerX - espacioEscenarios) + 10, game.world.centerY + 70, tituloEscenario, style);
+          var tituloSuperviviente = supervivientesObj[item].titulo;
+          contenedor.texto = game.add.text((game.world.centerX - espacioSupervivientes) + 10, game.world.centerY + 70, tituloSuperviviente, style);
           contenedor.addChild(contenedor.texto);
 
-          contenedor.interrogante = game.add.sprite((game.world.centerX - espacioEscenarios) + 270, game.world.centerY + 150, 'interrogante');
-          contenedor.interrogante.escenario = escenariosObj[item].id;
+          contenedor.interrogante = game.add.sprite((game.world.centerX - espacioSupervivientes) + 270, game.world.centerY + 150, 'interrogante');
+          contenedor.interrogante.superviviente =  supervivientesObj[item].id;
           contenedor.interrogante.inputEnabled = true;
           contenedor.interrogante.events.onInputDown.add(that.interroganteBoton, this);
           contenedor.interrogante.anchor.setTo(0.5);
           contenedor.addChild(contenedor.interrogante);
 
-          contenedor.seleccion = game.add.sprite((game.world.centerX - espacioEscenarios) + 50, game.world.centerY + 150, 'interrogante');
-          contenedor.seleccion.escenario = escenariosObj[item].id;
+          contenedor.seleccion = game.add.sprite((game.world.centerX - espacioSupervivientes) + 50, game.world.centerY + 150, 'interrogante');
+          contenedor.seleccion.superviviente = supervivientesObj[item].id;
           contenedor.seleccion.inputEnabled = true;
           contenedor.seleccion.events.onInputDown.add(that.seleccionBoton, this);
           contenedor.seleccion.anchor.setTo(0.5);
@@ -792,18 +810,15 @@ define("scenes/setupSuperviviente",
     };
 
     setupSuperviviente.prototype.interroganteBoton = function (conteexto) {
-      console.log(conteexto.escenario);
-      escenario = new Escenario(game, conteexto.escenario);
+      superviviente = new Superviviente(game, conteexto.superviviente);
     };
 
     setupSuperviviente.prototype.seleccionBoton = function (conteexto) {
-      console.log(contenedor);
       contenedor.children.forEach(function (losOtrosItems) {
         losOtrosItems.alpha = 1;
       });
       conteexto.alpha = 0.5;
-      Juego.juego.escenario = conteexto.escenario;
-      console.log(Juego);
+      Juego.juego.superviviente = conteexto.superviviente;
     };
 
     setupSuperviviente.prototype.itemDeDerecha = function () {
@@ -818,4 +833,75 @@ define("scenes/setupSuperviviente",
 
 
     __exports__["default"] = setupSuperviviente;
+  });
+define("utils/analytics",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    var Analytics = function(category) {
+        if (!category) {
+            throw new this.exception('No category defined');
+        }
+
+        this.active = (window.ga) ? true : false;
+        this.category = category;
+    };
+
+    Analytics.prototype.trackEvent = function(action, label, value) {
+        if (!this.active) {
+            return;
+        }
+
+        if (!action) {
+            throw new this.exception('No action defined');
+        }
+
+        if (value) {
+            window.ga('send', this.category, action, label, value);
+        }
+        else if (label) {
+            window.ga('send', this.category, action, label);
+        }
+        else {
+            window.ga('send', this.category, action);
+        }
+
+    };
+
+    Analytics.prototype.exception = function(message) {
+        this.message = message;
+        this.name = 'AnalyticsException';
+    };
+
+    __exports__["default"] = Analytics;
+  });
+define("utils/mediaCordova",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    var MediaCordova = function (sound) {
+      if (!sound) {
+        throw new this.exception('No src defined');
+      }
+      this.sound = sound;
+      if (!game.device.desktop) {
+        this.src = this.sound._sound.currentSrc;
+        this.soundObj = new Media(this.src,
+          function () {
+            console.log("playAudio():Audio Success");
+          }, function (err) {
+            console.log(err);
+          }
+        );
+      } else {
+        this.soundObj = this.sound;
+      }
+    };
+
+    MediaCordova.prototype.play = function () {
+      this.soundObj.play();
+    };
+
+
+    __exports__["default"] = MediaCordova;
   });

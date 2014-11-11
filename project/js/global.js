@@ -1,9 +1,9 @@
 var global = window['colapso'] = {
   juego: {
     numeroJugadores : 4,
-    jugadorNumero: 0,
-    escenario: '',
-    superviviente: ''
+    jugadorNumero: 1,
+    escenario: 'marine',
+    superviviente: 'eledificio'
   },
   supervivientes: [
     {

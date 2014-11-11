@@ -8,7 +8,7 @@ import Jugador from 'scenes/numeroJugador';
 import Escenario from 'scenes/setupEscenario';
 import Superviviente from 'scenes/setupSuperviviente';
 import Game from 'scenes/game';
-
+import InitJuego from 'scenes/initJuego';
 
 var game, App = {};
 
@@ -29,6 +29,8 @@ App.start = function () {
   game.state.add('setupEscenario', Escenario);
   game.state.add('setupSuperviviente', Superviviente);
   game.state.add('game', Game);
+  game.state.add('initJuego', InitJuego);
+
 
   game.state.start('boot');
 
