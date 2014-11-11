@@ -35,8 +35,8 @@ Preload.prototype.create = function () {
 };
 
 Preload.prototype.onLoadComplete = function () {
-  this.game.state.start('game', true, false);
-  //this.game.state.start('menu', true, false);
+  // this.game.state.start('game', true, false);
+  this.game.state.start('menu', true, false);
 };
 
 export default Preload;

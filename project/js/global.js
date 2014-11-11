@@ -45,6 +45,12 @@ var global = window['colapso'] = {
   ],
   sucesos: [
     {
+        "id": "roba_carta",
+        "titulo": "Roba carta",
+        "descripcion": "Has tenido suerte, puedes robar carta",
+        "typo": "robar",
+    },
+    {
         "id": "por_detras",
         "titulo": "¡Por detrás!",
         "descripcion": "Te despistas con una oferta de chocolate. ¡Quién tuviera ahora una tableta! Te toma por sorpresa 1 zombi y te da un susto de muerte.\nDescarta 1 carta de tu mano y después enfréntate a él.",
