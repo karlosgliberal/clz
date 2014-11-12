@@ -4,6 +4,7 @@ var sucesosObj = Juego.sucesos;
 var text, textDescripcion, group;
 
 function Suceso(game, id) {
+  this.tipo = id;
   if (id === 1) {
     id = game.rnd.integerInRange(1, Juego.sucesos.length);
   }
