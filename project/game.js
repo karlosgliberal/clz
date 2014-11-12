@@ -227,49 +227,6 @@ define("main",
 
     __exports__["default"] = App;
   });
-define("prefabs/colaTiempo",
-  ["exports"],
-  function(__exports__) {
-    "use strict";
-    var times;
-    var count = 0;
-    var lvl1Timer;
-
-    function ColaTiempo(game) {
-
-      this.movida = 'movida';
-      Phaser.Time.call(this, game);
-      // timerEvents = game.time.events.loop(game.rnd.integerInRange(250, 1000), updateCounter, this, i);
-    }
-
-    ColaTiempo.prototype = Object.create(Phaser.Time.prototype);
-    ColaTiempo.prototype.constructor = ColaTiempo;
-
-    ColaTiempo.prototype.add = function (time) {
-      // times  = game.time.events.loop(game.rnd.integerInRange(500, time), updateCounter, this, 1);
-
-      console.log(this);
-      lvl1Timer = this.game.time.create(false);
-
-      // lvl1Timer.start();
-      // lvl1Timer.onComplete.add(this.incrementCounter, this);
-      // lvl1Timer.repeat(Phaser.Timer.SECOND * 4, 10, this.objectDroppingFunction, this);
-
-    };
-
-    ColaTiempo.prototype.remove = function (time) {
-      game.time.events.remove(times);
-    };
-
-
-    function updateCounter() {
-
-      console.log('movida' + count );
-      count++;
-    }
-
-    __exports__["default"] = ColaTiempo;
-  });
 define("prefabs/escenario",
   ["global","exports"],
   function(__dependency1__, __exports__) {
@@ -328,6 +285,39 @@ define("prefabs/escenario",
 
 
     __exports__["default"] = Escenario;
+  });
+define("prefabs/gestionarTiempo",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    var times;
+    var count = 0;
+
+    function GestionarTiempo(game) {
+
+      this.movida = 'movida';
+      Phaser.Time.call(this, game);
+      // timerEvents = game.time.events.loop(game.rnd.integerInRange(250, 1000), updateCounter, this, i);
+    }
+
+    GestionarTiempo.prototype = Object.create(Phaser.Time.prototype);
+    GestionarTiempo.prototype.constructor = GestionarTiempo;
+
+    GestionarTiempo.prototype.add = function (time) {
+      times  = game.time.events.loop(game.rnd.integerInRange(500, time), this.terminado, this, 1);
+    };
+
+    GestionarTiempo.prototype.remove = function () {
+      game.time.events.remove(times);
+    };
+
+    GestionarTiempo.prototype.terminado = function () {
+      console.log('movida' + count);
+      count++;
+      this.onTerminated();
+    };
+
+    __exports__["default"] = GestionarTiempo;
   });
 define("prefabs/rotate-logo",
   ["exports"],
@@ -403,7 +393,7 @@ define("prefabs/suceso",
       this.destroy();
       textDescripcion.destroy();
       text.destroy();
-      this.onTerminated();
+      this.onClose();
     }
 
     Suceso.prototype = Object.create(Phaser.Group.prototype);
@@ -489,6 +479,77 @@ define("prefabs/vidas",
 
     __exports__["default"] = Vidas;
   });
+define("utils/analytics",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    var Analytics = function(category) {
+        if (!category) {
+            throw new this.exception('No category defined');
+        }
+
+        this.active = (window.ga) ? true : false;
+        this.category = category;
+    };
+
+    Analytics.prototype.trackEvent = function(action, label, value) {
+        if (!this.active) {
+            return;
+        }
+
+        if (!action) {
+            throw new this.exception('No action defined');
+        }
+
+        if (value) {
+            window.ga('send', this.category, action, label, value);
+        }
+        else if (label) {
+            window.ga('send', this.category, action, label);
+        }
+        else {
+            window.ga('send', this.category, action);
+        }
+
+    };
+
+    Analytics.prototype.exception = function(message) {
+        this.message = message;
+        this.name = 'AnalyticsException';
+    };
+
+    __exports__["default"] = Analytics;
+  });
+define("utils/mediaCordova",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    var MediaCordova = function (sound) {
+      if (!sound) {
+        throw new this.exception('No src defined');
+      }
+      this.sound = sound;
+      if (!game.device.desktop) {
+        this.src = this.sound._sound.currentSrc;
+        this.soundObj = new Media(this.src,
+          function () {
+            console.log("playAudio():Audio Success");
+          }, function (err) {
+            console.log(err);
+          }
+        );
+      } else {
+        this.soundObj = this.sound;
+      }
+    };
+
+    MediaCordova.prototype.play = function () {
+      this.soundObj.play();
+    };
+
+
+    __exports__["default"] = MediaCordova;
+  });
 define("scenes/boot",
   ["exports"],
   function(__exports__) {
@@ -553,12 +614,12 @@ define("scenes/game",
     __exports__["default"] = Game;
   });
 define("scenes/initJuego",
-  ["prefabs/suceso","exports"],
-  function(__dependency1__, __exports__) {
+  ["prefabs/suceso","prefabs/gestionarTiempo","exports"],
+  function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     //import Juego from 'global';
     var Suceso = __dependency1__["default"];
-    //import ColaTiempo from 'prefabs/colaTiempo';
+    var GestionarTiempo = __dependency2__["default"];
 
     var tiempo;
     function InitJuego() {}
@@ -567,30 +628,28 @@ define("scenes/initJuego",
     InitJuego.prototype.create = function () {
       var siguiente = this.add.button(this.game.world.centerX, game.world.centerY, 'siguiente', this.startGame, this);
       siguiente.anchor.setTo(0.5);
-      this.crecolasTiempo(2, 3);
+      tiempo = new GestionarTiempo();
+      tiempo.add(8000);
+
+      tiempo.onTerminated = function () {
+        tiempo.remove();
+        suceso = new Suceso(game, 1);
+        suceso.onClose = function () {
+          tiempo.add(10000);
+        };
+      };
     };
 
     InitJuego.prototype.crecolasTiempo = function (inicio, maxTiempo) {
       tiempo = this.game.time.create(false);
       tiempo.start();
       tiempo.onComplete.add(this.incrementCounter, this);
+      tiempo.remove();
       tiempo.repeat(Phaser.Timer.SECOND * game.rnd.integerInRange(inicio, maxTiempo), 1, this.objectDroppingFunction, this);
     };
 
-    InitJuego.prototype.incrementCounter = function () {
-      console.log('incrementCounter');
-    };
-
-    InitJuego.prototype.objectDroppingFunction = function () {
-      suceso = new Suceso(game, 1);
-      var that =  this;
-      suceso.onTerminated = function () {
-        that.crecolasTiempo(1, 9);
-      };
-    };
 
     InitJuego.prototype.startGame = function () {
-      console.log(tiempo);
       tiempo.remove();
       var aleatorio = game.rnd.integerInRange(0, 1);
       if (aleatorio === 0) {
@@ -972,75 +1031,4 @@ define("scenes/setupSuperviviente",
 
 
     __exports__["default"] = setupSuperviviente;
-  });
-define("utils/analytics",
-  ["exports"],
-  function(__exports__) {
-    "use strict";
-    var Analytics = function(category) {
-        if (!category) {
-            throw new this.exception('No category defined');
-        }
-
-        this.active = (window.ga) ? true : false;
-        this.category = category;
-    };
-
-    Analytics.prototype.trackEvent = function(action, label, value) {
-        if (!this.active) {
-            return;
-        }
-
-        if (!action) {
-            throw new this.exception('No action defined');
-        }
-
-        if (value) {
-            window.ga('send', this.category, action, label, value);
-        }
-        else if (label) {
-            window.ga('send', this.category, action, label);
-        }
-        else {
-            window.ga('send', this.category, action);
-        }
-
-    };
-
-    Analytics.prototype.exception = function(message) {
-        this.message = message;
-        this.name = 'AnalyticsException';
-    };
-
-    __exports__["default"] = Analytics;
-  });
-define("utils/mediaCordova",
-  ["exports"],
-  function(__exports__) {
-    "use strict";
-    var MediaCordova = function (sound) {
-      if (!sound) {
-        throw new this.exception('No src defined');
-      }
-      this.sound = sound;
-      if (!game.device.desktop) {
-        this.src = this.sound._sound.currentSrc;
-        this.soundObj = new Media(this.src,
-          function () {
-            console.log("playAudio():Audio Success");
-          }, function (err) {
-            console.log(err);
-          }
-        );
-      } else {
-        this.soundObj = this.sound;
-      }
-    };
-
-    MediaCordova.prototype.play = function () {
-      this.soundObj.play();
-    };
-
-
-    __exports__["default"] = MediaCordova;
   });

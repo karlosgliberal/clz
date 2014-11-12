@@ -48,7 +48,7 @@ function interroganteBotonSuperviviente() {
   this.destroy();
   textDescripcion.destroy();
   text.destroy();
-  this.onTerminated();
+  this.onClose();
 }
 
 Suceso.prototype = Object.create(Phaser.Group.prototype);
