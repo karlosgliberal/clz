@@ -227,6 +227,268 @@ define("main",
 
     __exports__["default"] = App;
   });
+define("prefabs/colaTiempo",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    var times;
+    var count = 0;
+    var lvl1Timer;
+
+    function ColaTiempo(game) {
+
+      this.movida = 'movida';
+      Phaser.Time.call(this, game);
+      // timerEvents = game.time.events.loop(game.rnd.integerInRange(250, 1000), updateCounter, this, i);
+    }
+
+    ColaTiempo.prototype = Object.create(Phaser.Time.prototype);
+    ColaTiempo.prototype.constructor = ColaTiempo;
+
+    ColaTiempo.prototype.add = function (time) {
+      // times  = game.time.events.loop(game.rnd.integerInRange(500, time), updateCounter, this, 1);
+
+      console.log(this);
+      lvl1Timer = this.game.time.create(false);
+
+      // lvl1Timer.start();
+      // lvl1Timer.onComplete.add(this.incrementCounter, this);
+      // lvl1Timer.repeat(Phaser.Timer.SECOND * 4, 10, this.objectDroppingFunction, this);
+
+    };
+
+    ColaTiempo.prototype.remove = function (time) {
+      game.time.events.remove(times);
+    };
+
+
+    function updateCounter() {
+
+      console.log('movida' + count );
+      count++;
+    }
+
+    __exports__["default"] = ColaTiempo;
+  });
+define("prefabs/escenario",
+  ["global","exports"],
+  function(__dependency1__, __exports__) {
+    "use strict";
+    var Juego = __dependency1__["default"];
+
+    var escenariosObj = Juego.escenarios[0];
+    var text, textDescripcion, group;
+
+    function Escenario(game, objeto) {
+      var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
+      var styleDescripcion = { font: "30px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
+      group = Phaser.Group.call(this, game);
+
+      var  sprite = this.create(-465, 0, 'seccionGrande');
+      sprite.anchor.setTo(0, 0);
+
+      var cerrar = this.create(0, 45, 'cerrar');
+      cerrar.inputEnabled = true;
+      cerrar.events.onInputDown.add(interroganteBotonEscenario, this);
+      //cerrar.anchor.setTo(0, 0);
+
+      var imagen = this.create(0, 215, 'eledificio');
+      imagen.scale.setTo(1, 1.5);
+      imagen.anchor.setTo(0, 0);
+
+      text = game.add.text(-465, 120, escenariosObj[objeto].titulo, style);
+
+      textDescripcion = game.add.text(-400, 220, escenariosObj[objeto].descripcion, styleDescripcion);
+      textDescripcion.wordWrap = true;
+      textDescripcion.align = 'left';
+      textDescripcion.wordWrapWidth =  340;
+
+      tweenEscenario(this, 465, 300);
+      tweenEscenario(cerrar, 400, 100);
+      tweenEscenario(imagen, 50, 100);
+      tweenEscenario(text, 105, 300);
+      tweenEscenario(textDescripcion, 100, 300);
+      // tweenEscenario(cerrar, 865);
+    }
+
+    function tweenEscenario(obj, coord, vel) {
+      var tweenContendero = game.add.tween(obj);
+      tweenContendero.to({x : coord }, vel, Phaser.Easing.Linear.None);
+      tweenContendero.start();
+    }
+
+    function interroganteBotonEscenario() {
+      this.destroy();
+      textDescripcion.destroy();
+      text.destroy();
+    }
+
+    Escenario.prototype = Object.create(Phaser.Group.prototype);
+    Escenario.prototype.constructor = Escenario;
+
+
+    __exports__["default"] = Escenario;
+  });
+define("prefabs/rotate-logo",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    function RotateLogo(game, x, y, rotateSpeed) {
+        Phaser.Sprite.call(this, game, x, y, 'logo');
+        this.anchor.setTo(0.5);
+
+        this.rotateSpeed = rotateSpeed;
+    }
+
+    RotateLogo.prototype = Object.create(Phaser.Sprite.prototype);
+    RotateLogo.prototype.constructor = RotateLogo;
+
+    RotateLogo.prototype.update = function() {
+        this.angle += this.rotateSpeed;
+    };
+
+    __exports__["default"] = RotateLogo;
+  });
+define("prefabs/suceso",
+  ["global","exports"],
+  function(__dependency1__, __exports__) {
+    "use strict";
+    var Juego = __dependency1__["default"];
+
+    var sucesosObj = Juego.sucesos;
+    var text, textDescripcion, group;
+
+    function Suceso(game, id) {
+      if (id === 1) {
+        id = game.rnd.integerInRange(1, Juego.sucesos.length);
+      }
+      var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
+      var styleDescripcion = { font: "30px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
+      group = Phaser.Group.call(this, game);
+
+      var  sprite = this.create(-465, 0, 'seccionGrande');
+      sprite.anchor.setTo(0, 0);
+
+      var cerrar = this.create(0, 45, 'cerrar');
+      cerrar.inputEnabled = true;
+      cerrar.events.onInputDown.add(interroganteBotonSuperviviente, this);
+      //cerrar.anchor.setTo(0, 0);
+
+      var imagen = this.create(0, 215, 'eledificio');
+      imagen.scale.setTo(1, 1.5);
+      imagen.anchor.setTo(0, 0);
+
+      text = game.add.text(-465, 120, sucesosObj[id].titulo, style);
+
+      textDescripcion = game.add.text(-400, 220, sucesosObj[id].descripcion, styleDescripcion);
+      textDescripcion.wordWrap = true;
+      textDescripcion.align = 'left';
+      textDescripcion.wordWrapWidth =  340;
+
+      tweenEscenario(this, 465, 300);
+      tweenEscenario(cerrar, 400, 100);
+      tweenEscenario(imagen, 50, 100);
+      tweenEscenario(text, 105, 300);
+      tweenEscenario(textDescripcion, 100, 300);
+      // tweenEscenario(cerrar, 865);
+    }
+
+    function tweenEscenario(obj, coord, vel) {
+      var tweenContendero = game.add.tween(obj);
+      tweenContendero.to({x : coord }, vel, Phaser.Easing.Linear.None);
+      tweenContendero.start();
+    }
+
+    function interroganteBotonSuperviviente() {
+      this.destroy();
+      textDescripcion.destroy();
+      text.destroy();
+      this.onTerminated();
+    }
+
+    Suceso.prototype = Object.create(Phaser.Group.prototype);
+    Suceso.prototype.constructor = Suceso;
+
+
+    __exports__["default"] = Suceso;
+  });
+define("prefabs/superviviente",
+  ["global","exports"],
+  function(__dependency1__, __exports__) {
+    "use strict";
+    var Juego = __dependency1__["default"];
+
+    var supervivientesObj = Juego.supervivientes[0];
+    var text, textDescripcion, group;
+
+    function Superviviente(game, objeto) {
+      var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
+      var styleDescripcion = { font: "30px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
+      group = Phaser.Group.call(this, game);
+
+      var  sprite = this.create(-465, 0, 'seccionGrande');
+      sprite.anchor.setTo(0, 0);
+
+      var cerrar = this.create(0, 45, 'cerrar');
+      cerrar.inputEnabled = true;
+      cerrar.events.onInputDown.add(interroganteBotonSuperviviente, this);
+      //cerrar.anchor.setTo(0, 0);
+
+      var imagen = this.create(0, 215, 'eledificio');
+      imagen.scale.setTo(1, 1.5);
+      imagen.anchor.setTo(0, 0);
+
+      text = game.add.text(-465, 120, supervivientesObj[objeto].titulo, style);
+
+      textDescripcion = game.add.text(-400, 220, supervivientesObj[objeto].descripcion, styleDescripcion);
+      textDescripcion.wordWrap = true;
+      textDescripcion.align = 'left';
+      textDescripcion.wordWrapWidth =  340;
+
+      tweenEscenario(this, 465, 300);
+      tweenEscenario(cerrar, 400, 100);
+      tweenEscenario(imagen, 50, 100);
+      tweenEscenario(text, 105, 300);
+      tweenEscenario(textDescripcion, 100, 300);
+      // tweenEscenario(cerrar, 865);
+    }
+
+    function tweenEscenario(obj, coord, vel) {
+      var tweenContendero = game.add.tween(obj);
+      tweenContendero.to({x : coord }, vel, Phaser.Easing.Linear.None);
+      tweenContendero.start();
+    }
+
+    function interroganteBotonSuperviviente() {
+      this.destroy();
+      textDescripcion.destroy();
+      text.destroy();
+    }
+
+    Superviviente.prototype = Object.create(Phaser.Group.prototype);
+    Superviviente.prototype.constructor = Superviviente;
+
+
+    __exports__["default"] = Superviviente;
+  });
+define("prefabs/vidas",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    function Vidas(game, x, y/*, your-params-here */) {
+        Phaser.Sprite.call(this, game, x, y, 'logo');
+
+        /* init code here */
+        this.anchor.setTo(0.5);
+    }
+
+    Vidas.prototype = Object.create(Phaser.Sprite.prototype);
+    Vidas.prototype.constructor = Vidas;
+
+    Vidas.prototype.update = function() {};
+
+    __exports__["default"] = Vidas;
+  });
 define("scenes/boot",
   ["exports"],
   function(__exports__) {
@@ -291,24 +553,46 @@ define("scenes/game",
     __exports__["default"] = Game;
   });
 define("scenes/initJuego",
-  ["global","prefabs/suceso","exports"],
-  function(__dependency1__, __dependency2__, __exports__) {
+  ["prefabs/suceso","exports"],
+  function(__dependency1__, __exports__) {
     "use strict";
-    var Juego = __dependency1__["default"];
-    var Suceso = __dependency2__["default"];
+    //import Juego from 'global';
+    var Suceso = __dependency1__["default"];
+    //import ColaTiempo from 'prefabs/colaTiempo';
 
+    var tiempo;
     function InitJuego() {}
     var suceso;
 
     InitJuego.prototype.create = function () {
       var siguiente = this.add.button(this.game.world.centerX, game.world.centerY, 'siguiente', this.startGame, this);
       siguiente.anchor.setTo(0.5);
-      console.log(Juego.sucesos[5]);
+      this.crecolasTiempo(2, 3);
+    };
+
+    InitJuego.prototype.crecolasTiempo = function (inicio, maxTiempo) {
+      tiempo = this.game.time.create(false);
+      tiempo.start();
+      tiempo.onComplete.add(this.incrementCounter, this);
+      tiempo.repeat(Phaser.Timer.SECOND * game.rnd.integerInRange(inicio, maxTiempo), 1, this.objectDroppingFunction, this);
+    };
+
+    InitJuego.prototype.incrementCounter = function () {
+      console.log('incrementCounter');
+    };
+
+    InitJuego.prototype.objectDroppingFunction = function () {
+      suceso = new Suceso(game, 1);
+      var that =  this;
+      suceso.onTerminated = function () {
+        that.crecolasTiempo(1, 9);
+      };
     };
 
     InitJuego.prototype.startGame = function () {
+      console.log(tiempo);
+      tiempo.remove();
       var aleatorio = game.rnd.integerInRange(0, 1);
-
       if (aleatorio === 0) {
         suceso = new Suceso(game, 1);
       } else {
@@ -442,8 +726,8 @@ define("scenes/preload",
     };
 
     Preload.prototype.onLoadComplete = function () {
-      // this.game.state.start('game', true, false);
-      this.game.state.start('menu', true, false);
+      this.game.state.start('game', true, false);
+      // this.game.state.start('menu', true, false);
     };
 
     __exports__["default"] = Preload;
@@ -688,224 +972,6 @@ define("scenes/setupSuperviviente",
 
 
     __exports__["default"] = setupSuperviviente;
-  });
-define("prefabs/escenario",
-  ["global","exports"],
-  function(__dependency1__, __exports__) {
-    "use strict";
-    var Juego = __dependency1__["default"];
-
-    var escenariosObj = Juego.escenarios[0];
-    var text, textDescripcion, group;
-
-    function Escenario(game, objeto) {
-      var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
-      var styleDescripcion = { font: "30px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
-      group = Phaser.Group.call(this, game);
-
-      var  sprite = this.create(-465, 0, 'seccionGrande');
-      sprite.anchor.setTo(0, 0);
-
-      var cerrar = this.create(0, 45, 'cerrar');
-      cerrar.inputEnabled = true;
-      cerrar.events.onInputDown.add(interroganteBotonEscenario, this);
-      //cerrar.anchor.setTo(0, 0);
-
-      var imagen = this.create(0, 215, 'eledificio');
-      imagen.scale.setTo(1, 1.5);
-      imagen.anchor.setTo(0, 0);
-
-      text = game.add.text(-465, 120, escenariosObj[objeto].titulo, style);
-
-      textDescripcion = game.add.text(-400, 220, escenariosObj[objeto].descripcion, styleDescripcion);
-      textDescripcion.wordWrap = true;
-      textDescripcion.align = 'left';
-      textDescripcion.wordWrapWidth =  340;
-
-      tweenEscenario(this, 465, 300);
-      tweenEscenario(cerrar, 400, 100);
-      tweenEscenario(imagen, 50, 100);
-      tweenEscenario(text, 105, 300);
-      tweenEscenario(textDescripcion, 100, 300);
-      // tweenEscenario(cerrar, 865);
-    }
-
-    function tweenEscenario(obj, coord, vel) {
-      var tweenContendero = game.add.tween(obj);
-      tweenContendero.to({x : coord }, vel, Phaser.Easing.Linear.None);
-      tweenContendero.start();
-    }
-
-    function interroganteBotonEscenario() {
-      this.destroy();
-      textDescripcion.destroy();
-      text.destroy();
-    }
-
-    Escenario.prototype = Object.create(Phaser.Group.prototype);
-    Escenario.prototype.constructor = Escenario;
-
-
-    __exports__["default"] = Escenario;
-  });
-define("prefabs/rotate-logo",
-  ["exports"],
-  function(__exports__) {
-    "use strict";
-    function RotateLogo(game, x, y, rotateSpeed) {
-        Phaser.Sprite.call(this, game, x, y, 'logo');
-        this.anchor.setTo(0.5);
-
-        this.rotateSpeed = rotateSpeed;
-    }
-
-    RotateLogo.prototype = Object.create(Phaser.Sprite.prototype);
-    RotateLogo.prototype.constructor = RotateLogo;
-
-    RotateLogo.prototype.update = function() {
-        this.angle += this.rotateSpeed;
-    };
-
-    __exports__["default"] = RotateLogo;
-  });
-define("prefabs/suceso",
-  ["global","exports"],
-  function(__dependency1__, __exports__) {
-    "use strict";
-    var Juego = __dependency1__["default"];
-
-    var sucesosObj = Juego.sucesos;
-    var text, textDescripcion, group;
-
-    function Suceso(game, id) {
-      if (id === 1) {
-        id = game.rnd.integerInRange(1, Juego.sucesos.length);
-      }
-      var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
-      var styleDescripcion = { font: "30px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
-      group = Phaser.Group.call(this, game);
-
-      var  sprite = this.create(-465, 0, 'seccionGrande');
-      sprite.anchor.setTo(0, 0);
-
-      var cerrar = this.create(0, 45, 'cerrar');
-      cerrar.inputEnabled = true;
-      cerrar.events.onInputDown.add(interroganteBotonSuperviviente, this);
-      //cerrar.anchor.setTo(0, 0);
-
-      var imagen = this.create(0, 215, 'eledificio');
-      imagen.scale.setTo(1, 1.5);
-      imagen.anchor.setTo(0, 0);
-
-      text = game.add.text(-465, 120, sucesosObj[id].titulo, style);
-
-      textDescripcion = game.add.text(-400, 220, sucesosObj[id].descripcion, styleDescripcion);
-      textDescripcion.wordWrap = true;
-      textDescripcion.align = 'left';
-      textDescripcion.wordWrapWidth =  340;
-
-      tweenEscenario(this, 465, 300);
-      tweenEscenario(cerrar, 400, 100);
-      tweenEscenario(imagen, 50, 100);
-      tweenEscenario(text, 105, 300);
-      tweenEscenario(textDescripcion, 100, 300);
-      // tweenEscenario(cerrar, 865);
-    }
-
-    function tweenEscenario(obj, coord, vel) {
-      var tweenContendero = game.add.tween(obj);
-      tweenContendero.to({x : coord }, vel, Phaser.Easing.Linear.None);
-      tweenContendero.start();
-    }
-
-    function interroganteBotonSuperviviente() {
-      this.destroy();
-      textDescripcion.destroy();
-      text.destroy();
-    }
-
-    Suceso.prototype = Object.create(Phaser.Group.prototype);
-    Suceso.prototype.constructor = Suceso;
-
-
-    __exports__["default"] = Suceso;
-  });
-define("prefabs/superviviente",
-  ["global","exports"],
-  function(__dependency1__, __exports__) {
-    "use strict";
-    var Juego = __dependency1__["default"];
-
-    var supervivientesObj = Juego.supervivientes[0];
-    var text, textDescripcion, group;
-
-    function Superviviente(game, objeto) {
-      var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
-      var styleDescripcion = { font: "30px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
-      group = Phaser.Group.call(this, game);
-
-      var  sprite = this.create(-465, 0, 'seccionGrande');
-      sprite.anchor.setTo(0, 0);
-
-      var cerrar = this.create(0, 45, 'cerrar');
-      cerrar.inputEnabled = true;
-      cerrar.events.onInputDown.add(interroganteBotonSuperviviente, this);
-      //cerrar.anchor.setTo(0, 0);
-
-      var imagen = this.create(0, 215, 'eledificio');
-      imagen.scale.setTo(1, 1.5);
-      imagen.anchor.setTo(0, 0);
-
-      text = game.add.text(-465, 120, supervivientesObj[objeto].titulo, style);
-
-      textDescripcion = game.add.text(-400, 220, supervivientesObj[objeto].descripcion, styleDescripcion);
-      textDescripcion.wordWrap = true;
-      textDescripcion.align = 'left';
-      textDescripcion.wordWrapWidth =  340;
-
-      tweenEscenario(this, 465, 300);
-      tweenEscenario(cerrar, 400, 100);
-      tweenEscenario(imagen, 50, 100);
-      tweenEscenario(text, 105, 300);
-      tweenEscenario(textDescripcion, 100, 300);
-      // tweenEscenario(cerrar, 865);
-    }
-
-    function tweenEscenario(obj, coord, vel) {
-      var tweenContendero = game.add.tween(obj);
-      tweenContendero.to({x : coord }, vel, Phaser.Easing.Linear.None);
-      tweenContendero.start();
-    }
-
-    function interroganteBotonSuperviviente() {
-      this.destroy();
-      textDescripcion.destroy();
-      text.destroy();
-    }
-
-    Superviviente.prototype = Object.create(Phaser.Group.prototype);
-    Superviviente.prototype.constructor = Superviviente;
-
-
-    __exports__["default"] = Superviviente;
-  });
-define("prefabs/vidas",
-  ["exports"],
-  function(__exports__) {
-    "use strict";
-    function Vidas(game, x, y/*, your-params-here */) {
-        Phaser.Sprite.call(this, game, x, y, 'logo');
-
-        /* init code here */
-        this.anchor.setTo(0.5);
-    }
-
-    Vidas.prototype = Object.create(Phaser.Sprite.prototype);
-    Vidas.prototype.constructor = Vidas;
-
-    Vidas.prototype.update = function() {};
-
-    __exports__["default"] = Vidas;
   });
 define("utils/analytics",
   ["exports"],
