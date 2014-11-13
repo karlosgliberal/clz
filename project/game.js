@@ -287,14 +287,14 @@ define("prefabs/escenario",
     __exports__["default"] = Escenario;
   });
 define("prefabs/gestionarTiempo",
-  ["exports"],
-  function(__exports__) {
+  ["prefabs/suceso","exports"],
+  function(__dependency1__, __exports__) {
     "use strict";
+    var Suceso = __dependency1__["default"];
     var times;
-    var count = 0;
 
     function GestionarTiempo(game) {
-      this.movida = 'movida';
+      this.tipo = 1;
       Phaser.Time.call(this, game);
     }
 
@@ -302,18 +302,30 @@ define("prefabs/gestionarTiempo",
     GestionarTiempo.prototype.constructor = GestionarTiempo;
 
     GestionarTiempo.prototype.add = function (time) {
-      times  = game.time.events.loop(game.rnd.integerInRange(500, time), this.terminado, this, 1);
+      times  = game.time.events.loop(game.rnd.integerInRange(500, time), terminado, this, 1);
     };
 
     GestionarTiempo.prototype.remove = function () {
       game.time.events.remove(times);
     };
 
-    GestionarTiempo.prototype.terminado = function () {
-      console.log('movida' + count);
-      count++;
-      this.onTerminated();
+    GestionarTiempo.prototype.tenerSuerte = function () {
+      this.tipo = game.rnd.integerInRange(0, 1);
+      this.add(0);
+      //times  = game.time.events.loop(game.rnd.integerInRange(500, time), terminado, this, 1);
     };
+
+    function terminado() {
+      console.log(this.tipo);
+      this.remove();
+      var that = this;
+      var suceso = new Suceso(game, this.tipo);
+      this.tipo = 1;
+      suceso.onClose = function () {
+        that.add(10000);
+      };
+    }
+
 
     __exports__["default"] = GestionarTiempo;
   });
@@ -542,23 +554,21 @@ define("scenes/game",
     __exports__["default"] = Game;
   });
 define("scenes/initJuego",
-  ["prefabs/suceso","prefabs/gestionarTiempo","exports"],
-  function(__dependency1__, __dependency2__, __exports__) {
+  ["prefabs/gestionarTiempo","exports"],
+  function(__dependency1__, __exports__) {
     "use strict";
     //import Juego from 'global';
-    var Suceso = __dependency1__["default"];
-    var GestionarTiempo = __dependency2__["default"];
+    var GestionarTiempo = __dependency1__["default"];
 
-    var tiempo, suceso;
+    var tiempo;
 
     function InitJuego() {}
 
     InitJuego.prototype.create = function () {
-      var siguiente = this.add.button(this.game.world.centerX, game.world.centerY, 'siguiente', this.startGame, this);
+      var siguiente = this.add.button(this.game.world.centerX, game.world.centerY, 'siguiente', startGame, this);
       siguiente.anchor.setTo(0.5);
       tiempo = new GestionarTiempo();
       tiempo.add(8000);
-      this.gestionandoColas(tiempo, 1);
     };
 
     InitJuego.prototype.crecolasTiempo = function (inicio, maxTiempo) {
@@ -568,26 +578,24 @@ define("scenes/initJuego",
       tiempo.repeat(Phaser.Timer.SECOND * game.rnd.integerInRange(inicio, maxTiempo), 1, this.objectDroppingFunction, this);
     };
 
-
-    InitJuego.prototype.startGame = function () {
+    function startGame() {
       tiempo.remove();
-      var tipoCarta = game.rnd.integerInRange(0, 1);
       tiempo = new GestionarTiempo();
-      tiempo.add(0);
-      this.gestionandoColas(tiempo, tipoCarta);
-    };
+      tiempo.tenerSuerte(0);
+      console.log("startGame");
+    }
 
-    InitJuego.prototype.gestionandoColas = function (tiempo, tipo) {
-      console.log(tipo);
-      tiempo.onTerminated = function () {
-        tiempo.remove();
-        suceso = new Suceso(game, tipo);
-        tipo = 1;
-        suceso.onClose = function () {
-          tiempo.add(10000);
-        };
-      };
-    };
+    // InitJuego.prototype.gestionandoColas = function (tiempo, tipo) {
+    //   console.log(tipo);
+    //   tiempo.onTerminated = function () {
+    //     tiempo.remove();
+    //     suceso = new Suceso(game, tipo);
+    //     tipo = 1;
+    //     suceso.onClose = function () {
+    //       tiempo.add(10000);
+    //     };
+    //   };
+    // };
 
     __exports__["default"] = InitJuego;
   });
@@ -715,8 +723,8 @@ define("scenes/preload",
     };
 
     Preload.prototype.onLoadComplete = function () {
-      //this.game.state.start('game', true, false);
-      this.game.state.start('menu', true, false);
+      this.game.state.start('game', true, false);
+      // this.game.state.start('menu', true, false);
     };
 
     __exports__["default"] = Preload;
@@ -781,6 +789,7 @@ define("scenes/setupEscenario",
           contenedor.seleccion.events.onInputDown.add(that.seleccionBoton, this);
           contenedor.seleccion.anchor.setTo(0.5);
           contenedor.addChild(contenedor.seleccion);
+          console.log(contenedor);
         }
       );
 

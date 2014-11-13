@@ -54,6 +54,7 @@ SetupEscenario.prototype.create = function () {
       contenedor.seleccion.events.onInputDown.add(that.seleccionBoton, this);
       contenedor.seleccion.anchor.setTo(0.5);
       contenedor.addChild(contenedor.seleccion);
+      console.log(contenedor);
     }
   );
 
