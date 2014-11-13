@@ -2,10 +2,8 @@ var times;
 var count = 0;
 
 function GestionarTiempo(game) {
-
   this.movida = 'movida';
   Phaser.Time.call(this, game);
-  // timerEvents = game.time.events.loop(game.rnd.integerInRange(250, 1000), updateCounter, this, i);
 }
 
 GestionarTiempo.prototype = Object.create(Phaser.Time.prototype);
