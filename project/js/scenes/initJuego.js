@@ -12,18 +12,17 @@ InitJuego.prototype.create = function () {
   tiempo.add(8000);
 };
 
-InitJuego.prototype.crecolasTiempo = function (inicio, maxTiempo) {
-  tiempo = this.game.time.create(false);
-  tiempo.start();
-  tiempo.onComplete.add(this.incrementCounter, this);
-  tiempo.repeat(Phaser.Timer.SECOND * game.rnd.integerInRange(inicio, maxTiempo), 1, this.objectDroppingFunction, this);
-};
+// InitJuego.prototype.crecolasTiempo = function (inicio, maxTiempo) {
+//   tiempo = this.game.time.create(false);
+//   tiempo.start();
+//   tiempo.onComplete.add(this.incrementCounter, this);
+//   tiempo.repeat(Phaser.Timer.SECOND * game.rnd.integerInRange(inicio, maxTiempo), 1, this.objectDroppingFunction, this);
+// };
 
 function startGame() {
   tiempo.remove();
   tiempo = new GestionarTiempo();
   tiempo.tenerSuerte(0);
-  console.log("startGame");
 }
 
 // InitJuego.prototype.gestionandoColas = function (tiempo, tipo) {

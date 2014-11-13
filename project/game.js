@@ -49,130 +49,262 @@ define("global",
       ],
       sucesos: [
         {
-            "id": "roba_carta",
-            "titulo": "Roba carta",
-            "descripcion": "Has tenido suerte, puedes robar carta",
-            "typo": "robar",
+            "id": "roba_una_carta",
+            "titulo": "Roba una Carta",
+            "descripcion": "Has tenido suerte (por ahora) Roba una carta",
+            "tipo": 1
         },
         {
             "id": "por_detras",
             "titulo": "¡Por detrás!",
             "descripcion": "Te despistas con una oferta de chocolate. ¡Quién tuviera ahora una tableta! Te toma por sorpresa 1 zombi y te da un susto de muerte.\nDescarta 1 carta de tu mano y después enfréntate a él.",
-            "typo": "Individual",
+            "tipo": 1
         },
         {
-            "id": "tu_no",
+            "id": "no_tu_no",
             "titulo": "¡No, tú no!",
             "descripcion": "Daniel, tu mejor amigo desde la infancia, te ataca convertido en zombi. Intentas zafarte de él, pero te cuesta mucho abrirle la cabeza.\n¡La mejor parte de tu infancia la pasaste con él! Pierdes 1 vida en el forcejeo. Te enfrentas a 1 zombi.",
-            "typo": "Individual",
-        },
-        {
-            "id": "almacen_intacto",
-            "titulo": "Almacén intacto",
-            "descripcion": "Encuentras un pequeño almacén de productos farmacéuticos. ¡Está intacto! Si logras abrir la puerta ganas 2 vidas.",
-            "typo": "Individual",
+            "tipo": 1
         },
         {
             "id": "rodeado",
             "titulo": "¡Rodeado!",
             "descripcion": "Te has despistado con una súper oferta en cerveza y te has separado del grupo. 3 zombis quieren comerte el cerebro.\n¡Ahora tú eres la mejor oferta del supermercado! Si los eliminas a todos roba 1 carta de tu mazo.",
-            "typo": "Individual",
+            "tipo": 1
         },
         {
-            "id": "contenedor_cerrado",
-            "titulo": "Contenedor cerrado",
-            "descripcion": "Has encontrado un pequeño contenedor cerrado con llave. En la etiqueta se lee \"Wisky de malta. Pack de lujo\".\nSi logras abrir la cerradura gana 2 vidas.",
-            "typo": "Individual",
-        },
-        {
-            "id": "oferta_refrescos",
+            "id": "oferta_en_refrescos",
             "titulo": "Oferta en refrescos",
             "descripcion": "En una oscura esquina resalta el cartel de neón en el que se lee: \"Oferta en refrescos\". Una lata de Red Bull es custodiada por 2 zombis.\nPuedes elegir enfrentarte a ellos o no. Si eliminas a ambos roba 2 cartas de tu mazo.",
-            "typo": "Individual",
+            "tipo": 1
         },
         {
-            "id": "oficina_supervisor",
-            "titulo": "Oficina del supervisor",
-            "descripcion": "Te encuentras ante una puerta de madera con un ojo de buey, por el que ves a 1 zombi. El maldito supervisor se encerró en su\ndespacho con un buen montón de productos caros. ¿Puedes abrir la cerradura? Si lo haces te enfrentas a 1 zombi y después robas 3 cartas de tu mazo.",
-            "typo": "Individual",
-        },
-        {
-            "id": "estante_bricolaje",
+            "id": "estante_de_bricolaje",
             "titulo": "Estante de bricolaje",
             "descripcion": "Te atrae un cartel amarillo en el que se lee: \"oferta superpegamento\". Pierdes por un momento a tu grupo y un macabro susurro envuelto en un \nolor sanguinoliento te toma por sorpresa. Te enfrentas a 1 zombi. Si lo eliminas coge 1 carta de tu basura.",
-            "typo": "Individual",
+            "tipo": 1
         },
         {
             "id": "perro_zombi",
             "titulo": "¡Perro zombi!",
             "descripcion": "Un perro zombi se te echa encima. Quiere devorarte y llevarse tus huesos. ¡Deja de acariciarlo y mátalo! Te enfrentas a 1 perro zombi.\nCada jugador perderá 1 vida hasta que sea eliminado.",
-            "typo": "Individual",
+            "tipo": 1
         },
         {
             "id": "el_charcutero",
             "titulo": "El charcutero",
             "descripcion": "¿Por qué te detienes a mirar precios en la sección de charcutería? ¡Todo está podrido! Te has separado de tu grupo y ahora te enfrentas\nal charcutero y a sus dos aprendices. Todo por soñar con un bocata de chopped. Te enfrentas a 3 zombis.",
-            "typo": "Individual",
+            "tipo": 1
         },
         {
             "id": "sorprendidos",
             "titulo": "¡Sorprendidos!",
             "descripcion": "Ha sido mala idea entrar en el almacén. ¿Pensábais que estaría vacío? Os asustáis al entrar en el pasillo C.\nCada jugador descarta 1 carta de su mano. Os enfrentáis a 3 zombis.",
-            "typo": "Colectivo",
-        },
-        {
-            "id": "puerta_misteriosa",
-            "titulo": "Puerta misteriosa",
-            "descripcion": "Encontráis una misteriosa puerta cerrada con llave. ¿Podéis abrirla? Si la abrís, cada jugador lanza 1D6:\n1: Roba 1 carta de tu mazo.\n2-5: Roba 2 carta de tu mazo.\n6: Roba 3 cartas de tu mazo.",
-            "typo": "Colectivo",
+            "tipo": 0
         },
         {
             "id": "camion_empotrado",
             "titulo": "Camión empotrado",
-            "descripcion": "La cabina de un gran camión empotrado en la zona de cajas es un buen refugio para esconder vuestros cerebros de 3 zombis. Los jugadores que\naporten (colocar en su basura) 1 ganzúa o 1 cinturón de herramientas se esconden en la cabina del camión y no recibirán ningún punto de daño\nen este suceso colectivo. Los jugadores que no aporten dichos recursos se enfrentan a 3 zombis.",
-            "typo": "Colectivo"
+            "descripcion": "La cabina de un gran camión empotrado en la zona de cajas es un buen refugio para esconder vuestros cerebros de 3 zombis. Los jugadores que\naporten (colocar en su basura) 1 cinturón de herramientas se esconden en la cabina del camión y no recibirán ningún punto de daño\nen este suceso colectivo. Los jugadores que no aporten dicha carta se enfrentan a 3 zombis.",
+            "tipo": 0
         },
         {
-            "id": "heroe_caído",
+            "id": "heroe_caido",
             "titulo": "Héroe caído",
             "descripcion": "Llegáis tarde a ayudar a un hombre que está siendo devorado por unos zombis. ¿Llevará algo de utilidad encima ese pobre desgraciado?\nOs enfrentais a 3 zombis. Los jugadores que eliminen zombis en este suceso roban 1 carta de su mazo al finalizar el mismo.",
-            "typo": "Colectivo"
+            "tipo": 0
         },
         {
-            "id": "techo_cede",
+            "id": "el_techo_cede",
             "titulo": "¡El techo cede!",
-            "descripcion": "Las oficinas del piso de arriba están infestadas de zombis. Hay tantos en una zona que el techo ha cedido en el mismo instante en que vosotros\npasábais. Habéis quedado atrapados entre los escombros y los zombis. ¡Pero qué mala suerte tenéis! Los jugadores que no usen  para librarse\n(colocar en su basura) 1 carta de recurso, descartan 1 carta de su mano y pierden 1 vida.",
-            "typo": "Colectivo"
+            "descripcion": "Las oficinas del piso de arriba están infestadas de zombis. Hay tantos en una zona que el techo ha cedido en el mismo instante en que vosotros\npasábais. Habéis quedado atrapados entre los escombros y los zombis. ¡Pero qué mala suerte tenéis! Los jugadores descartan 1 carta de su mano y pierden 1 vida.",
+            "tipo": 0
         },
         {
             "id": "necesito_armas",
             "titulo": "¡Necesito armas!",
             "descripcion": "Os encontráis a un hombre desquiciado que se ha atrincherado en los lavabos. A través de una rendija de la puerta os propone un intercambio. Él\nnecesita armas y tiene medicamentos de sobra. Los jugadores que intercambien (colocar en su basura) 1 carta de arma, ganan 2 vidas.",
-            "typo": "Colectivo"
+            "tipo": 0
         },
         {
             "id": "enfermera_caida",
             "titulo": "Enfermera caída",
             "descripcion": "Una mujer vestida de enfermera ha sido devorada por 3 zombis en la sección de alimentos ecológicos. Vuestros cuerpos calientes son ahora\nel plato principal de esos malnacidos. Os enfrentáis a 3 zombis. Los jugadores que eliminen zombis en este suceso ganan 1 punto de vida.",
-            "typo": "Colectivo"
+            "tipo": 0
         },
         {
             "id": "aparcamiento_privado",
             "titulo": "Aparcamiento privado",
             "descripcion": "Encontráis una puerta de acceso a un diminuto aparcamiento subterráneo. Entráis en busca de una salida al exterior, pero lo único que encontráis\nson más zombis. Os han tomado por sorpresa. No se pueden usar las habilidades de los supervivientes en este suceso. Os enfrentáis a 3 zombis.",
-            "typo": "Colectivo"
-        },
-        {
-            "id": "ayudadme",
-            "titulo": "¡Ayudadme!",
-            "descripcion": "Los jugadores no pueden jugar cartas de su mano en este suceso. Elegid 1 jugador al azar. Ese jugador queda atrapado por varios brazos de zombis\nque asoman por una rendija del suelo y pierde gran parte de sus cosas (coloca todas las cartas de su mano en su basura). Otro jugador puede ayudarle\nsacrificándose en su lugar (colocando todas las cartas de su mano en su propia basura en lugar del jugador atrapado).",
-            "typo": "Colectivo"
+            "tipo": 0
         },
         {
             "id": "puerta_reventada",
             "titulo": "Puerta reventada",
             "descripcion": "Los zombis revientan una puerta justo cuando os acercáis a ella, y quedáis rodeados. Os alejáis corriendo al tiempo que os los quitáis de encima como\npodéis. Los jugadores no podéis jugar cartas en este suceso. Os enfrentáis a 2 zombis.",
-            "typo": "Colectivo"
+            "tipo": 0
+        },
+        {
+            "id": "ayudadme",
+            "titulo": "¡Ayudadme!",
+            "descripcion": "Los jugadores no pueden jugar cartas de su mano en este suceso. El jugador de tu derecha queda atrapado por varios brazos de zombis\nque asoman por una rendija del suelo y pierde todas sus cosas (coloca todas las cartas de su mano en su basura). ",
+            "tipo": 1
+        },
+        {
+            "id": "un_mal_paso",
+            "titulo": "Un mal paso",
+            "descripcion": "El suelo cede bajo tus pies, tropiezas y caes de bruces pierdes parte de tu equipo. Pones 2 cartas en el centro de la mesa el jugador de tu derecha elige que hacer con ellas ",
+            "tipo": 1
+        },
+        {
+            "id": "ruleta_rusa",
+            "titulo": "Ruleta rusa",
+            "descripcion": "ataque de 3 zombies por sorpresa, huis a la carrera, todos descartais una carta ",
+            "tipo": 0
+        },
+        {
+            "id": "decisiones_dificiles",
+            "titulo": "Decisiones dificiles",
+            "descripcion": "ataque 2 zombies, elige a un jugador que no seas tu, este se libra del suceso ",
+            "tipo": 0
+        },
+        {
+            "id": "Nunca_te_fies_de_un_anister",
+            "titulo": "Nunca te fies de un Lanister",
+            "descripcion": "todos se curan menos uno, tu eliges quien",
+            "tipo": 0
+        },
+        {
+            "id": "super_heroe",
+            "titulo": "Super heroe",
+            "descripcion": "ataque 2 zombies, tu eliges quienes se enfrentan a ellos",
+            "tipo": 0
+        },
+        {
+            "id": "mediador",
+            "titulo": "Mediador",
+            "descripcion": "Pelea en el grupo. el jugador de tu derecha se enfentra a al de tu izquierda. los 2 reciben un punto de daño",
+            "tipo": 1
+        },
+        {
+            "id": "gatito_gatito ",
+            "titulo": "gatito gatito ",
+            "descripcion": "mordisco de gato rabioso 1 punto de daño",
+            "tipo": 1
+        },
+        {
+            "id": "la_voz_de_juez",
+            "titulo": "La voz de juez",
+            "descripcion": "tu elijes quien no participa en este suceso el resto se enfrentan a 2 zombies",
+            "tipo": 0
+        },
+        {
+            "id": "suerte_por_un_dia",
+            "titulo": "Suerte por un dia",
+            "descripcion": "cogeis una carta de la basura y recuperar 1 vida",
+            "tipo": 0
+        },
+        {
+            "id": "cuchipanda",
+            "titulo": "Cuchipanda",
+            "descripcion": "tu y otro jugador  de tu eleccion recuperais 1 vida",
+            "tipo": 1
+        },
+        {
+            "id": "mal_menor",
+            "titulo": "Mal menor",
+            "descripcion": "ataque de 3 zombis, zancadilleas al jugador elegido cae y recibe un punto de daño el resto se enfrentan a los zombis",
+            "tipo": 0
+        },
+        {
+            "id": "manos_de_trapo",
+            "titulo": "Manos de trapo",
+            "descripcion": "Te dije que esta trampa para zombies nos quitaria de problemas, pero activas sin querer el detonador. Tú, el jugador de la derecha y el de tu izquierda recibis 1 punto de daño ",
+            "tipo": 1
+        },
+        {
+            "id": "el_elegido",
+            "titulo": "El elegido",
+            "descripcion": "elige un jugador pone carta bocaabajo y te enfrentas a un zombie si lo matas el recupera carta, si no a la basura",
+            "tipo": 1
+        },
+        {
+            "id": "amigo_o_enemigo",
+            "titulo": "Amigo o enemigo",
+            "descripcion": "Se derrumba el techo una nube de polvo lo cubre todo.No distingues si esas figuras son zombis o tus compañeros. Cada jugador puede enfrentarse a otro jugador como si de zombis se tratasen ",
+            "tipo": 0
+        },
+        {
+            "id": "manos_ocupadas",
+            "titulo": "Manos ocupadas",
+            "descripcion": "El suelo cede bajo tus pies logras agarrarte a una estanteria, alguien te ayuda? el jugador de tu derecha puede mirar en tu mano y quitarte una carta. si lo hace no recibes 1 punto de daño.",
+            "tipo": 1
+        },
+        {
+            "id": "emociones_aventuras_no_es_algo_que_anele_un_edi",
+            "titulo": "Emociones, aventuras, no es algo que anele un Jedi.",
+            "descripcion": "Os sorprende unos zombis hambrientos tu y el superviviente que tu elijas correis hacia una puerta y la cerrais de golpe, el resto se enfrentan a 2 zombies",
+            "tipo": 0
+        },
+        {
+            "id": "acero_puro",
+            "titulo": "Acero puro",
+            "descripcion": "Ves un grupo de zombis, dos estan un poco mas separado que el resto, si matais a 2 sin armas de fuego, todos robais una carta , si no os enfrentais a 4 zombies ",
+            "tipo": 0
+        },
+        {
+            "id": "locura_transitoria",
+            "titulo": "Locura transitoria",
+            "descripcion": "Empiezas a ver zombis donde solo hay humanos haces un punto de daño a un jugador que tu eligas como si de un zombi se tratase",
+            "tipo": 1
+        },
+        {
+            "id": "in_extremis",
+            "titulo": "In extremis",
+            "descripcion": "Unos zombies te persiguen caes al suelo y tu arma se pierde, deja 3 cartas en el centro de la mesa si alguien te pasa una carta de arma. Recuperas las cartas, si no van a la basura y recibes 2 puntos de daño",
+            "tipo": 1
+        },
+        {
+            "id": "bocado_apetitoso",
+            "titulo": "Bocado apetitoso",
+            "descripcion": "Pasas entre un grupo de numeros zombis. 1 se fija en ti no se pueden utilizar armas de fuego para eliminarlo",
+            "tipo": 1
+        },
+        {
+            "id": "bofetada",
+            "titulo": "Bofetada",
+            "descripcion": "Te da un ataque de pánico, gritas como si no hubiera un mañana, caminas fuera de si. Los zombis comienzan ha aparecer el jugador de la derecha roba una carta de tu mano. y te hace 1 punto de daño",
+            "tipo": 0
+        },
+        {
+            "id": "donde_estas_ratita",
+            "titulo": "Donde estas ratita?",
+            "descripcion": "Pensaste que podias amaestrar a esa rata, lo habias visto en mil peliculas, le das un trozito de pan y esta te pega un mordisco que apocas te arranca medio dedo. Recibes 1 pt de daño",
+            "tipo": 1
+        },
+        {
+            "id": "todos_a_una",
+            "titulo": "Todos a una",
+            "descripcion": "Una pesada estanteria esta caida, sospechais que debajo puede haber alguna sorpresa, 2 jugadores se dedican a moverla el resto a vigilar a esos zombis que se estan acercando, tu eliges quien mueve la estanteria y quienes se enfrantan a 2 zombis. Si cumplis la mision todos robais una carta",
+            "tipo": 0
+        },
+        {
+            "id": "mientras_duermen",
+            "titulo": "Mientras duermen",
+            "descripcion": "Te despiertas en mitad de la noche, no puedes parar de pensar en las mochilas de tus compañeros repletas de armas, botiquines , enseña una carta de arma al resto y coge una carta del mazo del jugador de tu elección. Has echo ruido y te enfentas a 1 zombi ",
+            "tipo": 1
+        },
+        {
+            "id": "mas_solo_que_la_una",
+            "titulo": "Mas solo que la una",
+            "descripcion": "Un zombie se acerca y te ha pillado por sorpresa, pides desesperadamente ayuda a un compañero, alguien puede matar 1 zombie por ti, si nadie te ayuda recibes un punto de daño",
+            "tipo": 1
+        },
+        {
+            "id": "bollitos_para_desayunar",
+            "titulo": "Bollitos para desayunar",
+            "descripcion": "Sabes que los bollitos que guardas en tu mochila esta en muy mal estado, se los ofreces a un jugador este recibe 1 pt de daño",
+            "tipo": 1
         }
     ]
     };
@@ -294,7 +426,8 @@ define("prefabs/gestionarTiempo",
     var times;
 
     function GestionarTiempo(game) {
-      this.tipo = 1;
+      this.individualColectivo = 0;
+      this.roboCarta = 1;
       Phaser.Time.call(this, game);
     }
 
@@ -310,19 +443,26 @@ define("prefabs/gestionarTiempo",
     };
 
     GestionarTiempo.prototype.tenerSuerte = function () {
-      this.tipo = game.rnd.integerInRange(0, 1);
+      this.roboCarta = game.rnd.integerInRange(0, 1);
+      if (this.roboCarta === 0) {
+        this.individualColectivo = 1;
+        this.roboCarta = 0;
+      } else {
+        this.individualColectivo = 1;
+        this.roboCarta = 1;
+      }
       this.add(0);
-      //times  = game.time.events.loop(game.rnd.integerInRange(500, time), terminado, this, 1);
     };
 
     function terminado() {
-      console.log(this.tipo);
       this.remove();
       var that = this;
-      var suceso = new Suceso(game, this.tipo);
-      this.tipo = 1;
+      console.log('terminado: ', this.individualColectivo, this.roboCarta);
+      var suceso = new Suceso(game, this.individualColectivo, this.roboCarta);
       suceso.onClose = function () {
         that.add(10000);
+        that.individualColectivo = 0;
+        that.roboCarta = 1;
       };
     }
 
@@ -355,17 +495,18 @@ define("prefabs/suceso",
     "use strict";
     var Juego = __dependency1__["default"];
 
-    var sucesosObj = Juego.sucesos;
     var text, textDescripcion, group;
 
-    function Suceso(game, id) {
-      this.tipo = id;
-      if (id === 1) {
-        id = game.rnd.integerInRange(1, Juego.sucesos.length);
-      }
+    function Suceso(game, individalColectivo, roboCarta) {
+      var cartaObjeto = this.obtenerCarta(individalColectivo, roboCarta);
+
+      // if (roboCarta === 0) {
+      //   id = game.rnd.integerInRange(1, Juego.sucesos.length);
+      // }
       var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
       var styleDescripcion = { font: "30px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
       group = Phaser.Group.call(this, game);
+
 
       var  sprite = this.create(-465, 0, 'seccionGrande');
       sprite.anchor.setTo(0, 0);
@@ -373,22 +514,18 @@ define("prefabs/suceso",
       var cerrar = this.create(0, 45, 'cerrar');
       cerrar.inputEnabled = true;
       cerrar.events.onInputDown.add(interroganteBotonSuperviviente, this);
-      //cerrar.anchor.setTo(0, 0);
 
-      var imagen = this.create(0, 215, 'eledificio');
-      imagen.scale.setTo(1, 1.5);
-      imagen.anchor.setTo(0, 0);
 
-      text = game.add.text(-465, 120, sucesosObj[id].titulo, style);
+      text = game.add.text(-465, 120, cartaObjeto.titulo + ': ' + cartaObjeto.tipo, style);
 
-      textDescripcion = game.add.text(-400, 220, sucesosObj[id].descripcion, styleDescripcion);
+      textDescripcion = game.add.text(-400, 220, cartaObjeto.descripcion, styleDescripcion);
       textDescripcion.wordWrap = true;
       textDescripcion.align = 'left';
-      textDescripcion.wordWrapWidth =  340;
+      textDescripcion.wordWrapWidth =  600;
 
       tweenEscenario(this, 465, 300);
       tweenEscenario(cerrar, 400, 100);
-      tweenEscenario(imagen, 50, 100);
+      // tweenEscenario(imagen, 50, 100);
       tweenEscenario(text, 105, 300);
       tweenEscenario(textDescripcion, 100, 300);
       // tweenEscenario(cerrar, 865);
@@ -407,8 +544,23 @@ define("prefabs/suceso",
       this.onClose();
     }
 
+
     Suceso.prototype = Object.create(Phaser.Group.prototype);
     Suceso.prototype.constructor = Suceso;
+
+    Suceso.prototype.obtenerCarta = function (individualColectivo, roboCarta) {
+      var cartas = [];
+      if (roboCarta === 0) {
+        return Juego.sucesos[0];
+      }
+      for (var i = Juego.sucesos.length - 1; i >= 0; i--) {
+        if (Juego.sucesos[i].tipo === individualColectivo) {
+          cartas.push(Juego.sucesos[i]);
+        }
+      }
+      var id = game.rnd.integerInRange(1, cartas.length);
+      return cartas[id];
+    };
 
 
     __exports__["default"] = Suceso;
@@ -571,18 +723,17 @@ define("scenes/initJuego",
       tiempo.add(8000);
     };
 
-    InitJuego.prototype.crecolasTiempo = function (inicio, maxTiempo) {
-      tiempo = this.game.time.create(false);
-      tiempo.start();
-      tiempo.onComplete.add(this.incrementCounter, this);
-      tiempo.repeat(Phaser.Timer.SECOND * game.rnd.integerInRange(inicio, maxTiempo), 1, this.objectDroppingFunction, this);
-    };
+    // InitJuego.prototype.crecolasTiempo = function (inicio, maxTiempo) {
+    //   tiempo = this.game.time.create(false);
+    //   tiempo.start();
+    //   tiempo.onComplete.add(this.incrementCounter, this);
+    //   tiempo.repeat(Phaser.Timer.SECOND * game.rnd.integerInRange(inicio, maxTiempo), 1, this.objectDroppingFunction, this);
+    // };
 
     function startGame() {
       tiempo.remove();
       tiempo = new GestionarTiempo();
       tiempo.tenerSuerte(0);
-      console.log("startGame");
     }
 
     // InitJuego.prototype.gestionandoColas = function (tiempo, tipo) {

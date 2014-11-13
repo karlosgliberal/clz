@@ -2,7 +2,8 @@ import Suceso from 'prefabs/suceso';
 var times;
 
 function GestionarTiempo(game) {
-  this.tipo = 1;
+  this.individualColectivo = 0;
+  this.roboCarta = 1;
   Phaser.Time.call(this, game);
 }
 
@@ -18,19 +19,26 @@ GestionarTiempo.prototype.remove = function () {
 };
 
 GestionarTiempo.prototype.tenerSuerte = function () {
-  this.tipo = game.rnd.integerInRange(0, 1);
+  this.roboCarta = game.rnd.integerInRange(0, 1);
+  if (this.roboCarta === 0) {
+    this.individualColectivo = 1;
+    this.roboCarta = 0;
+  } else {
+    this.individualColectivo = 1;
+    this.roboCarta = 1;
+  }
   this.add(0);
-  //times  = game.time.events.loop(game.rnd.integerInRange(500, time), terminado, this, 1);
 };
 
 function terminado() {
-  console.log(this.tipo);
   this.remove();
   var that = this;
-  var suceso = new Suceso(game, this.tipo);
-  this.tipo = 1;
+  console.log('terminado: ', this.individualColectivo, this.roboCarta);
+  var suceso = new Suceso(game, this.individualColectivo, this.roboCarta);
   suceso.onClose = function () {
     that.add(10000);
+    that.individualColectivo = 0;
+    that.roboCarta = 1;
   };
 }
 
