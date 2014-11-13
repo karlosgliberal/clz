@@ -26,6 +26,7 @@ Preload.prototype.preload = function () {
   this.load.image('seccionGrande', 'assets/seccionGrande.png');
 
   this.load.audio('blop', 'assets/audio/blop.mp3');
+  this.load.audio('sos', 'assets/audio/sos.mp3');
 
   this.load.spritesheet('button-start', 'assets/botones.png', 371, 100);
   this.load.spritesheet('numeros', 'assets/botones_numero.png', 94, 92);

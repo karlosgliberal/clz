@@ -1,9 +1,15 @@
 import Juego from 'global';
+import MediaCordova from 'utils/mediaCordova';
 
-var text, textDescripcion, group;
+var text, textDescripcion, group, sosAudioAssets, sosAudio;
 
 function Suceso(game, individalColectivo, roboCarta) {
   var cartaObjeto = this.obtenerCarta(individalColectivo, roboCarta);
+  sosAudioAssets = game.add.audio('sos');
+  sosAudio = new MediaCordova(sosAudioAssets);
+  if (individalColectivo == 0) {
+    sosAudio.play();
+  }
 
   // if (roboCarta === 0) {
   //   id = game.rnd.integerInRange(1, Juego.sucesos.length);
@@ -66,6 +72,5 @@ Suceso.prototype.obtenerCarta = function (individualColectivo, roboCarta) {
   var id = game.rnd.integerInRange(1, cartas.length);
   return cartas[id];
 };
-
 
 export default Suceso;

@@ -490,15 +490,21 @@ define("prefabs/rotate-logo",
     __exports__["default"] = RotateLogo;
   });
 define("prefabs/suceso",
-  ["global","exports"],
-  function(__dependency1__, __exports__) {
+  ["global","utils/mediaCordova","exports"],
+  function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     var Juego = __dependency1__["default"];
+    var MediaCordova = __dependency2__["default"];
 
-    var text, textDescripcion, group;
+    var text, textDescripcion, group, sosAudioAssets, sosAudio;
 
     function Suceso(game, individalColectivo, roboCarta) {
       var cartaObjeto = this.obtenerCarta(individalColectivo, roboCarta);
+      sosAudioAssets = game.add.audio('sos');
+      sosAudio = new MediaCordova(sosAudioAssets);
+      if (individalColectivo == 0) {
+        sosAudio.play();
+      }
 
       // if (roboCarta === 0) {
       //   id = game.rnd.integerInRange(1, Juego.sucesos.length);
@@ -561,7 +567,6 @@ define("prefabs/suceso",
       var id = game.rnd.integerInRange(1, cartas.length);
       return cartas[id];
     };
-
 
     __exports__["default"] = Suceso;
   });
@@ -723,30 +728,11 @@ define("scenes/initJuego",
       tiempo.add(8000);
     };
 
-    // InitJuego.prototype.crecolasTiempo = function (inicio, maxTiempo) {
-    //   tiempo = this.game.time.create(false);
-    //   tiempo.start();
-    //   tiempo.onComplete.add(this.incrementCounter, this);
-    //   tiempo.repeat(Phaser.Timer.SECOND * game.rnd.integerInRange(inicio, maxTiempo), 1, this.objectDroppingFunction, this);
-    // };
-
     function startGame() {
       tiempo.remove();
       tiempo = new GestionarTiempo();
       tiempo.tenerSuerte(0);
     }
-
-    // InitJuego.prototype.gestionandoColas = function (tiempo, tipo) {
-    //   console.log(tipo);
-    //   tiempo.onTerminated = function () {
-    //     tiempo.remove();
-    //     suceso = new Suceso(game, tipo);
-    //     tipo = 1;
-    //     suceso.onClose = function () {
-    //       tiempo.add(10000);
-    //     };
-    //   };
-    // };
 
     __exports__["default"] = InitJuego;
   });
@@ -865,6 +851,7 @@ define("scenes/preload",
       this.load.image('seccionGrande', 'assets/seccionGrande.png');
 
       this.load.audio('blop', 'assets/audio/blop.mp3');
+      this.load.audio('sos', 'assets/audio/sos.mp3');
 
       this.load.spritesheet('button-start', 'assets/botones.png', 371, 100);
       this.load.spritesheet('numeros', 'assets/botones_numero.png', 94, 92);
