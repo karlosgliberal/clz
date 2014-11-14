@@ -11,7 +11,13 @@ GestionarTiempo.prototype = Object.create(Phaser.Time.prototype);
 GestionarTiempo.prototype.constructor = GestionarTiempo;
 
 GestionarTiempo.prototype.add = function (time) {
-  times  = game.time.events.loop(game.rnd.integerInRange(500, time), terminado, this, 1);
+  var aleatorio = game.rnd.integerInRange(500, time);
+  console.log(aleatorio);
+  times  = game.time.events.loop(aleatorio, terminado, this, 1);
+};
+
+GestionarTiempo.prototype.sucesoIndiviudal = function () {
+  times  = game.time.events.loop(0, terminado, this, 1);
 };
 
 GestionarTiempo.prototype.remove = function () {
@@ -27,7 +33,7 @@ GestionarTiempo.prototype.tenerSuerte = function () {
     this.individualColectivo = 1;
     this.roboCarta = 1;
   }
-  this.add(0);
+  this.sucesoIndiviudal(0);
 };
 
 function terminado() {
@@ -36,7 +42,7 @@ function terminado() {
   console.log('terminado: ', this.individualColectivo, this.roboCarta);
   var suceso = new Suceso(game, this.individualColectivo, this.roboCarta);
   suceso.onClose = function () {
-    that.add(10000);
+    that.add(240000);
     that.individualColectivo = 0;
     that.roboCarta = 1;
   };

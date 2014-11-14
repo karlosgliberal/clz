@@ -7,32 +7,29 @@ function Suceso(game, individalColectivo, roboCarta) {
   var cartaObjeto = this.obtenerCarta(individalColectivo, roboCarta);
   sosAudioAssets = game.add.audio('sos');
   sosAudio = new MediaCordova(sosAudioAssets);
-  if (individalColectivo == 0) {
+  if (individalColectivo === 0) {
     sosAudio.play();
   }
 
-  // if (roboCarta === 0) {
-  //   id = game.rnd.integerInRange(1, Juego.sucesos.length);
-  // }
   var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
   var styleDescripcion = { font: "30px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
   group = Phaser.Group.call(this, game);
 
-
-  var  sprite = this.create(-465, 0, 'seccionGrande');
+  var  sprite = this.create(-465, 0, 'individual');
   sprite.anchor.setTo(0, 0);
+
 
   var cerrar = this.create(0, 45, 'cerrar');
   cerrar.inputEnabled = true;
   cerrar.events.onInputDown.add(interroganteBotonSuperviviente, this);
 
 
-  text = game.add.text(-465, 120, cartaObjeto.titulo + ': ' + cartaObjeto.tipo, style);
+  text = game.add.text(-465, 55, cartaObjeto.titulo + ': ' + cartaObjeto.tipo, style);
 
   textDescripcion = game.add.text(-400, 220, cartaObjeto.descripcion, styleDescripcion);
   textDescripcion.wordWrap = true;
   textDescripcion.align = 'left';
-  textDescripcion.wordWrapWidth =  600;
+  textDescripcion.wordWrapWidth =  800;
 
   tweenEscenario(this, 465, 300);
   tweenEscenario(cerrar, 400, 100);

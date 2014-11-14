@@ -435,7 +435,13 @@ define("prefabs/gestionarTiempo",
     GestionarTiempo.prototype.constructor = GestionarTiempo;
 
     GestionarTiempo.prototype.add = function (time) {
-      times  = game.time.events.loop(game.rnd.integerInRange(500, time), terminado, this, 1);
+      var aleatorio = game.rnd.integerInRange(500, time);
+      console.log(aleatorio);
+      times  = game.time.events.loop(aleatorio, terminado, this, 1);
+    };
+
+    GestionarTiempo.prototype.sucesoIndiviudal = function () {
+      times  = game.time.events.loop(0, terminado, this, 1);
     };
 
     GestionarTiempo.prototype.remove = function () {
@@ -451,7 +457,7 @@ define("prefabs/gestionarTiempo",
         this.individualColectivo = 1;
         this.roboCarta = 1;
       }
-      this.add(0);
+      this.sucesoIndiviudal(0);
     };
 
     function terminado() {
@@ -460,7 +466,7 @@ define("prefabs/gestionarTiempo",
       console.log('terminado: ', this.individualColectivo, this.roboCarta);
       var suceso = new Suceso(game, this.individualColectivo, this.roboCarta);
       suceso.onClose = function () {
-        that.add(10000);
+        that.add(240000);
         that.individualColectivo = 0;
         that.roboCarta = 1;
       };
@@ -502,32 +508,29 @@ define("prefabs/suceso",
       var cartaObjeto = this.obtenerCarta(individalColectivo, roboCarta);
       sosAudioAssets = game.add.audio('sos');
       sosAudio = new MediaCordova(sosAudioAssets);
-      if (individalColectivo == 0) {
+      if (individalColectivo === 0) {
         sosAudio.play();
       }
 
-      // if (roboCarta === 0) {
-      //   id = game.rnd.integerInRange(1, Juego.sucesos.length);
-      // }
       var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
       var styleDescripcion = { font: "30px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
       group = Phaser.Group.call(this, game);
 
-
-      var  sprite = this.create(-465, 0, 'seccionGrande');
+      var  sprite = this.create(-465, 0, 'individual');
       sprite.anchor.setTo(0, 0);
+
 
       var cerrar = this.create(0, 45, 'cerrar');
       cerrar.inputEnabled = true;
       cerrar.events.onInputDown.add(interroganteBotonSuperviviente, this);
 
 
-      text = game.add.text(-465, 120, cartaObjeto.titulo + ': ' + cartaObjeto.tipo, style);
+      text = game.add.text(-465, 55, cartaObjeto.titulo + ': ' + cartaObjeto.tipo, style);
 
       textDescripcion = game.add.text(-400, 220, cartaObjeto.descripcion, styleDescripcion);
       textDescripcion.wordWrap = true;
       textDescripcion.align = 'left';
-      textDescripcion.wordWrapWidth =  600;
+      textDescripcion.wordWrapWidth =  800;
 
       tweenEscenario(this, 465, 300);
       tweenEscenario(cerrar, 400, 100);
@@ -717,15 +720,16 @@ define("scenes/initJuego",
     //import Juego from 'global';
     var GestionarTiempo = __dependency1__["default"];
 
-    var tiempo;
+    var tiempo, textura;
 
     function InitJuego() {}
 
     InitJuego.prototype.create = function () {
+      textura = this.add.sprite(0, 0, 'textura');
       var siguiente = this.add.button(this.game.world.centerX, game.world.centerY, 'siguiente', startGame, this);
       siguiente.anchor.setTo(0.5);
       tiempo = new GestionarTiempo();
-      tiempo.add(8000);
+      tiempo.add(240000);
     };
 
     function startGame() {
@@ -849,6 +853,8 @@ define("scenes/preload",
       this.load.image('seccionMini', 'assets/seccionMini.png');
       this.load.image('cerrar', 'assets/cerrar.png');
       this.load.image('seccionGrande', 'assets/seccionGrande.png');
+      this.load.image('individual', 'assets/individual.png');
+      this.load.image('empezar', 'assets/empezar.png');
 
       this.load.audio('blop', 'assets/audio/blop.mp3');
       this.load.audio('sos', 'assets/audio/sos.mp3');
@@ -861,8 +867,8 @@ define("scenes/preload",
     };
 
     Preload.prototype.onLoadComplete = function () {
-      this.game.state.start('game', true, false);
-      // this.game.state.start('menu', true, false);
+      // this.game.state.start('game', true, false);
+      this.game.state.start('menu', true, false);
     };
 
     __exports__["default"] = Preload;
@@ -879,7 +885,6 @@ define("scenes/setupEscenario",
         espacioEscenarios = 0,
         contenedor,
         botonDerecha,
-        botonIzquierda,
         tweenContendero,
         interrogante,
         escenariosObj = Juego.escenarios[0],

@@ -24,6 +24,8 @@ Preload.prototype.preload = function () {
   this.load.image('seccionMini', 'assets/seccionMini.png');
   this.load.image('cerrar', 'assets/cerrar.png');
   this.load.image('seccionGrande', 'assets/seccionGrande.png');
+  this.load.image('individual', 'assets/individual.png');
+  this.load.image('empezar', 'assets/empezar.png');
 
   this.load.audio('blop', 'assets/audio/blop.mp3');
   this.load.audio('sos', 'assets/audio/sos.mp3');
@@ -36,8 +38,8 @@ Preload.prototype.create = function () {
 };
 
 Preload.prototype.onLoadComplete = function () {
-  this.game.state.start('game', true, false);
-  // this.game.state.start('menu', true, false);
+  // this.game.state.start('game', true, false);
+  this.game.state.start('menu', true, false);
 };
 
 export default Preload;
