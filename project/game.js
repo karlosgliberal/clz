@@ -673,7 +673,7 @@ define("scenes/boot",
       this.game.scale.setScreenSize(true);
       this.game.scale.pageAlignHorizontally = true;
       this.game.scale.pageAlignVertically = true;
-      this.game.scale.stopFullScreen();
+      //this.game.scale.stopFullScreen();
 
       this.game.canvas.id = 'colapso';
 
@@ -756,7 +756,9 @@ define("scenes/menu",
 
     Menu.prototype.create = function () {
       blopAudioAssets = this.game.add.audio('blop');
+      console.log(blopAudioAssets);
       blopAudio = new MediaCordova(blopAudioAssets);
+      console.log(blopAudio);
       textura = this.add.sprite(0, 0, 'textura');
       image =  this.game.add.image(this.game.world.centerX, 200, 'logo');
       image.anchor.setTo(0.5, 0.5);
@@ -1165,8 +1167,9 @@ define("utils/mediaCordova",
       }
       this.sound = sound;
       if (!game.device.desktop) {
-        this.src = this.sound._sound.currentSrc;
-        this.soundObj = new Media(this.src,
+        console.log(this.sound);
+        //this.src = this.sound._sound.currentSrc;
+        this.soundObj = new Media("assets/audio/blop.mp3",
           function () {
             console.log("playAudio():Audio Success");
           }, function (err) {

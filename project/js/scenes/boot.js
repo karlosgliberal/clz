@@ -17,7 +17,7 @@ Boot.prototype.create = function () {
   this.game.scale.setScreenSize(true);
   this.game.scale.pageAlignHorizontally = true;
   this.game.scale.pageAlignVertically = true;
-  this.game.scale.stopFullScreen();
+  //this.game.scale.stopFullScreen();
 
   this.game.canvas.id = 'colapso';
 

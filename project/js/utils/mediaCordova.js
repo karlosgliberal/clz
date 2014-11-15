@@ -4,8 +4,9 @@ var MediaCordova = function (sound) {
   }
   this.sound = sound;
   if (!game.device.desktop) {
-    this.src = this.sound._sound.currentSrc;
-    this.soundObj = new Media(this.src,
+    console.log(this.sound);
+    //this.src = this.sound._sound.currentSrc;
+    this.soundObj = new Media("assets/audio/blop.mp3",
       function () {
         console.log("playAudio():Audio Success");
       }, function (err) {
