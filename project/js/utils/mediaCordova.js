@@ -4,9 +4,13 @@ var MediaCordova = function (sound) {
   }
   this.sound = sound;
   if (!game.device.desktop) {
-    console.log(this.sound);
-    //this.src = this.sound._sound.currentSrc;
-    this.soundObj = new Media("assets/audio/blop.mp3",
+    if (game.device.iOS) {
+      this.src = 'assets/audio/' + sound.key + '.mp3';
+    } else {
+      this.src = this.sound._sound.currentSrc;
+    }
+    console.log(this.src);
+    this.soundObj = new Media(this.src,
       function () {
         console.log("playAudio():Audio Success");
       }, function (err) {

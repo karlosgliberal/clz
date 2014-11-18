@@ -755,10 +755,11 @@ define("scenes/menu",
         blopAudio;
 
     Menu.prototype.create = function () {
+      console.log(game.device);
       blopAudioAssets = this.game.add.audio('blop');
       console.log(blopAudioAssets);
       blopAudio = new MediaCordova(blopAudioAssets);
-      console.log(blopAudio);
+      console.log(blopAudio.sound);
       textura = this.add.sprite(0, 0, 'textura');
       image =  this.game.add.image(this.game.world.centerX, 200, 'logo');
       image.anchor.setTo(0.5, 0.5);
@@ -1167,9 +1168,13 @@ define("utils/mediaCordova",
       }
       this.sound = sound;
       if (!game.device.desktop) {
-        console.log(this.sound);
-        //this.src = this.sound._sound.currentSrc;
-        this.soundObj = new Media("assets/audio/blop.mp3",
+        if (game.device.iOS) {
+          this.src = 'assets/audio/' + sound.key + '.mp3';
+        } else {
+          this.src = this.sound._sound.currentSrc;
+        }
+        console.log(this.src);
+        this.soundObj = new Media(this.src,
           function () {
             console.log("playAudio():Audio Success");
           }, function (err) {
