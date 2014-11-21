@@ -329,10 +329,8 @@ define("main",
     var Superviviente = __dependency8__["default"];
     var Game = __dependency9__["default"];
     var InitJuego = __dependency10__["default"];
-
     var game, App = {};
-
-
+    console.log('delfin');
     App.start = function () {
       game = new Phaser.Game(
         960, 640,

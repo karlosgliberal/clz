@@ -9,10 +9,8 @@ import Escenario from 'scenes/setupEscenario';
 import Superviviente from 'scenes/setupSuperviviente';
 import Game from 'scenes/game';
 import InitJuego from 'scenes/initJuego';
-
 var game, App = {};
-
-
+console.log('delfin');
 App.start = function () {
   game = new Phaser.Game(
     960, 640,

@@ -11,12 +11,8 @@ var gulp = require('gulp'),
     connect = require('gulp-connect'),
     // imagemin = require('gulp-imagemin'),
     uglify = require('gulp-uglify'),
-    run = require('gulp-run'),
     //browserSync = require('browser-sync'),
-    source = require('vinyl-source-stream'),
     path = require('path'),
-    $ = require('gulp-load-plugins')();
-    nn = require('node-notifier');
 
 function errorHandler(error, error_type) {
     var notifier = new nn.NotificationCenter();
@@ -33,7 +29,8 @@ var notifier = new nn.NotificationCenter()
 var paths = {
     develop: 'project',
     product: 'dist',
-    cordova: '../cordova/www/'
+    ios: '../ios_clz/platforms/ios/www',
+    android: '../android_clz/www'
 };
 
 // General tasks
@@ -61,6 +58,7 @@ gulp.task('html', function () {
         //.pipe(browserSync.reload({ stream: true }))
         .pipe(connect.reload());
 });
+
 
 gulp.task('styles', function () {
     return gulp.src(paths.develop + '/css/*.css')
@@ -116,7 +114,8 @@ gulp.task('process-html', function() {
     return gulp.src(paths.develop + '/index.html')
         .pipe(processhtml('index.html'))
         .pipe(gulp.dest(paths.product))
-        .pipe(gulp.dest(paths.cordova))
+        .pipe(gulp.dest(paths.ios))
+        .pipe(gulp.dest(paths.android))
         .on('error', gutil.log);
 });
 
@@ -128,7 +127,8 @@ gulp.task('minifycss', function () {
         }))
         .pipe(rename('style.css'))
         .pipe(gulp.dest(paths.product))
-        .pipe(gulp.dest(paths.cordova))
+        .pipe(gulp.dest(paths.ios))
+        .pipe(gulp.dest(paths.android))
         .on('error', gutil.log);
 });
 
@@ -143,7 +143,8 @@ gulp.task('uglify', ['scripts'], function () {
   .pipe(concat('game.js'))
   .pipe(uglify())
   .pipe(gulp.dest(paths.product))
-  .pipe(gulp.dest(paths.cordova))
+  .pipe(gulp.dest(paths.ios))
+  .pipe(gulp.dest(paths.android))
   .on('error', gutil.log);
   }
 );
@@ -153,23 +154,16 @@ gulp.task('process-assets', function () {
     gulp.src(['project/assets/**/*'])
         // .pipe(imagemin())
         .pipe(gulp.dest(paths.product + '/assets'))
-        .pipe(gulp.dest(paths.cordova + '/assets'))
+        .pipe(gulp.dest(paths.ios + '/assets'))
+        .pipe(gulp.dest(paths.android + '/assets'))
         .on('error', gutil.log);
     gulp.src(['project/*.png', 'project/*.ico', 'project/*.xml', 'project/*.manifest'])
         .pipe(gulp.dest(paths.product))
-        .pipe(gulp.dest(paths.cordova))
+        .pipe(gulp.dest(paths.ios))
+        .pipe(gulp.dest(paths.android))
         .on('error', gutil.log);
-});
-
-// Use gulp-run in the middle of a pipeline:
-gulp.task('cordova', function () {
-  gulp.src('../cordova')           // Get input files.
-    .pipe(run('cd ../cordova'))     // Use awk to extract the even lines.
-    .pipe(run('ls'))     // Use awk to extract the even lines.
-    //.pipe(run('cordova run android'));     // Use awk to extract the even lines.
 });
 
 // Runnable tasks
 gulp.task('default', ['compile', 'watch', 'connect']);
 gulp.task('build', ['clean', 'process-html', 'minifycss', 'uglify', 'process-assets']);
-gulp.task('android', ['cordova']);
