@@ -6,25 +6,28 @@ define("global",
       juego: {
         numeroJugadores : 4,
         jugadorNumero: 1,
-        escenario: 'marine',
-        superviviente: 'eledificio'
+        escenario: 'eledificio',
+        superviviente: 'marine'
       },
       supervivientes: [
         {
           marine: {
             id: 'marine',
             titulo: 'Marine',
-            descripcion: 'El marine'
+            descripcion: 'El marine',
+            imagen: 'marine.png'
           },
           ratero: {
             id: 'ratero',
             titulo: 'ratero',
-            descripcion: 'El raterojjk'
+            descripcion: 'El raterojjk',
+            imagen: 'marine.png',
           },
           monje: {
             id: 'monje',
             titulo: 'monje',
-            descripcion: 'El monje'
+            descripcion: 'El monje',
+            imagen: 'marine.png'
           }
         }
       ],
@@ -610,12 +613,20 @@ define("prefabs/superviviente",
     __exports__["default"] = Superviviente;
   });
 define("prefabs/vidas",
-  ["exports"],
-  function(__exports__) {
+  ["utils/mediaCordova","exports"],
+  function(__dependency1__, __exports__) {
     "use strict";
-    var group, fondoVidas, vidaMas, vidaMenos, vidaNumeros;
+    var MediaCordova = __dependency1__["default"];
+
+    var group, fondoVidas, vidaMas, vidaMenos, vidaNumeros, bellAudioAssets, bellAudio, malAudioAssets, malAudio;
 
     function Vidas(game) {
+      bellAudioAssets = game.add.audio('bell');
+      bellAudio = new MediaCordova(bellAudioAssets);
+
+      malAudioAssets = game.add.audio('mal');
+      malAudio = new MediaCordova(malAudioAssets);
+
       group = Phaser.Group.call(this, game);
       vidaMas = game.add.button(game.world.centerX + 430, 126, 'vidaMas', addVida, this);
       vidaMas.anchor.setTo(0.5);
@@ -632,27 +643,109 @@ define("prefabs/vidas",
     }
 
     function addVida() {
+      console.log('boton');
       vidaNumeros.frame =  vidaNumeros.frame - 1;
       vidaMenos.alpha = 1;
+      vidaMenos.input.enabled = true;
       if (vidaNumeros.frame === 0) {
         vidaMas.alpha = 0.1;
+        vidaMas.input.enabled = false;
         vidaNumeros.frame = 0;
       }
+      bellAudio.play();
     }
 
     function rmVida() {
       vidaNumeros.frame =  vidaNumeros.frame + 1;
       vidaMas.alpha = 1;
+      vidaMas.input.enabled = true;
       if (vidaNumeros.frame === 2) {
         vidaMenos.alpha = 0.1;
+        vidaMenos.input.enabled = false;
         vidaNumeros.frame = 2;
       }
+      malAudio.play();
     }
 
     Vidas.prototype = Object.create(Phaser.Group.prototype);
     Vidas.prototype.constructor = Vidas;
 
     __exports__["default"] = Vidas;
+  });
+define("utils/analytics",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    var Analytics = function(category) {
+        if (!category) {
+            throw new this.exception('No category defined');
+        }
+
+        this.active = (window.ga) ? true : false;
+        this.category = category;
+    };
+
+    Analytics.prototype.trackEvent = function(action, label, value) {
+        if (!this.active) {
+            return;
+        }
+
+        if (!action) {
+            throw new this.exception('No action defined');
+        }
+
+        if (value) {
+            window.ga('send', this.category, action, label, value);
+        }
+        else if (label) {
+            window.ga('send', this.category, action, label);
+        }
+        else {
+            window.ga('send', this.category, action);
+        }
+
+    };
+
+    Analytics.prototype.exception = function(message) {
+        this.message = message;
+        this.name = 'AnalyticsException';
+    };
+
+    __exports__["default"] = Analytics;
+  });
+define("utils/mediaCordova",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    var MediaCordova = function (sound) {
+      if (!sound) {
+        throw new this.exception('No src defined');
+      }
+      this.sound = sound;
+      if (!game.device.desktop) {
+        if (game.device.iOS) {
+          this.src = 'assets/audio/' + sound.key + '.mp3';
+        } else {
+          this.src = this.sound._sound.currentSrc;
+        }
+        this.soundObj = new Media(this.src,
+          function () {
+            console.log("playAudio():Audio Success");
+          }, function (err) {
+            console.log(err);
+          }
+        );
+      } else {
+        this.soundObj = this.sound;
+      }
+    };
+
+    MediaCordova.prototype.play = function () {
+      this.soundObj.play();
+    };
+
+
+    __exports__["default"] = MediaCordova;
   });
 define("scenes/boot",
   ["exports"],
@@ -718,14 +811,15 @@ define("scenes/game",
     __exports__["default"] = Game;
   });
 define("scenes/initJuego",
-  ["prefabs/gestionarTiempo","prefabs/vidas","exports"],
-  function(__dependency1__, __dependency2__, __exports__) {
+  ["global","prefabs/gestionarTiempo","prefabs/vidas","exports"],
+  function(__dependency1__, __dependency2__, __dependency3__, __exports__) {
     "use strict";
-    //import Juego from 'global';
-    var GestionarTiempo = __dependency1__["default"];
-    var Vidas = __dependency2__["default"];
+    var Juego = __dependency1__["default"];
+    var GestionarTiempo = __dependency2__["default"];
+    var Vidas = __dependency3__["default"];
 
-    var tiempo, textura, vidas;
+    var tiempo, textura, vidas, superviviente;
+    var juego = Juego.juego;
 
     function InitJuego() {}
 
@@ -733,6 +827,9 @@ define("scenes/initJuego",
       textura = this.add.sprite(0, 0, 'fondoJuego');
       var siguiente = this.add.button(this.game.world.centerX + 250, game.world.centerY + 250, 'siguiente', startGame, this);
       siguiente.anchor.setTo(0.5);
+
+      superviviente = this.add.sprite(200, 350, juego.superviviente);
+      superviviente.anchor.set(0.5);
 
       vidas =  new Vidas(game);
 
@@ -774,8 +871,8 @@ define("scenes/menu",
 
     Menu.prototype.startGame = function () {
       blopAudio.play();
-      this.game.state.start('initJuego', true, false);
-      //this.game.state.start('setupNumeros', true, false);
+      // this.game.state.start('initJuego', true, false);
+      this.game.state.start('setupNumeros', true, false);
     };
 
 
@@ -832,19 +929,34 @@ define("scenes/numeroJugador",
     __exports__["default"] = numeroJugador;
   });
 define("scenes/preload",
-  ["exports"],
-  function(__exports__) {
+  ["global","exports"],
+  function(__dependency1__, __exports__) {
     "use strict";
+    var Juego = __dependency1__["default"];
+
+    var supervivientesObj = Juego.supervivientes[0],
+        supervivientes = [];
+
     function Preload() {
       this.loadingSprite = null;
     }
 
     Preload.prototype.preload = function () {
+      var that = this;
       this.loadingSprite = this.add.sprite(320, 480, 'preloader');
       this.loadingSprite.anchor.setTo(0.5, 0.5);
 
       this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
       this.load.setPreloadSprite(this.loadingSprite);
+
+      var supervivientesKey = Object.keys(supervivientesObj);
+
+      for (var i = supervivientesKey.length - 1; i >= 0; i--) {
+        supervivientes.push(supervivientesKey[i]);
+      }
+      supervivientes.forEach(function (item, index) {
+        that.load.image(item, 'assets/supervivientes/' + item + '.png');
+      });
 
       // Load game assets here
       this.load.image('logo', 'assets/logo.png');
@@ -874,9 +986,11 @@ define("scenes/preload",
       this.load.spritesheet('vidaNumeros', 'assets/juegoUi/vidas-numeros.png', 107, 90, 3);
 
 
-
+      //Sonido
       this.load.audio('blop', 'assets/audio/blop.mp3');
       this.load.audio('sos', 'assets/audio/sos.mp3');
+      this.load.audio('bell', 'assets/audio/bell.mp3');
+      this.load.audio('mal', 'assets/audio/mal.mp3');
 
       this.load.spritesheet('button-start', 'assets/botones.png', 371, 100);
       this.load.spritesheet('numeros', 'assets/botones_numero.png', 94, 92);
@@ -886,8 +1000,8 @@ define("scenes/preload",
     };
 
     Preload.prototype.onLoadComplete = function () {
-      this.game.state.start('initJuego', true, false);
-      // this.game.state.start('menu', true, false);
+      // this.game.state.start('initJuego', true, false);
+      this.game.state.start('menu', true, false);
     };
 
     __exports__["default"] = Preload;
@@ -1132,79 +1246,4 @@ define("scenes/setupSuperviviente",
 
 
     __exports__["default"] = setupSuperviviente;
-  });
-define("utils/analytics",
-  ["exports"],
-  function(__exports__) {
-    "use strict";
-    var Analytics = function(category) {
-        if (!category) {
-            throw new this.exception('No category defined');
-        }
-
-        this.active = (window.ga) ? true : false;
-        this.category = category;
-    };
-
-    Analytics.prototype.trackEvent = function(action, label, value) {
-        if (!this.active) {
-            return;
-        }
-
-        if (!action) {
-            throw new this.exception('No action defined');
-        }
-
-        if (value) {
-            window.ga('send', this.category, action, label, value);
-        }
-        else if (label) {
-            window.ga('send', this.category, action, label);
-        }
-        else {
-            window.ga('send', this.category, action);
-        }
-
-    };
-
-    Analytics.prototype.exception = function(message) {
-        this.message = message;
-        this.name = 'AnalyticsException';
-    };
-
-    __exports__["default"] = Analytics;
-  });
-define("utils/mediaCordova",
-  ["exports"],
-  function(__exports__) {
-    "use strict";
-    var MediaCordova = function (sound) {
-      if (!sound) {
-        throw new this.exception('No src defined');
-      }
-      this.sound = sound;
-      if (!game.device.desktop) {
-        if (game.device.iOS) {
-          this.src = 'assets/audio/' + sound.key + '.mp3';
-        } else {
-          this.src = this.sound._sound.currentSrc;
-        }
-        this.soundObj = new Media(this.src,
-          function () {
-            console.log("playAudio():Audio Success");
-          }, function (err) {
-            console.log(err);
-          }
-        );
-      } else {
-        this.soundObj = this.sound;
-      }
-    };
-
-    MediaCordova.prototype.play = function () {
-      this.soundObj.play();
-    };
-
-
-    __exports__["default"] = MediaCordova;
   });

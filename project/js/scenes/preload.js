@@ -1,13 +1,28 @@
+import Juego from 'global';
+
+var supervivientesObj = Juego.supervivientes[0],
+    supervivientes = [];
+
 function Preload() {
   this.loadingSprite = null;
 }
 
 Preload.prototype.preload = function () {
+  var that = this;
   this.loadingSprite = this.add.sprite(320, 480, 'preloader');
   this.loadingSprite.anchor.setTo(0.5, 0.5);
 
   this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
   this.load.setPreloadSprite(this.loadingSprite);
+
+  var supervivientesKey = Object.keys(supervivientesObj);
+
+  for (var i = supervivientesKey.length - 1; i >= 0; i--) {
+    supervivientes.push(supervivientesKey[i]);
+  }
+  supervivientes.forEach(function (item, index) {
+    that.load.image(item, 'assets/supervivientes/' + item + '.png');
+  });
 
   // Load game assets here
   this.load.image('logo', 'assets/logo.png');
@@ -37,9 +52,11 @@ Preload.prototype.preload = function () {
   this.load.spritesheet('vidaNumeros', 'assets/juegoUi/vidas-numeros.png', 107, 90, 3);
 
 
-
+  //Sonido
   this.load.audio('blop', 'assets/audio/blop.mp3');
   this.load.audio('sos', 'assets/audio/sos.mp3');
+  this.load.audio('bell', 'assets/audio/bell.mp3');
+  this.load.audio('mal', 'assets/audio/mal.mp3');
 
   this.load.spritesheet('button-start', 'assets/botones.png', 371, 100);
   this.load.spritesheet('numeros', 'assets/botones_numero.png', 94, 92);
@@ -49,8 +66,8 @@ Preload.prototype.create = function () {
 };
 
 Preload.prototype.onLoadComplete = function () {
-  this.game.state.start('initJuego', true, false);
-  // this.game.state.start('menu', true, false);
+  // this.game.state.start('initJuego', true, false);
+  this.game.state.start('menu', true, false);
 };
 
 export default Preload;

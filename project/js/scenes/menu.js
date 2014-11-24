@@ -20,8 +20,8 @@ Menu.prototype.create = function () {
 
 Menu.prototype.startGame = function () {
   blopAudio.play();
-  this.game.state.start('initJuego', true, false);
-  //this.game.state.start('setupNumeros', true, false);
+  // this.game.state.start('initJuego', true, false);
+  this.game.state.start('setupNumeros', true, false);
 };
 
 
