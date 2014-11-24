@@ -27,6 +27,17 @@ Preload.prototype.preload = function () {
   this.load.image('individual', 'assets/individual.png');
   this.load.image('empezar', 'assets/empezar.png');
 
+  //Juego Ui
+  this.load.image('fondoJuego', 'assets/juegoUi/fondo-superviviente.png');
+
+  //Vida Ui
+  this.load.image('fondoVidas', 'assets/juegoUi/fondo-vidas.png');
+  this.load.image('vidaMenos', 'assets/juegoUi/vidas-menos.png');
+  this.load.image('vidaMas', 'assets/juegoUi/vidas-mas.png');
+  this.load.spritesheet('vidaNumeros', 'assets/juegoUi/vidas-numeros.png', 107, 90, 3);
+
+
+
   this.load.audio('blop', 'assets/audio/blop.mp3');
   this.load.audio('sos', 'assets/audio/sos.mp3');
 
@@ -38,8 +49,8 @@ Preload.prototype.create = function () {
 };
 
 Preload.prototype.onLoadComplete = function () {
-  // this.game.state.start('game', true, false);
-  this.game.state.start('menu', true, false);
+  this.game.state.start('initJuego', true, false);
+  // this.game.state.start('menu', true, false);
 };
 
 export default Preload;

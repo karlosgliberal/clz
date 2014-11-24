@@ -330,7 +330,6 @@ define("main",
     var Game = __dependency9__["default"];
     var InitJuego = __dependency10__["default"];
     var game, App = {};
-    console.log('delfin');
     App.start = function () {
       game = new Phaser.Game(
         960, 640,
@@ -434,7 +433,6 @@ define("prefabs/gestionarTiempo",
 
     GestionarTiempo.prototype.add = function (time) {
       var aleatorio = game.rnd.integerInRange(500, time);
-      console.log(aleatorio);
       times  = game.time.events.loop(aleatorio, terminado, this, 1);
     };
 
@@ -473,26 +471,6 @@ define("prefabs/gestionarTiempo",
 
     __exports__["default"] = GestionarTiempo;
   });
-define("prefabs/rotate-logo",
-  ["exports"],
-  function(__exports__) {
-    "use strict";
-    function RotateLogo(game, x, y, rotateSpeed) {
-        Phaser.Sprite.call(this, game, x, y, 'logo');
-        this.anchor.setTo(0.5);
-
-        this.rotateSpeed = rotateSpeed;
-    }
-
-    RotateLogo.prototype = Object.create(Phaser.Sprite.prototype);
-    RotateLogo.prototype.constructor = RotateLogo;
-
-    RotateLogo.prototype.update = function() {
-        this.angle += this.rotateSpeed;
-    };
-
-    __exports__["default"] = RotateLogo;
-  });
 define("prefabs/suceso",
   ["global","utils/mediaCordova","exports"],
   function(__dependency1__, __dependency2__, __exports__) {
@@ -512,6 +490,7 @@ define("prefabs/suceso",
 
       var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
       var styleDescripcion = { font: "30px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
+
       group = Phaser.Group.call(this, game);
 
       var  sprite = this.create(-465, 0, 'individual');
@@ -634,17 +613,44 @@ define("prefabs/vidas",
   ["exports"],
   function(__exports__) {
     "use strict";
-    function Vidas(game, x, y/*, your-params-here */) {
-        Phaser.Sprite.call(this, game, x, y, 'logo');
+    var group, fondoVidas, vidaMas, vidaMenos, vidaNumeros;
 
-        /* init code here */
-        this.anchor.setTo(0.5);
+    function Vidas(game) {
+      group = Phaser.Group.call(this, game);
+      vidaMas = game.add.button(game.world.centerX + 430, 126, 'vidaMas', addVida, this);
+      vidaMas.anchor.setTo(0.5);
+
+      vidaMenos = game.add.button(game.world.centerX + 185, 126, 'vidaMenos', rmVida, this);
+      vidaMenos.anchor.setTo(0.5);
+      fondoVidas = this.create(game.world.centerX + 150, 55, 'fondoVidas');
+      fondoVidas.anchor.setTo(0, 0);
+
+      vidaNumeros = game.add.sprite(game.world.centerX + 315, 130, 'vidaNumeros');
+      vidaNumeros.anchor.setTo(0.5);
+      vidaNumeros.frame = 1;
+      vidaNumeros.numeroFrames = vidaNumeros.animations._frameData._frames.length;
     }
 
-    Vidas.prototype = Object.create(Phaser.Sprite.prototype);
-    Vidas.prototype.constructor = Vidas;
+    function addVida() {
+      vidaNumeros.frame =  vidaNumeros.frame - 1;
+      vidaMenos.alpha = 1;
+      if (vidaNumeros.frame === 0) {
+        vidaMas.alpha = 0.1;
+        vidaNumeros.frame = 0;
+      }
+    }
 
-    Vidas.prototype.update = function() {};
+    function rmVida() {
+      vidaNumeros.frame =  vidaNumeros.frame + 1;
+      vidaMas.alpha = 1;
+      if (vidaNumeros.frame === 2) {
+        vidaMenos.alpha = 0.1;
+        vidaNumeros.frame = 2;
+      }
+    }
+
+    Vidas.prototype = Object.create(Phaser.Group.prototype);
+    Vidas.prototype.constructor = Vidas;
 
     __exports__["default"] = Vidas;
   });
@@ -712,20 +718,24 @@ define("scenes/game",
     __exports__["default"] = Game;
   });
 define("scenes/initJuego",
-  ["prefabs/gestionarTiempo","exports"],
-  function(__dependency1__, __exports__) {
+  ["prefabs/gestionarTiempo","prefabs/vidas","exports"],
+  function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     //import Juego from 'global';
     var GestionarTiempo = __dependency1__["default"];
+    var Vidas = __dependency2__["default"];
 
-    var tiempo, textura;
+    var tiempo, textura, vidas;
 
     function InitJuego() {}
 
     InitJuego.prototype.create = function () {
-      textura = this.add.sprite(0, 0, 'textura');
-      var siguiente = this.add.button(this.game.world.centerX, game.world.centerY, 'siguiente', startGame, this);
+      textura = this.add.sprite(0, 0, 'fondoJuego');
+      var siguiente = this.add.button(this.game.world.centerX + 250, game.world.centerY + 250, 'siguiente', startGame, this);
       siguiente.anchor.setTo(0.5);
+
+      vidas =  new Vidas(game);
+
       tiempo = new GestionarTiempo();
       tiempo.add(240000);
     };
@@ -753,11 +763,8 @@ define("scenes/menu",
         blopAudio;
 
     Menu.prototype.create = function () {
-      console.log(game.device);
       blopAudioAssets = this.game.add.audio('blop');
-      console.log(blopAudioAssets);
       blopAudio = new MediaCordova(blopAudioAssets);
-      console.log(blopAudio.sound);
       textura = this.add.sprite(0, 0, 'textura');
       image =  this.game.add.image(this.game.world.centerX, 200, 'logo');
       image.anchor.setTo(0.5, 0.5);
@@ -766,9 +773,9 @@ define("scenes/menu",
     };
 
     Menu.prototype.startGame = function () {
-      //blop.play();
       blopAudio.play();
-      this.game.state.start('setupNumeros', true, false);
+      this.game.state.start('initJuego', true, false);
+      //this.game.state.start('setupNumeros', true, false);
     };
 
 
@@ -857,6 +864,17 @@ define("scenes/preload",
       this.load.image('individual', 'assets/individual.png');
       this.load.image('empezar', 'assets/empezar.png');
 
+      //Juego Ui
+      this.load.image('fondoJuego', 'assets/juegoUi/fondo-superviviente.png');
+
+      //Vida Ui
+      this.load.image('fondoVidas', 'assets/juegoUi/fondo-vidas.png');
+      this.load.image('vidaMenos', 'assets/juegoUi/vidas-menos.png');
+      this.load.image('vidaMas', 'assets/juegoUi/vidas-mas.png');
+      this.load.spritesheet('vidaNumeros', 'assets/juegoUi/vidas-numeros.png', 107, 90, 3);
+
+
+
       this.load.audio('blop', 'assets/audio/blop.mp3');
       this.load.audio('sos', 'assets/audio/sos.mp3');
 
@@ -868,8 +886,8 @@ define("scenes/preload",
     };
 
     Preload.prototype.onLoadComplete = function () {
-      // this.game.state.start('game', true, false);
-      this.game.state.start('menu', true, false);
+      this.game.state.start('initJuego', true, false);
+      // this.game.state.start('menu', true, false);
     };
 
     __exports__["default"] = Preload;
@@ -1171,7 +1189,6 @@ define("utils/mediaCordova",
         } else {
           this.src = this.sound._sound.currentSrc;
         }
-        console.log(this.src);
         this.soundObj = new Media(this.src,
           function () {
             console.log("playAudio():Audio Success");

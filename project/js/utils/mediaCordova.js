@@ -9,7 +9,6 @@ var MediaCordova = function (sound) {
     } else {
       this.src = this.sound._sound.currentSrc;
     }
-    console.log(this.src);
     this.soundObj = new Media(this.src,
       function () {
         console.log("playAudio():Audio Success");

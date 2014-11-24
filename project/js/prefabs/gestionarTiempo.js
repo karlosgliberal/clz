@@ -12,7 +12,6 @@ GestionarTiempo.prototype.constructor = GestionarTiempo;
 
 GestionarTiempo.prototype.add = function (time) {
   var aleatorio = game.rnd.integerInRange(500, time);
-  console.log(aleatorio);
   times  = game.time.events.loop(aleatorio, terminado, this, 1);
 };
 

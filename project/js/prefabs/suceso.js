@@ -13,6 +13,7 @@ function Suceso(game, individalColectivo, roboCarta) {
 
   var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
   var styleDescripcion = { font: "30px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
+
   group = Phaser.Group.call(this, game);
 
   var  sprite = this.create(-465, 0, 'individual');

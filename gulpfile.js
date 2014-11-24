@@ -12,7 +12,7 @@ var gulp = require('gulp'),
     // imagemin = require('gulp-imagemin'),
     uglify = require('gulp-uglify'),
     //browserSync = require('browser-sync'),
-    path = require('path'),
+    path = require('path');
 
 function errorHandler(error, error_type) {
     var notifier = new nn.NotificationCenter();
@@ -24,7 +24,6 @@ function errorHandler(error, error_type) {
     this.emit('end');
 }
 
-var notifier = new nn.NotificationCenter()
 
 var paths = {
     develop: 'project',

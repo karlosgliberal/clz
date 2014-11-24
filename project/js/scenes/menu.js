@@ -9,11 +9,8 @@ var empezar,
     blopAudio;
 
 Menu.prototype.create = function () {
-  console.log(game.device);
   blopAudioAssets = this.game.add.audio('blop');
-  console.log(blopAudioAssets);
   blopAudio = new MediaCordova(blopAudioAssets);
-  console.log(blopAudio.sound);
   textura = this.add.sprite(0, 0, 'textura');
   image =  this.game.add.image(this.game.world.centerX, 200, 'logo');
   image.anchor.setTo(0.5, 0.5);
@@ -22,9 +19,9 @@ Menu.prototype.create = function () {
 };
 
 Menu.prototype.startGame = function () {
-  //blop.play();
   blopAudio.play();
-  this.game.state.start('setupNumeros', true, false);
+  this.game.state.start('initJuego', true, false);
+  //this.game.state.start('setupNumeros', true, false);
 };
 
 
