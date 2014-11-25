@@ -7,13 +7,13 @@ define("global",
         numeroJugadores : 4,
         jugadorNumero: 1,
         escenario: 'eledificio',
-        superviviente: 'marine'
+        superviviente: 'june'
       },
       supervivientes: [
         {
-          marine: {
+          june: {
             id: 'June',
-            titulo: 'Marine',
+            titulo: 'June',
             subtitulo: 'Mano de vida',
             descripcion: 'Media vida dedica como cirujana en uno de los hospitales mas agetreado de la ciudad',
             imagen: 'marine.png',
@@ -27,18 +27,54 @@ define("global",
               }
             ]
           },
-          ratero: {
-            id: 'ratero',
-            titulo: 'ratero',
-            descripcion: 'El raterojjk',
+          kyuzu: {
+            id: 'kyuzu',
+            titulo: 'Kyuzu',
+            subtitulo: 'Duro como los bloques del norte',
+            descripcion: 'En la zona norte en el barrio de los bloques la carcel fue su segunda casa y su escuela',
             imagen: 'marine.png',
+            habilidad: 'Mata a un zombi',
+            cartas: [
+              {
+                burlar: 5,
+                dañar: 15,
+                curar: 5,
+                comunes: 15
+              }
+            ]
           },
-          monje: {
-            id: 'monje',
-            titulo: 'monje',
-            descripcion: 'El monje',
-            imagen: 'marine.png'
-          }
+          hennai: {
+            id: 'hennai',
+            titulo: 'hennai',
+            subtitulo: '¿ah es tu cartera?',
+            descripcion: 'Antes de lo acontecido fue un triste oficinista, no sabía que tenia otras habilidades, cuidado que no te engañe ',
+            imagen: 'marine.png',
+            habilidad: 'roba una carta de la basura',
+            cartas: [
+              {
+                burlar: 15,
+                dañar: 5,
+                curar: 5,
+                comunes: 15
+              }
+            ]
+          },
+          jacco: {
+            id: 'jacco',
+            titulo: 'jacco',
+            subtitulo: 'De mantenimiento por obligación',
+            descripcion: 'Toda la vida arreglando cosas no pensaba que le iba a salvar la vida',
+            imagen: 'marine.png',
+            habilidad: 'intercambia una carta',
+            cartas: [
+              {
+                burlar: 10,
+                dañar: 10,
+                curar: 10,
+                comunes: 10
+              }
+            ]
+          },
         }
       ],
       escenarios: [
@@ -746,12 +782,13 @@ define("scenes/game",
     __exports__["default"] = Game;
   });
 define("scenes/initJuego",
-  ["global","prefabs/gestionarTiempo","prefabs/vidas","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __exports__) {
+  ["global","prefabs/gestionarTiempo","prefabs/vidas","prefabs/superviviente","exports"],
+  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __exports__) {
     "use strict";
     var Juego = __dependency1__["default"];
     var GestionarTiempo = __dependency2__["default"];
     var Vidas = __dependency3__["default"];
+    var Superviviente = __dependency4__["default"];
 
     var tiempo, textura, vidas, superviviente;
     var juego = Juego.juego;
@@ -763,8 +800,7 @@ define("scenes/initJuego",
       var siguiente = this.add.button(this.game.world.centerX + 250, game.world.centerY + 250, 'siguiente', startGame, this);
       siguiente.anchor.setTo(0.5);
 
-      superviviente = this.add.sprite(200, 350, juego.superviviente);
-      superviviente.anchor.set(0.5);
+      superviviente = new Superviviente(game, juego.superviviente);
 
       vidas =  new Vidas(game);
 
@@ -806,8 +842,8 @@ define("scenes/menu",
 
     Menu.prototype.startGame = function () {
       blopAudio.play();
-      // this.game.state.start('initJuego', true, false);
-      this.game.state.start('setupNumeros', true, false);
+      this.game.state.start('initJuego', true, false);
+      // this.game.state.start('setupNumeros', true, false);
     };
 
 
@@ -1124,10 +1160,10 @@ define("scenes/setupSuperviviente",
           contenedor.seccion.anchor.setTo(0.5);
           contenedor.addChild(contenedor.seccion);
 
-          contenedor.superviviente = game.add.sprite((game.world.centerX - espacioSupervivientes) + 150, game.world.centerY - 60, supervivientesObj[item].id);
-          contenedor.superviviente.scale.setTo(-0.9, -0.9);
-          contenedor.superviviente.anchor.setTo(0.5);
-          contenedor.addChild(contenedor.superviviente);
+          // contenedor.superviviente = game.add.sprite((game.world.centerX - espacioSupervivientes) + 150, game.world.centerY - 60, supervivientesObj[item].id);
+          // contenedor.superviviente.scale.setTo(-0.9, -0.9);
+          // contenedor.superviviente.anchor.setTo(0.5);
+          // contenedor.addChild(contenedor.superviviente);
 
           var tituloSuperviviente = supervivientesObj[item].titulo;
           contenedor.texto = game.add.text((game.world.centerX - espacioSupervivientes) + 10, game.world.centerY + 70, tituloSuperviviente, style);

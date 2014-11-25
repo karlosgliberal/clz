@@ -32,10 +32,10 @@ setupSuperviviente.prototype.create = function () {
       contenedor.seccion.anchor.setTo(0.5);
       contenedor.addChild(contenedor.seccion);
 
-      contenedor.superviviente = game.add.sprite((game.world.centerX - espacioSupervivientes) + 150, game.world.centerY - 60, supervivientesObj[item].id);
-      contenedor.superviviente.scale.setTo(-0.9, -0.9);
-      contenedor.superviviente.anchor.setTo(0.5);
-      contenedor.addChild(contenedor.superviviente);
+      // contenedor.superviviente = game.add.sprite((game.world.centerX - espacioSupervivientes) + 150, game.world.centerY - 60, supervivientesObj[item].id);
+      // contenedor.superviviente.scale.setTo(-0.9, -0.9);
+      // contenedor.superviviente.anchor.setTo(0.5);
+      // contenedor.addChild(contenedor.superviviente);
 
       var tituloSuperviviente = supervivientesObj[item].titulo;
       contenedor.texto = game.add.text((game.world.centerX - espacioSupervivientes) + 10, game.world.centerY + 70, tituloSuperviviente, style);

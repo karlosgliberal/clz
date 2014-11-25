@@ -1,6 +1,7 @@
 import Juego from 'global';
 import GestionarTiempo from 'prefabs/gestionarTiempo';
 import Vidas from 'prefabs/vidas';
+import Superviviente from 'prefabs/superviviente';
 
 var tiempo, textura, vidas, superviviente;
 var juego = Juego.juego;
@@ -12,8 +13,7 @@ InitJuego.prototype.create = function () {
   var siguiente = this.add.button(this.game.world.centerX + 250, game.world.centerY + 250, 'siguiente', startGame, this);
   siguiente.anchor.setTo(0.5);
 
-  superviviente = this.add.sprite(200, 350, juego.superviviente);
-  superviviente.anchor.set(0.5);
+  superviviente = new Superviviente(game, juego.superviviente);
 
   vidas =  new Vidas(game);
 

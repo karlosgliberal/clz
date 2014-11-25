@@ -3,13 +3,13 @@ var global = window['colapso'] = {
     numeroJugadores : 4,
     jugadorNumero: 1,
     escenario: 'eledificio',
-    superviviente: 'marine'
+    superviviente: 'june'
   },
   supervivientes: [
     {
-      marine: {
+      june: {
         id: 'June',
-        titulo: 'Marine',
+        titulo: 'June',
         subtitulo: 'Mano de vida',
         descripcion: 'Media vida dedica como cirujana en uno de los hospitales mas agetreado de la ciudad',
         imagen: 'marine.png',
@@ -23,18 +23,54 @@ var global = window['colapso'] = {
           }
         ]
       },
-      ratero: {
-        id: 'ratero',
-        titulo: 'ratero',
-        descripcion: 'El raterojjk',
+      kyuzu: {
+        id: 'kyuzu',
+        titulo: 'Kyuzu',
+        subtitulo: 'Duro como los bloques del norte',
+        descripcion: 'En la zona norte en el barrio de los bloques la carcel fue su segunda casa y su escuela',
         imagen: 'marine.png',
+        habilidad: 'Mata a un zombi',
+        cartas: [
+          {
+            burlar: 5,
+            dañar: 15,
+            curar: 5,
+            comunes: 15
+          }
+        ]
       },
-      monje: {
-        id: 'monje',
-        titulo: 'monje',
-        descripcion: 'El monje',
-        imagen: 'marine.png'
-      }
+      hennai: {
+        id: 'hennai',
+        titulo: 'hennai',
+        subtitulo: '¿ah es tu cartera?',
+        descripcion: 'Antes de lo acontecido fue un triste oficinista, no sabía que tenia otras habilidades, cuidado que no te engañe ',
+        imagen: 'marine.png',
+        habilidad: 'roba una carta de la basura',
+        cartas: [
+          {
+            burlar: 15,
+            dañar: 5,
+            curar: 5,
+            comunes: 15
+          }
+        ]
+      },
+      jacco: {
+        id: 'jacco',
+        titulo: 'jacco',
+        subtitulo: 'De mantenimiento por obligación',
+        descripcion: 'Toda la vida arreglando cosas no pensaba que le iba a salvar la vida',
+        imagen: 'marine.png',
+        habilidad: 'intercambia una carta',
+        cartas: [
+          {
+            burlar: 10,
+            dañar: 10,
+            curar: 10,
+            comunes: 10
+          }
+        ]
+      },
     }
   ],
   escenarios: [
