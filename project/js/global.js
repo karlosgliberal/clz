@@ -3,7 +3,7 @@ var global = window['colapso'] = {
     numeroJugadores : 4,
     jugadorNumero: 1,
     escenario: 'eledificio',
-    superviviente: 'june'
+    superviviente: 'kyuzu'
   },
   supervivientes: [
     {
