@@ -3,7 +3,7 @@ var global = window['colapso'] = {
     numeroJugadores : 4,
     jugadorNumero: 1,
     escenario: 'eledificio',
-    superviviente: 'kyuzu'
+    superviviente: 'june'
   },
   supervivientes: [
     {
@@ -41,8 +41,8 @@ var global = window['colapso'] = {
       },
       hennai: {
         id: 'hennai',
-        titulo: 'hennai',
-        subtitulo: '¿ah es tu cartera?',
+        titulo: 'HENNAI',
+        subtitulo: '¿ah es tu cartera? 15 5 8',
         descripcion: 'Antes de lo acontecido fue un triste oficinista, no sabía que tenia otras habilidades, cuidado que no te engañe ',
         imagen: 'marine.png',
         habilidad: 'roba una carta de la basura',

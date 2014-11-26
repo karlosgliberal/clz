@@ -18,33 +18,32 @@ function Vidas(game) {
   fondoVidas = this.create(game.world.centerX + 150, 55, 'fondoVidas');
   fondoVidas.anchor.setTo(0, 0);
 
-  vidaNumeros = game.add.sprite(game.world.centerX + 315, 130, 'vidaNumeros');
-  vidaNumeros.anchor.setTo(0.5);
-  vidaNumeros.frame = 1;
-  vidaNumeros.numeroFrames = vidaNumeros.animations._frameData._frames.length;
+  vidaNumeros = game.add.sprite(game.world.centerX + 250, 85, 'vidaNumeros');
+  vidaNumeros.anchor.setTo(0, 0);
+  vidaNumeros.frame = 5;
+  vidaNumeros.numeroFrames = vidaNumeros.animations._frameData._frames.length - 1;
 }
 
 function addVida() {
-  console.log('boton');
-  vidaNumeros.frame =  vidaNumeros.frame - 1;
+  vidaNumeros.frame =  vidaNumeros.frame + 1;
   vidaMenos.alpha = 1;
   vidaMenos.input.enabled = true;
-  if (vidaNumeros.frame === 0) {
+  if (vidaNumeros.frame === vidaNumeros.numeroFrames) {
     vidaMas.alpha = 0.1;
     vidaMas.input.enabled = false;
-    vidaNumeros.frame = 0;
+    vidaNumeros.frame = vidaNumeros.numeroFrames;
   }
   bellAudio.play();
 }
 
 function rmVida() {
-  vidaNumeros.frame =  vidaNumeros.frame + 1;
+  vidaNumeros.frame =  vidaNumeros.frame - 1;
   vidaMas.alpha = 1;
   vidaMas.input.enabled = true;
-  if (vidaNumeros.frame === 2) {
+  if (vidaNumeros.frame === 0) {
     vidaMenos.alpha = 0.1;
     vidaMenos.input.enabled = false;
-    vidaNumeros.frame = 2;
+    vidaNumeros.frame = 0;
   }
   malAudio.play();
 }

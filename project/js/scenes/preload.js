@@ -50,7 +50,7 @@ Preload.prototype.preload = function () {
   this.load.image('vidaMenos', 'assets/juegoUi/vidas-menos.png');
   this.load.image('vidaMas', 'assets/juegoUi/vidas-mas.png');
   this.load.image('cartas', 'assets/juegoUi/cartas.png');
-  this.load.spritesheet('vidaNumeros', 'assets/juegoUi/vidas-numeros.png', 107, 90, 3);
+  this.load.spritesheet('vidaNumeros', 'assets/juegoUi/vidas-numeros.png', 121, 90, 21);
 
 
   //Sonido
@@ -67,8 +67,8 @@ Preload.prototype.create = function () {
 };
 
 Preload.prototype.onLoadComplete = function () {
-  // this.game.state.start('initJuego', true, false);
-  this.game.state.start('menu', true, false);
+  this.game.state.start('initJuego', true, false);
+  // this.game.state.start('menu', true, false);
 };
 
 export default Preload;

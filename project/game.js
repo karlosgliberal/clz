@@ -7,7 +7,7 @@ define("global",
         numeroJugadores : 4,
         jugadorNumero: 1,
         escenario: 'eledificio',
-        superviviente: 'kyuzu'
+        superviviente: 'june'
       },
       supervivientes: [
         {
@@ -45,8 +45,8 @@ define("global",
           },
           hennai: {
             id: 'hennai',
-            titulo: 'hennai',
-            subtitulo: '¿ah es tu cartera?',
+            titulo: 'HENNAI',
+            subtitulo: '¿ah es tu cartera? 15 5 8',
             descripcion: 'Antes de lo acontecido fue un triste oficinista, no sabía que tenia otras habilidades, cuidado que no te engañe ',
             imagen: 'marine.png',
             habilidad: 'roba una carta de la basura',
@@ -611,9 +611,10 @@ define("prefabs/superviviente",
 
 
     function Superviviente(game, objeto) {
-      var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
+      var style = { font: "46px futura", fill: '#fff', fontSize: '50px', align: "center" };
       var styleDescripcion = { font: "25px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
-      var styleSubtitulo = { font: "18px eurostileregular", fill: '#fff', fontSize: '15px', align: "center" };
+      var styleSubtitulo = { font: "18px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
+
       group = Phaser.Group.call(this, game);
       var cartasDatos = supervivientesObj[objeto].cartas[0];
 
@@ -624,12 +625,24 @@ define("prefabs/superviviente",
 
       imagen = game.add.image(5, 50, juego.superviviente);
       titulo = game.add.text(260, 50, supervivientesObj[objeto].titulo, style);
+      titulo.anchor.setTo(0 , 0);
+
       subtitulo = game.add.text(titulo.x + 110, titulo.y + 22, supervivientesObj[objeto].subtitulo, styleSubtitulo);
       cartas = game.add.image(imagen.x + 350, imagen.y + 180, 'cartas');
-      burlar = game.add.text(cartas.x + 17, cartas.y + 13, cartasDatos.burlar, styleSubtitulo);
-      dañar = game.add.text(cartas.x + 70, cartas.y + 86, cartasDatos.dañar, styleSubtitulo);
-      curar = game.add.text(cartas.x + 64, cartas.y + 180, cartasDatos.curar, styleSubtitulo);
-      comunes = game.add.text(cartas.x + 10, cartas.y + 250, cartasDatos.comunes, styleSubtitulo);
+      cartas.anchor.setTo(0, 0);
+
+      burlar = game.add.text(cartas.x + 22, cartas.y + 25, cartasDatos.burlar, styleSubtitulo);
+      burlar.anchor.setTo(0.5);
+
+      curar = game.add.text(cartas.x + 75, cartas.y + 100, cartasDatos.curar, styleSubtitulo);
+      curar.anchor.setTo(0.5);
+
+      dañar = game.add.text(cartas.x + 76, cartas.y + 189, cartasDatos.dañar, styleSubtitulo);
+      dañar.anchor.setTo(0.5);
+
+      comunes = game.add.text(cartas.x + 21, cartas.y + 260, cartasDatos.comunes, styleSubtitulo);
+      comunes.anchor.setTo(0.5);
+
       habilidad = game.add.text(cartas.x + 260, cartas.y + 30, supervivientesObj[objeto].habilidad, styleDescripcion);
 
 
@@ -692,33 +705,32 @@ define("prefabs/vidas",
       fondoVidas = this.create(game.world.centerX + 150, 55, 'fondoVidas');
       fondoVidas.anchor.setTo(0, 0);
 
-      vidaNumeros = game.add.sprite(game.world.centerX + 315, 130, 'vidaNumeros');
-      vidaNumeros.anchor.setTo(0.5);
-      vidaNumeros.frame = 1;
-      vidaNumeros.numeroFrames = vidaNumeros.animations._frameData._frames.length;
+      vidaNumeros = game.add.sprite(game.world.centerX + 250, 85, 'vidaNumeros');
+      vidaNumeros.anchor.setTo(0, 0);
+      vidaNumeros.frame = 5;
+      vidaNumeros.numeroFrames = vidaNumeros.animations._frameData._frames.length - 1;
     }
 
     function addVida() {
-      console.log('boton');
-      vidaNumeros.frame =  vidaNumeros.frame - 1;
+      vidaNumeros.frame =  vidaNumeros.frame + 1;
       vidaMenos.alpha = 1;
       vidaMenos.input.enabled = true;
-      if (vidaNumeros.frame === 0) {
+      if (vidaNumeros.frame === vidaNumeros.numeroFrames) {
         vidaMas.alpha = 0.1;
         vidaMas.input.enabled = false;
-        vidaNumeros.frame = 0;
+        vidaNumeros.frame = vidaNumeros.numeroFrames;
       }
       bellAudio.play();
     }
 
     function rmVida() {
-      vidaNumeros.frame =  vidaNumeros.frame + 1;
+      vidaNumeros.frame =  vidaNumeros.frame - 1;
       vidaMas.alpha = 1;
       vidaMas.input.enabled = true;
-      if (vidaNumeros.frame === 2) {
+      if (vidaNumeros.frame === 0) {
         vidaMenos.alpha = 0.1;
         vidaMenos.input.enabled = false;
-        vidaNumeros.frame = 2;
+        vidaNumeros.frame = 0;
       }
       malAudio.play();
     }
@@ -727,6 +739,81 @@ define("prefabs/vidas",
     Vidas.prototype.constructor = Vidas;
 
     __exports__["default"] = Vidas;
+  });
+define("utils/analytics",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    var Analytics = function(category) {
+        if (!category) {
+            throw new this.exception('No category defined');
+        }
+
+        this.active = (window.ga) ? true : false;
+        this.category = category;
+    };
+
+    Analytics.prototype.trackEvent = function(action, label, value) {
+        if (!this.active) {
+            return;
+        }
+
+        if (!action) {
+            throw new this.exception('No action defined');
+        }
+
+        if (value) {
+            window.ga('send', this.category, action, label, value);
+        }
+        else if (label) {
+            window.ga('send', this.category, action, label);
+        }
+        else {
+            window.ga('send', this.category, action);
+        }
+
+    };
+
+    Analytics.prototype.exception = function(message) {
+        this.message = message;
+        this.name = 'AnalyticsException';
+    };
+
+    __exports__["default"] = Analytics;
+  });
+define("utils/mediaCordova",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    var MediaCordova = function (sound) {
+      if (!sound) {
+        throw new this.exception('No src defined');
+      }
+      this.sound = sound;
+      if (!game.device.desktop) {
+        if (game.device.iOS) {
+          this.src = 'assets/audio/' + sound.key + '.mp3';
+        } else {
+          this.src = this.sound._sound.currentSrc;
+        }
+        this.soundObj = new Media(this.src,
+          function () {
+            console.log("playAudio():Audio Success");
+          }, function (err) {
+            console.log(err);
+          }
+        );
+      } else {
+        this.soundObj = this.sound;
+      }
+    };
+
+    MediaCordova.prototype.play = function () {
+      this.soundObj.play();
+    };
+
+
+    __exports__["default"] = MediaCordova;
   });
 define("scenes/boot",
   ["exports"],
@@ -965,7 +1052,7 @@ define("scenes/preload",
       this.load.image('vidaMenos', 'assets/juegoUi/vidas-menos.png');
       this.load.image('vidaMas', 'assets/juegoUi/vidas-mas.png');
       this.load.image('cartas', 'assets/juegoUi/cartas.png');
-      this.load.spritesheet('vidaNumeros', 'assets/juegoUi/vidas-numeros.png', 107, 90, 3);
+      this.load.spritesheet('vidaNumeros', 'assets/juegoUi/vidas-numeros.png', 121, 90, 21);
 
 
       //Sonido
@@ -982,8 +1069,8 @@ define("scenes/preload",
     };
 
     Preload.prototype.onLoadComplete = function () {
-      // this.game.state.start('initJuego', true, false);
-      this.game.state.start('menu', true, false);
+      this.game.state.start('initJuego', true, false);
+      // this.game.state.start('menu', true, false);
     };
 
     __exports__["default"] = Preload;
@@ -1228,79 +1315,4 @@ define("scenes/setupSuperviviente",
 
 
     __exports__["default"] = setupSuperviviente;
-  });
-define("utils/analytics",
-  ["exports"],
-  function(__exports__) {
-    "use strict";
-    var Analytics = function(category) {
-        if (!category) {
-            throw new this.exception('No category defined');
-        }
-
-        this.active = (window.ga) ? true : false;
-        this.category = category;
-    };
-
-    Analytics.prototype.trackEvent = function(action, label, value) {
-        if (!this.active) {
-            return;
-        }
-
-        if (!action) {
-            throw new this.exception('No action defined');
-        }
-
-        if (value) {
-            window.ga('send', this.category, action, label, value);
-        }
-        else if (label) {
-            window.ga('send', this.category, action, label);
-        }
-        else {
-            window.ga('send', this.category, action);
-        }
-
-    };
-
-    Analytics.prototype.exception = function(message) {
-        this.message = message;
-        this.name = 'AnalyticsException';
-    };
-
-    __exports__["default"] = Analytics;
-  });
-define("utils/mediaCordova",
-  ["exports"],
-  function(__exports__) {
-    "use strict";
-    var MediaCordova = function (sound) {
-      if (!sound) {
-        throw new this.exception('No src defined');
-      }
-      this.sound = sound;
-      if (!game.device.desktop) {
-        if (game.device.iOS) {
-          this.src = 'assets/audio/' + sound.key + '.mp3';
-        } else {
-          this.src = this.sound._sound.currentSrc;
-        }
-        this.soundObj = new Media(this.src,
-          function () {
-            console.log("playAudio():Audio Success");
-          }, function (err) {
-            console.log(err);
-          }
-        );
-      } else {
-        this.soundObj = this.sound;
-      }
-    };
-
-    MediaCordova.prototype.play = function () {
-      this.soundObj.play();
-    };
-
-
-    __exports__["default"] = MediaCordova;
   });

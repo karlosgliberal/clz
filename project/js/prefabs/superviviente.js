@@ -6,9 +6,10 @@ var juego = Juego.juego;
 
 
 function Superviviente(game, objeto) {
-  var style = { font: "46px eurostileregular", fill: '#fff', fontSize: '50px', align: "center" };
+  var style = { font: "46px futura", fill: '#fff', fontSize: '50px', align: "center" };
   var styleDescripcion = { font: "25px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
-  var styleSubtitulo = { font: "18px eurostileregular", fill: '#fff', fontSize: '15px', align: "center" };
+  var styleSubtitulo = { font: "18px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
+
   group = Phaser.Group.call(this, game);
   var cartasDatos = supervivientesObj[objeto].cartas[0];
 
@@ -19,12 +20,24 @@ function Superviviente(game, objeto) {
 
   imagen = game.add.image(5, 50, juego.superviviente);
   titulo = game.add.text(260, 50, supervivientesObj[objeto].titulo, style);
+  titulo.anchor.setTo(0 , 0);
+
   subtitulo = game.add.text(titulo.x + 110, titulo.y + 22, supervivientesObj[objeto].subtitulo, styleSubtitulo);
   cartas = game.add.image(imagen.x + 350, imagen.y + 180, 'cartas');
-  burlar = game.add.text(cartas.x + 17, cartas.y + 13, cartasDatos.burlar, styleSubtitulo);
-  dañar = game.add.text(cartas.x + 70, cartas.y + 86, cartasDatos.dañar, styleSubtitulo);
-  curar = game.add.text(cartas.x + 64, cartas.y + 180, cartasDatos.curar, styleSubtitulo);
-  comunes = game.add.text(cartas.x + 10, cartas.y + 250, cartasDatos.comunes, styleSubtitulo);
+  cartas.anchor.setTo(0, 0);
+
+  burlar = game.add.text(cartas.x + 22, cartas.y + 25, cartasDatos.burlar, styleSubtitulo);
+  burlar.anchor.setTo(0.5);
+
+  curar = game.add.text(cartas.x + 75, cartas.y + 100, cartasDatos.curar, styleSubtitulo);
+  curar.anchor.setTo(0.5);
+
+  dañar = game.add.text(cartas.x + 76, cartas.y + 189, cartasDatos.dañar, styleSubtitulo);
+  dañar.anchor.setTo(0.5);
+
+  comunes = game.add.text(cartas.x + 21, cartas.y + 260, cartasDatos.comunes, styleSubtitulo);
+  comunes.anchor.setTo(0.5);
+
   habilidad = game.add.text(cartas.x + 260, cartas.y + 30, supervivientesObj[objeto].habilidad, styleDescripcion);
 
 
