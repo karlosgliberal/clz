@@ -126,8 +126,8 @@ gulp.task('minifycss', function () {
         }))
         .pipe(rename('style.css'))
         .pipe(gulp.dest(paths.product))
-        .pipe(gulp.dest(paths.ios))
-        .pipe(gulp.dest(paths.android))
+        .pipe(gulp.dest(paths.ios + '/css'))
+        .pipe(gulp.dest(paths.android + '/css'))
         .on('error', gutil.log);
 });
 
