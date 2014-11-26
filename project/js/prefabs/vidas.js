@@ -33,6 +33,7 @@ function addVida() {
     vidaMas.input.enabled = false;
     vidaNumeros.frame = vidaNumeros.numeroFrames;
   }
+  console.log(bellAudio);
   bellAudio.play();
 }
 

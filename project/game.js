@@ -7,13 +7,13 @@ define("global",
         numeroJugadores : 4,
         jugadorNumero: 1,
         escenario: 'eledificio',
-        superviviente: 'june'
+        superviviente: 'hennai'
       },
       supervivientes: [
         {
           june: {
             id: 'June',
-            titulo: 'June',
+            titulo: 'JUNE',
             subtitulo: 'Mano de vida',
             descripcion: 'Media vida dedica como cirujana en uno de los hospitales mas agetreado de la ciudad',
             imagen: 'marine.png',
@@ -29,7 +29,7 @@ define("global",
           },
           kyuzu: {
             id: 'kyuzu',
-            titulo: 'Kyuzu',
+            titulo: 'KYUZU',
             subtitulo: 'Duro como los bloques del norte',
             descripcion: 'En la zona norte en el barrio de los bloques la carcel fue su segunda casa y su escuela',
             imagen: 'marine.png',
@@ -61,7 +61,7 @@ define("global",
           },
           jacco: {
             id: 'jacco',
-            titulo: 'jacco',
+            titulo: 'JACCO',
             subtitulo: 'De mantenimiento por obligación',
             descripcion: 'Toda la vida arreglando cosas no pensaba que le iba a salvar la vida',
             imagen: 'marine.png',
@@ -611,8 +611,9 @@ define("prefabs/superviviente",
 
 
     function Superviviente(game, objeto) {
-      var style = { font: "46px futura", fill: '#fff', fontSize: '50px', align: "center" };
-      var styleDescripcion = { font: "25px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
+      // var style = { font: "46px Avalon", fill: '#fff', fontSize: '50px', align: "center" };
+      var tituloStyle = {font: '50px futuracondensed_medium', fill: '#ffffff', align: 'left'};
+      var habilidadStyle = { font: "25px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
       var styleSubtitulo = { font: "18px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
 
       group = Phaser.Group.call(this, game);
@@ -624,10 +625,10 @@ define("prefabs/superviviente",
       //cerrar.anchor.setTo(0, 0);
 
       imagen = game.add.image(5, 50, juego.superviviente);
-      titulo = game.add.text(260, 50, supervivientesObj[objeto].titulo, style);
-      titulo.anchor.setTo(0 , 0);
+      titulo = game.add.text(260, 58, supervivientesObj[objeto].titulo, tituloStyle);
+      titulo.anchor.setTo(0, 0);
 
-      subtitulo = game.add.text(titulo.x + 110, titulo.y + 22, supervivientesObj[objeto].subtitulo, styleSubtitulo);
+      subtitulo = game.add.text(titulo.x + 100, titulo.y + 32, supervivientesObj[objeto].subtitulo, styleSubtitulo);
       cartas = game.add.image(imagen.x + 350, imagen.y + 180, 'cartas');
       cartas.anchor.setTo(0, 0);
 
@@ -643,11 +644,11 @@ define("prefabs/superviviente",
       comunes = game.add.text(cartas.x + 21, cartas.y + 260, cartasDatos.comunes, styleSubtitulo);
       comunes.anchor.setTo(0.5);
 
-      habilidad = game.add.text(cartas.x + 260, cartas.y + 30, supervivientesObj[objeto].habilidad, styleDescripcion);
+      habilidad = game.add.text(cartas.x + 260, cartas.y + 30, supervivientesObj[objeto].habilidad, habilidadStyle);
 
 
 
-      textDescripcion = game.add.text(-400, 220, supervivientesObj[objeto].descripcion, styleDescripcion);
+      textDescripcion = game.add.text(-400, 220, supervivientesObj[objeto].descripcion, habilidadStyle);
       textDescripcion.wordWrap = true;
       textDescripcion.align = 'left';
       textDescripcion.wordWrapWidth =  340;
@@ -720,6 +721,7 @@ define("prefabs/vidas",
         vidaMas.input.enabled = false;
         vidaNumeros.frame = vidaNumeros.numeroFrames;
       }
+      console.log(bellAudio);
       bellAudio.play();
     }
 
@@ -739,81 +741,6 @@ define("prefabs/vidas",
     Vidas.prototype.constructor = Vidas;
 
     __exports__["default"] = Vidas;
-  });
-define("utils/analytics",
-  ["exports"],
-  function(__exports__) {
-    "use strict";
-    var Analytics = function(category) {
-        if (!category) {
-            throw new this.exception('No category defined');
-        }
-
-        this.active = (window.ga) ? true : false;
-        this.category = category;
-    };
-
-    Analytics.prototype.trackEvent = function(action, label, value) {
-        if (!this.active) {
-            return;
-        }
-
-        if (!action) {
-            throw new this.exception('No action defined');
-        }
-
-        if (value) {
-            window.ga('send', this.category, action, label, value);
-        }
-        else if (label) {
-            window.ga('send', this.category, action, label);
-        }
-        else {
-            window.ga('send', this.category, action);
-        }
-
-    };
-
-    Analytics.prototype.exception = function(message) {
-        this.message = message;
-        this.name = 'AnalyticsException';
-    };
-
-    __exports__["default"] = Analytics;
-  });
-define("utils/mediaCordova",
-  ["exports"],
-  function(__exports__) {
-    "use strict";
-    var MediaCordova = function (sound) {
-      if (!sound) {
-        throw new this.exception('No src defined');
-      }
-      this.sound = sound;
-      if (!game.device.desktop) {
-        if (game.device.iOS) {
-          this.src = 'assets/audio/' + sound.key + '.mp3';
-        } else {
-          this.src = this.sound._sound.currentSrc;
-        }
-        this.soundObj = new Media(this.src,
-          function () {
-            console.log("playAudio():Audio Success");
-          }, function (err) {
-            console.log(err);
-          }
-        );
-      } else {
-        this.soundObj = this.sound;
-      }
-    };
-
-    MediaCordova.prototype.play = function () {
-      this.soundObj.play();
-    };
-
-
-    __exports__["default"] = MediaCordova;
   });
 define("scenes/boot",
   ["exports"],
@@ -958,7 +885,6 @@ define("scenes/numeroJugador",
     var siguiente;
     var grupoJugador;
     var textura;
-    var jugadores;
     var text;
 
     numeroJugador.prototype.create = function () {
@@ -1022,7 +948,7 @@ define("scenes/preload",
       for (var i = supervivientesKey.length - 1; i >= 0; i--) {
         supervivientes.push(supervivientesKey[i]);
       }
-      supervivientes.forEach(function (item, index) {
+      supervivientes.forEach(function (item) {
         that.load.image(item, 'assets/supervivientes/' + item + '.png');
       });
 
@@ -1088,7 +1014,6 @@ define("scenes/setupEscenario",
         contenedor,
         botonDerecha,
         tweenContendero,
-        interrogante,
         escenariosObj = Juego.escenarios[0],
         escenarios = [],
         escenario,
@@ -1232,9 +1157,7 @@ define("scenes/setupSuperviviente",
         espacioSupervivientes = 0,
         contenedor,
         botonDerecha,
-        botonIzquierda,
         tweenContendero,
-        interrogante,
         supervivientesObj = Juego.supervivientes[0],
         supervivientes = [],
         superviviente,
@@ -1315,4 +1238,82 @@ define("scenes/setupSuperviviente",
 
 
     __exports__["default"] = setupSuperviviente;
+  });
+define("utils/analytics",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    var Analytics = function(category) {
+        if (!category) {
+            throw new this.exception('No category defined');
+        }
+
+        this.active = (window.ga) ? true : false;
+        this.category = category;
+    };
+
+    Analytics.prototype.trackEvent = function(action, label, value) {
+        if (!this.active) {
+            return;
+        }
+
+        if (!action) {
+            throw new this.exception('No action defined');
+        }
+
+        if (value) {
+            window.ga('send', this.category, action, label, value);
+        }
+        else if (label) {
+            window.ga('send', this.category, action, label);
+        }
+        else {
+            window.ga('send', this.category, action);
+        }
+
+    };
+
+    Analytics.prototype.exception = function(message) {
+        this.message = message;
+        this.name = 'AnalyticsException';
+    };
+
+    __exports__["default"] = Analytics;
+  });
+define("utils/mediaCordova",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    var MediaCordova = function (sound) {
+      if (!sound) {
+        throw new this.exception('No src defined');
+      }
+      this.sound = sound;
+      if (!game.device.desktop) {
+        if (game.device.iOS) {
+          this.src = 'assets/audio/' + sound.key + '.mp3';
+        } else if (game.device.android) {
+          this.src = '/android_asset/www/assets/audio/' + sound.key + '.mp3';
+          console.log(this.src);
+        } else {
+          this.src = this.sound._sound.currentSrc;
+        }
+        this.soundObj = new Media(this.src,
+          function () {
+            console.log("playAudio():Audio Success");
+          }, function (err) {
+            console.log(err);
+          }
+        );
+      } else {
+        this.soundObj = this.sound;
+      }
+    };
+
+    MediaCordova.prototype.play = function () {
+      this.soundObj.play();
+    };
+
+
+    __exports__["default"] = MediaCordova;
   });

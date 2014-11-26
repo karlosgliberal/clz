@@ -5,7 +5,6 @@ function numeroJugador() {}
 var siguiente;
 var grupoJugador;
 var textura;
-var jugadores;
 var text;
 
 numeroJugador.prototype.create = function () {

@@ -3,13 +3,13 @@ var global = window['colapso'] = {
     numeroJugadores : 4,
     jugadorNumero: 1,
     escenario: 'eledificio',
-    superviviente: 'june'
+    superviviente: 'hennai'
   },
   supervivientes: [
     {
       june: {
         id: 'June',
-        titulo: 'June',
+        titulo: 'JUNE',
         subtitulo: 'Mano de vida',
         descripcion: 'Media vida dedica como cirujana en uno de los hospitales mas agetreado de la ciudad',
         imagen: 'marine.png',
@@ -25,7 +25,7 @@ var global = window['colapso'] = {
       },
       kyuzu: {
         id: 'kyuzu',
-        titulo: 'Kyuzu',
+        titulo: 'KYUZU',
         subtitulo: 'Duro como los bloques del norte',
         descripcion: 'En la zona norte en el barrio de los bloques la carcel fue su segunda casa y su escuela',
         imagen: 'marine.png',
@@ -57,7 +57,7 @@ var global = window['colapso'] = {
       },
       jacco: {
         id: 'jacco',
-        titulo: 'jacco',
+        titulo: 'JACCO',
         subtitulo: 'De mantenimiento por obligación',
         descripcion: 'Toda la vida arreglando cosas no pensaba que le iba a salvar la vida',
         imagen: 'marine.png',

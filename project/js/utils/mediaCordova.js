@@ -6,6 +6,9 @@ var MediaCordova = function (sound) {
   if (!game.device.desktop) {
     if (game.device.iOS) {
       this.src = 'assets/audio/' + sound.key + '.mp3';
+    } else if (game.device.android) {
+      this.src = '/android_asset/www/assets/audio/' + sound.key + '.mp3';
+      console.log(this.src);
     } else {
       this.src = this.sound._sound.currentSrc;
     }

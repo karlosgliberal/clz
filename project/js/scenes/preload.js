@@ -20,7 +20,7 @@ Preload.prototype.preload = function () {
   for (var i = supervivientesKey.length - 1; i >= 0; i--) {
     supervivientes.push(supervivientesKey[i]);
   }
-  supervivientes.forEach(function (item, index) {
+  supervivientes.forEach(function (item) {
     that.load.image(item, 'assets/supervivientes/' + item + '.png');
   });
 

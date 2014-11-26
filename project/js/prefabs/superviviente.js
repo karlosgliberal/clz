@@ -6,8 +6,9 @@ var juego = Juego.juego;
 
 
 function Superviviente(game, objeto) {
-  var style = { font: "46px futura", fill: '#fff', fontSize: '50px', align: "center" };
-  var styleDescripcion = { font: "25px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
+  // var style = { font: "46px Avalon", fill: '#fff', fontSize: '50px', align: "center" };
+  var tituloStyle = {font: '50px futuracondensed_medium', fill: '#ffffff', align: 'left'};
+  var habilidadStyle = { font: "25px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
   var styleSubtitulo = { font: "18px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
 
   group = Phaser.Group.call(this, game);
@@ -19,10 +20,10 @@ function Superviviente(game, objeto) {
   //cerrar.anchor.setTo(0, 0);
 
   imagen = game.add.image(5, 50, juego.superviviente);
-  titulo = game.add.text(260, 50, supervivientesObj[objeto].titulo, style);
-  titulo.anchor.setTo(0 , 0);
+  titulo = game.add.text(260, 58, supervivientesObj[objeto].titulo, tituloStyle);
+  titulo.anchor.setTo(0, 0);
 
-  subtitulo = game.add.text(titulo.x + 110, titulo.y + 22, supervivientesObj[objeto].subtitulo, styleSubtitulo);
+  subtitulo = game.add.text(titulo.x + 100, titulo.y + 32, supervivientesObj[objeto].subtitulo, styleSubtitulo);
   cartas = game.add.image(imagen.x + 350, imagen.y + 180, 'cartas');
   cartas.anchor.setTo(0, 0);
 
@@ -38,11 +39,11 @@ function Superviviente(game, objeto) {
   comunes = game.add.text(cartas.x + 21, cartas.y + 260, cartasDatos.comunes, styleSubtitulo);
   comunes.anchor.setTo(0.5);
 
-  habilidad = game.add.text(cartas.x + 260, cartas.y + 30, supervivientesObj[objeto].habilidad, styleDescripcion);
+  habilidad = game.add.text(cartas.x + 260, cartas.y + 30, supervivientesObj[objeto].habilidad, habilidadStyle);
 
 
 
-  textDescripcion = game.add.text(-400, 220, supervivientesObj[objeto].descripcion, styleDescripcion);
+  textDescripcion = game.add.text(-400, 220, supervivientesObj[objeto].descripcion, habilidadStyle);
   textDescripcion.wordWrap = true;
   textDescripcion.align = 'left';
   textDescripcion.wordWrapWidth =  340;
