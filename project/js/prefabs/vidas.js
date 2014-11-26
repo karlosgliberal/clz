@@ -10,11 +10,15 @@ function Vidas(game) {
   malAudio = new MediaCordova(malAudioAssets);
 
   group = Phaser.Group.call(this, game);
-  vidaMas = game.add.button(game.world.centerX + 430, 126, 'vidaMas', addVida, this);
+  vidaMas = game.add.button(game.world.centerX + 430, 126, 'vidaMas');
+  vidaMas.events.onInputDown.add(addVida, this);
   vidaMas.anchor.setTo(0.5);
+  //vidaMas = game.add.button(game.world.centerX + 430, 126, 'vidaMas', addVida, this);
 
-  vidaMenos = game.add.button(game.world.centerX + 185, 126, 'vidaMenos', rmVida, this);
+  vidaMenos = game.add.button(game.world.centerX + 185, 126, 'vidaMenos');
+  vidaMenos.events.onInputDown.add(rmVida, this);
   vidaMenos.anchor.setTo(0.5);
+
   fondoVidas = this.create(game.world.centerX + 150, 55, 'fondoVidas');
   fondoVidas.anchor.setTo(0, 0);
 
