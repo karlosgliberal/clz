@@ -46,3 +46,16 @@ canvas {
 
 }
 
+@font-face {
+    font-family: 'curlyjoeregular';
+    src: url('../assets/fonts/curjtrial-webfont.eot');
+    src: url('../assets/fonts/curjtrial-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../assets/fonts/curjtrial-webfont.woff2') format('woff2'),
+         url('../assets/fonts/curjtrial-webfont.woff') format('woff'),
+         url('../assets/fonts/curjtrial-webfont.ttf') format('truetype'),
+         url('../assets/fonts/curjtrial-webfont.svg#curlyjoeregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
