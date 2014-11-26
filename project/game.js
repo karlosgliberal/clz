@@ -612,8 +612,8 @@ define("prefabs/superviviente",
 
     function Superviviente(game, objeto) {
       // var style = { font: "46px Avalon", fill: '#fff', fontSize: '50px', align: "center" };
-      var tituloStyle = {font: '50px curlyjoeregular', fill: '#ffffff', align: 'left'};
-      var habilidadStyle = { font: "45px curlyjoeregular", fill: '#fff', fontSize: '25px', align: "center" };
+      var tituloStyle = {font: '50px futuracondensed_medium', fill: '#ffffff', align: 'left'};
+      var habilidadStyle = { font: "45px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
       var styleSubtitulo = { font: "18px eurostileregular", fill: '#fff', fontSize: '25px', align: "center" };
 
       group = Phaser.Group.call(this, game);
